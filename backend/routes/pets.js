@@ -1,18 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const userController = require('../controllers/userController')
+const petController = require('../controllers/petController')
 const authenticationService = require('../services/authentication');
 
 router.use(authenticationService.authenticateJWT); //runs before every route
 
-router.get('/', userController.getPets);
-router.get('/add', userController.addPet);
-router.post('/add', userController.savePet);
-router.get('/:id', userController.getPet);
+router.get('/pets', petController.getPets);
+router.get('/pets/add', petController.addPet);
+router.post('/pets/add', petController.savePet);
+router.get('/pets/:id', petController.getPet);
 
-router.get('/:id/edit', userController.editPet);
-router.post('/:id', userController.updatePet);
+router.get('/pets/:id/edit', petController.editPet);
+router.post('/pets/:id', petController.updatePet);
 
-router.post('/:id/delete', userController.deletePet);
+router.post('/pets/:id/delete', petController.deletePet);
 
 module.exports = router;

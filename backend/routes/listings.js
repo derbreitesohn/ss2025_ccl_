@@ -1,18 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const userController = require('../controllers/userController')
+const listingController = require('../controllers/listingController')
 const authenticationService = require('../services/authentication');
 
 router.use(authenticationService.authenticateJWT); //runs before every route
 
-router.get('/', userController.getListings);
-router.get('/add', userController.addListing);
-router.post('/add', userController.saveListing);
-router.get('/:id', userController.getListing);
+router.get('/listings', listingController.getListings);
+router.get('/listings/add', listingController.addListing);
+router.post('/listings/add', listingController.saveListing);
+router.get('/listings/:id', listingController.getListing);
 
-router.get('/:id/edit', userController.editListing);
-router.post('/:id', userController.updateListing);
+router.get('/listings/:id/edit', listingController.editListing);
+router.post('/listings/:id', listingController.updateListing);
 
-router.post('/:id/delete', userController.deleteListing);
-
-module.exports = router;
+router.post('/listings/:id/delete', listingController.deleteListing);
