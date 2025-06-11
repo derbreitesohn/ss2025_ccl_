@@ -2,7 +2,13 @@ import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
 import axios from 'axios'
+
 import HomePage from './components/HomePage'
+import LoginPage from './components/LoginPage'
+import Profile from './components/Profile'
+import MyListings from './components/MyListings'
+import Favorites from './components/Favorites'
+import Messages from './components/Messages'
 
 
 
@@ -30,6 +36,11 @@ function App() {
             <Routes>
                 {/* Public routes */}
                 <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/mylistings" element={<MyListings />} />
+                <Route path="/favorites" element={<Favorites />} />
+                <Route path="/messages" element={<Messages />} />
 
 
             </Routes>
