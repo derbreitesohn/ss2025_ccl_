@@ -64,6 +64,13 @@ function loadRegister(req, res, next) {
     res.json({ user: emptyUser });
 }
 
+function register(req, res, next) {
+    const newUser = req.body;
+
+    userModel.saveUser(newUser)
+        .then(() => res.redirect('/'))
+        .catch(err => res.status(500).send('Error saving user: ' + err.message));
+}
 
 function deleteUser(req, res, next) {
     userModel.deleteUser(req.params.id) //gets id and passes to model function

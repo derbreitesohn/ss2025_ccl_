@@ -9,17 +9,37 @@ const userController = require("../controllers/userController");
 const petController = require("../controllers/petController");
 const listingController = require("../controllers/listingController");
 const favoriteController = require("../controllers/favoriteController");
-
 const router = express.Router();
 const authenticationService = require('../services/authentication');
 
+
 router.get("/", (req, res) => {
-    res.render("index", {title: "Express"})
+    res.json({title: "Express"})
 });
+
 
 router.get('/register', userController.loadRegister);
 router.post('/register', userController.register);
-router.post("/", (req, res) => {
-    console.log(req.body);
-    res.send("Received a POST request");
-});
+
+
+
+router.route('/login')
+    .get((req, res) => {
+        res.render('login');
+    })
+    .post((req, res) => {
+        userModel.getUsers()
+            .then((users) => {
+                authenticationService.authenticateUser(req.body, users, res)
+            })
+            .catch((err) => {res.sendStatus(500)});
+    })
+
+router.get('/logout', (req, res) => {
+    res.cookie('accessToken', '', {maxAge: 0});
+    res.redirect('/');
+})
+
+
+
+module.exports = router;

@@ -14,3 +14,6 @@ router.get('/listings/:id/edit', listingController.editListing);
 router.post('/listings/:id', listingController.updateListing);
 
 router.post('/listings/:id/delete', listingController.deleteListing);
+
+
+module.exports = router;
