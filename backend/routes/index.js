@@ -10,7 +10,7 @@ const petController = require("../controllers/petController");
 const listingController = require("../controllers/listingController");
 const favoriteController = require("../controllers/favoriteController");
 const router = express.Router();
-const authenticationService = require('../services/authentication');
+//const authenticationService = require('../services/authentication');
 
 
 router.get("/", (req, res) => {
