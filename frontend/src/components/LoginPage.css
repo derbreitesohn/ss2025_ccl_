@@ -1,0 +1,261 @@
+/* PatPat Split Layout Login Styles */
+.login-split-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+/* Left Side - Login Form */
+.login-form-section {
+    flex: 1;
+    max-width: 600px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.login-form-content {
+    width: 100%;
+    max-width: 450px;
+
+}
+
+/* Logo and Header */
+.login-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.logo-icon {
+    width: 32px;
+    height: 32px;
+    background-color: #8b5cf6;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-placeholder {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.logo-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1f2937;
+}
+
+.tagline {
+    color: #6b7280;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Welcome Section */
+.welcome-section {
+    margin-bottom: 32px;
+}
+
+.welcome-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #1f2937;
+    margin: 0 0 8px 0;
+    padding: 20px;
+}
+
+.welcome-subtitle {
+    color: #6b7280;
+    font-size: 16px;
+    margin: 0;
+}
+
+/* Error Message */
+.error-message {
+    color: #dc2626;
+    background-color: #fef2f2;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    text-align: center;
+    border: 1px solid #fecaca;
+}
+
+/* Form Styles */
+.form-container {
+    margin-bottom: 24px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #374151;
+    padding-bottom: 10px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 20px 20px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background-color: white;
+
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.form-input::placeholder {
+    color: #9ca3af;
+}
+
+.signin-button {
+    width: 100%;
+    padding: 20px 20px;
+    background-color: #8b5cf6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.signin-button:hover:not(:disabled) {
+    background-color: #7c3aed;
+}
+
+.signin-button:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.signin-button.loading {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+}
+
+/* Footer */
+.login-footer {
+    text-align: center;
+    margin-top: 24px;
+}
+
+.login-footer p {
+    color: #6b7280;
+    font-size: 14px;
+    margin: 0;
+}
+
+.signup-link {
+    color: #8b5cf6;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.signup-link:hover {
+    text-decoration: underline;
+}
+
+/* Right Side - Photo */
+.photo-section {
+    flex: 1;
+    position: relative;
+    background-color: #f3f4f6;
+}
+
+.photo-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.login-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.photo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(139, 92, 246, 0.1) 0%, rgba(0, 0, 0, 0.2) 100%);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .login-split-container {
+        flex-direction: column;
+    }
+
+    .login-form-section {
+        max-width: none;
+        flex: none;
+        padding: 20px;
+    }
+
+    .photo-section {
+        flex: 1;
+        min-height: 200px;
+    }
+
+    .welcome-title {
+        font-size: 28px;
+    }
+
+    .logo-text {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-form-section {
+        padding: 16px;
+    }
+
+    .welcome-title {
+        font-size: 24px;
+    }
+}
