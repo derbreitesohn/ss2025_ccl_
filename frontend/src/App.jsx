@@ -9,6 +9,7 @@ import Profile from './components/Profile'
 import MyListings from './components/MyListings'
 import Favorites from './components/Favorites'
 import Messages from './components/Messages'
+import SignUp from './components/SignUp'
 
 
 
@@ -41,6 +42,7 @@ function App() {
                 <Route path="/mylistings" element={<MyListings />} />
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/messages" element={<Messages />} />
+                <Route path="/signup" element={<SignUp />} />
 
 
             </Routes>

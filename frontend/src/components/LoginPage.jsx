@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom';
 import './LoginPage.css';
-import loginImage from '../images/fee_ccl.png'
-import logo from '../images/logo_patpat.png'
+import loginImage from '../images/fee_ccl.png';
+import logo from '../images/logo_patpat.png';
 
 const API_BASE_URL = 'http://localhost:3000';
 
@@ -13,13 +12,15 @@ function LoginPage() {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    const navigate = useNavigate();
+
     const handleLogin = async (e) => {
         e.preventDefault();
         setError('');
         setIsLoading(true);
 
         try {
-            const response = await fetch(`${API_BASE_URL}/auth/login`, {
+            const response = await fetch(`${API_BASE_URL}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -35,14 +36,12 @@ function LoginPage() {
             if (!response.ok) {
                 throw new Error(data.message || 'Login failed');
             }
-            navigate('/')
 
-            // Store the token (you can uncomment this when ready to use localStorage)
+            // Store the token if needed
             // localStorage.setItem('token', data.token);
 
-            // Redirect to home page or dashboard
             console.log('Login successful:', data);
-            // navigate('/home'); // uncomment when using react-router
+            navigate('/'); // Redirect to home or dashboard
 
         } catch (error) {
             setError(error.message || 'An error occurred during login');
@@ -59,16 +58,13 @@ function LoginPage() {
                     {/* Logo and Header */}
                     <div className="login-header">
                         <div className="logo-section">
-
-                                <div className="logo-placeholder">
-                                    <img
-                                        src={logo}
-                                        alt="logo"
-                                        className="logo-image"
-                                    />
-                                </div>
-
-
+                            <div className="logo-placeholder">
+                                <img
+                                    src={logo}
+                                    alt="logo"
+                                    className="logo-image"
+                                />
+                            </div>
                         </div>
                         <p className="tagline">Find your perfect companion</p>
                     </div>
@@ -87,7 +83,7 @@ function LoginPage() {
                     )}
 
                     {/* Login Form */}
-                    <div className="form-container">
+                    <form onSubmit={handleLogin} className="form-container">
                         <div className="form-group">
                             <label htmlFor="username" className="form-label">
                                 Username
@@ -119,17 +115,22 @@ function LoginPage() {
                         </div>
 
                         <button
-                            onClick={handleLogin}
+                            type="submit"
                             className={`signin-button ${isLoading ? 'loading' : ''}`}
                             disabled={isLoading}
                         >
                             {isLoading ? 'Signing in...' : 'Sign In'}
                         </button>
-                    </div>
+                    </form>
 
                     {/* Footer */}
                     <div className="login-footer">
-                        <p>Don't have an account? <a href="#" className="signup-link">Sign up</a></p>
+                        <p>
+                            Don't have an account?{' '}
+                            <Link to="/signup" className="signup-link">
+                                Sign up
+                            </Link>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -144,12 +145,9 @@ function LoginPage() {
                     />
                     <div className="photo-overlay"></div>
                 </div>
-
             </div>
         </div>
     );
 }
-
-
 
 export default LoginPage;
