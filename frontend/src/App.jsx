@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
 import axios from 'axios'
+import HomePage from './components/HomePage'
 
 
 
@@ -28,6 +29,7 @@ function App() {
         <Router>
             <Routes>
                 {/* Public routes */}
+                <Route path="/" element={<HomePage />} />
 
 
             </Routes>
