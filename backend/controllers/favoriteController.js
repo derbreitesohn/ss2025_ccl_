@@ -1,4 +1,4 @@
-const favoriteModel = require("../models/listingModel");
+const favoriteModel = require("../models/favoriteModel");
 const req = require("express/lib/request");
 const res = require("express/lib/response");
 
