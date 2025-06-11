@@ -5,25 +5,25 @@ const res = require("express/lib/response");
 
 function getUsers(req,res,next) {
     userModel.getUsers()
-        .then( users => res.json({ users: users }))
+        .then(users => res.json(users))
         .catch( err => res.sendStatus(500))
 }
 
 function getUser(req, res, next) {
     userModel.getUser(req.params.id)
-        .then(user => res.json({ users: user }))
+        .then(user => res.json(user))
         .catch(err => res.status(404).send(err.message));
 }
 
 function editUser(req, res, next) {
     userModel.getUser(req.params.id)
-        .then(user => res.json({ editUser: user }))
+        .then(user => res.json(user))
         .catch(err =>  res.sendStatus(500));
 }
 
 function updateUser(req, res, next) {
     userModel.updateUser(req.body)
-        .then(user => res.json({ users: users }))
+        .then(user => res.json(user))
         .catch(err =>  res.sendStatus(500));
 }
 
@@ -39,7 +39,7 @@ function addUser(req, res, next) {
         created_at: new Date(),
 
     };
-    res.json({ user: emptyUser });
+    res.json(emptyUser);
 }
 
 function saveUser(req, res, next) {
@@ -61,7 +61,7 @@ function loadRegister(req, res, next) {
         password: '',
         created_at: new Date(),
     };
-    res.json({ user: emptyUser });
+    res.json( emptyUser);
 }
 
 function register(req, res, next) {

@@ -5,25 +5,25 @@ const res = require("express/lib/response");
 
 function getPets(req, res, next) {
     petModel.getPets()
-        .then(pets => res.json({ pets: pets }))
+        .then(pets => res.json( pets))
         .catch(err => res.sendStatus(500));
 }
 
 function getPet(req, res, next) {
     petModel.getPet(req.params.id)
-        .then(pet => res.json({ pets: pet }))
+        .then(pet => res.json(pet))
         .catch(err => res.status(404).send(err.message));
 }
 
 function editPet(req, res, next) {
     petModel.getPet(req.params.id)
-        .then(pet => res.json({ editPet: pet }))
+        .then(pet => res.json(pet))
         .catch(err => res.sendStatus(500));
 }
 
 function updatePet(req, res, next) {
     petModel.updatePet(req.body)
-        .then(pet => res.json({ pets: pet }))
+        .then(pet => res.json( pet))
         .catch(err => res.sendStatus(500));
 }
 
@@ -41,7 +41,7 @@ function addPet(req, res, next) {
         created_at: new Date(),
         pet_picture: ''
     };
-    res.json({ pet: emptyPet });
+    res.json(emptyPet);
 }
 
 function savePet(req, res, next) {

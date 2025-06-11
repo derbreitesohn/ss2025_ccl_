@@ -17,7 +17,7 @@ function getListing(req, res, next) {
 
 function editListing(req, res, next) {
     listingModel.getListing(req.params.id)
-        .then(listing => res.json({ editListing: listing }))
+        .then(listing => res.json( listing))
         .catch(err => res.sendStatus(500));
 }
 
@@ -41,7 +41,7 @@ function addListing(req, res, next) {
         created_at: new Date(),
         pet_picture: ''
     };
-    res.json({ listing: emptyListing });
+    res.json(emptyListing);
 }
 
 function saveListing(req, res, next) {
