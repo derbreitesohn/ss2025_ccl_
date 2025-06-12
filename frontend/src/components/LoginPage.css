@@ -41,6 +41,7 @@
     justify-content: center;
     gap: 8px;
     margin-bottom: 8px;
+    padding-bottom: 10px;
 }
 
 .logo-icon {
@@ -72,6 +73,7 @@
     color: #6b7280;
     font-size: 14px;
     margin: 0;
+    padding-bottom: 50px;
 }
 
 /* Welcome Section */
@@ -84,13 +86,15 @@
     font-weight: bold;
     color: #1f2937;
     margin: 0 0 8px 0;
-    padding: 20px;
+
+    padding-bottom: 30px;
 }
 
 .welcome-subtitle {
     color: #6b7280;
     font-size: 16px;
     margin: 0;
+    padding-bottom: 50px;
 }
 
 /* Error Message */
@@ -111,8 +115,8 @@
 }
 
 .form-group {
-    margin-bottom: 20px;
-    padding-bottom: 20px;
+    margin-bottom: 40px;
+    padding-bottom: 40px;
 }
 
 .form-label {
@@ -148,7 +152,8 @@
 
 .signin-button {
     width: 100%;
-    padding: 20px 20px;
+   padding-bottom: 20px;
+    padding-top: 50px;
     background-color: #8b5cf6;
     color: white;
     border: none;
@@ -222,40 +227,4 @@
     right: 0;
     bottom: 0;
     background: linear-gradient(45deg, rgba(139, 92, 246, 0.1) 0%, rgba(0, 0, 0, 0.2) 100%);
-}
-
-/* Mobile Responsive */
-@media (max-width: 768px) {
-    .login-split-container {
-        flex-direction: column;
-    }
-
-    .login-form-section {
-        max-width: none;
-        flex: none;
-        padding: 20px;
-    }
-
-    .photo-section {
-        flex: 1;
-        min-height: 200px;
-    }
-
-    .welcome-title {
-        font-size: 28px;
-    }
-
-    .logo-text {
-        font-size: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .login-form-section {
-        padding: 16px;
-    }
-
-    .welcome-title {
-        font-size: 24px;
-    }
 }
