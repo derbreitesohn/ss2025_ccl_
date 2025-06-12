@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
-
+import loginImage from '../images/fee_ccl.png';
+import logo from '../images/logo_patpat.png';
+import './SignUp.css';
 
 const API_BASE_URL = 'http://localhost:3000';
 
@@ -79,24 +81,168 @@ function SignUp() {
     };
 
     return (
-        <div>
-            <h1>Register</h1>
-            {error && <div style={{color: 'red'}}>{error}</div>}
-            <form onSubmit={handleSubmit}>
-                <input name="name" placeholder="Name" onChange={handleChange} />
-                <input name="username" placeholder="Username" onChange={handleChange} />
-                <input name="email" placeholder="Email" onChange={handleChange} />
-                <input name="password" placeholder="Password" type="password" onChange={handleChange} />
-                <input name="location" placeholder="Location" onChange={handleChange} />
-                <input name="profile_picture" placeholder="Profile Picture" onChange={handleChange} />
-                <input name="about" placeholder="About" onChange={handleChange} />
-                <button type="submit" disabled={isLoading}>
-                    {isLoading ? 'Submitting...' : 'Sign Up'}
-                </button>
-            </form>
-        </div>
+        <div className="login-split-container">
+            {/* Left Side - Sign Up Form */}
+            <div className="login-form-section">
+                <div className="login-form-content">
+                    {/* Logo and Header */}
+                    <div className="login-header">
+                        <div className="logo-section">
+                            <div className="logo-placeholder">
+                                <img
+                                    src={logo}
+                                    alt="logo"
+                                    className="logo-image"
+                                />
+                            </div>
+                        </div>
+                        <p className="tagline">Find your perfect companion</p>
+                    </div>
 
+                    {/* Welcome Text */}
+                    <div className="welcome-section">
+                        <h1 className="welcome-title">Create an account</h1>
+                        <p className="welcome-subtitle">Sign up to get started</p>
+                    </div>
+
+                    {/* Error Message */}
+                    {error && (
+                        <div className="error-message">
+                            {error}
+                        </div>
+                    )}
+
+                    {/* Sign Up Form */}
+                    <form onSubmit={handleSubmit} className="form-container">
+                        <div className="form-group">
+                            <label htmlFor="name" className="form-label">Name</label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                required
+                                className="form-input"
+                                placeholder="Enter your Name"
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="username" className="form-label">Username</label>
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                value={formData.username}
+                                onChange={handleChange}
+                                required
+                                className="form-input"
+                                placeholder="Enter your Username"
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="email" className="form-label">Email</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                required
+                                className="form-input"
+                                placeholder="Enter your Email"
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="password" className="form-label">Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
+                                className="form-input"
+                                placeholder="Enter your Password"
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="location" className="form-label">Location</label>
+                            <input
+                                type="text"
+                                id="location"
+                                name="location"
+                                value={formData.location}
+                                onChange={handleChange}
+                                className="form-input"
+                                placeholder="Enter your Location"
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="profile_picture" className="form-label">Profile Picture URL</label>
+                            <input
+                                type="text"
+                                id="profile_picture"
+                                name="profile_picture"
+                                value={formData.profile_picture}
+                                onChange={handleChange}
+                                className="form-input"
+                                placeholder="Enter picture URL"
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="about" className="form-label">About</label>
+                            <input
+                                type="text"
+                                id="about"
+                                name="about"
+                                value={formData.about}
+                                onChange={handleChange}
+                                className="form-input"
+                                placeholder="Tell us about yourself"
+                            />
+                        </div>
+
+                        <button
+                            type="submit"
+                            className={`signin-button ${isLoading ? 'loading' : ''}`}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? 'Creating account...' : 'Sign Up'}
+                        </button>
+                    </form>
+
+                    {/* Footer */}
+                    <div className="login-footer">
+                        <p>
+                            Already have an account?{' '}
+                            <a href="/login" className="signup-link">
+                                Sign in
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Right Side - Dog Photo */}
+            <div className="photo-section">
+                <div className="photo-container">
+                    <img
+                        src={loginImage}
+                        alt="Beautiful dog companion"
+                        className="login-image"
+                    />
+                    <div className="photo-overlay"></div>
+                </div>
+            </div>
+        </div>
     );
 }
 
-export default SignUp;
+    export default SignUp;
