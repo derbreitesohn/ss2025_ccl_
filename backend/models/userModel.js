@@ -28,14 +28,13 @@ let getUser = (id) => new Promise((resolve, reject) => {
 let saveUser = (userData) => new Promise(async(resolve, reject) => {
     userData.password = await bcrypt.hash(userData.password, 10);
 
-    let sql = "INSERT INTO user (name, username, email, location, profile_picture, about, created_at, password) VALUES (" +
+    let sql = "INSERT INTO user (name, username, email, location, profile_picture, about, password) VALUES (" +
         db.escape(userData.name) + "," +
         db.escape(userData.username) + "," +
         db.escape(userData.email) + "," +
         db.escape(userData.location) + "," +
         db.escape(userData.profile_picture) + "," +
         db.escape(userData.about) + "," +
-        db.escape(userData.created_at) + "," +
         db.escape(userData.password) + ")";
 
     console.log(sql);
@@ -59,7 +58,6 @@ let updateUser = (userData) => new Promise(async (resolve, reject) => {
         ", location = " + db.escape(userData.location) +
         ", profile_picture = " + db.escape(userData.profile_picture) +
         ", about = " + db.escape(userData.about) +
-        ", created_at = " + db.escape(userData.created_at) +
         ", password = " + db.escape(userData.password) +
         " WHERE id = " + parseInt(userData.id);
     console.log(sql);

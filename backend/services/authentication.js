@@ -10,7 +10,7 @@ async function checkPassword(password, hash) {
 // Authenticates user, checking credentials, setting JWT if valid
 async function authenticateUser({username, password}, users, res) { //{} for destructuring, cleaner
     const user = users.find( u => {
-        return u.email === username;
+        return u.username === username;
     });
 
     // If user exists and pw correct
@@ -18,11 +18,16 @@ async function authenticateUser({username, password}, users, res) { //{} for des
         // Create token
         const accessToken = jwt.sign({ id: user.id, name: user.name }, ACCESS_TOKEN_SECRET, {expiresIn: '1h'});
         // Store token as cookie in browser
-        res.cookie('accessToken', accessToken);
+        res.cookie('accessToken', accessToken, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'Lax',
+            maxAge: 60 * 60 * 1000
+        });
 
-        res.redirect('/users/' + user.id);
+        res.json({Login: "success"});
     } else {
-        res.send('Username or password incorrect');
+        res.json({Login: "Fail"});
     }
 }
 

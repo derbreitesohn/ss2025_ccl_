@@ -25,6 +25,8 @@ function LoginPage() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
+
                 body: JSON.stringify({
                     username: username,
                     password: password
@@ -37,8 +39,8 @@ function LoginPage() {
                 throw new Error(data.message || 'Login failed');
             }
 
-            // Store the token if needed
-            // localStorage.setItem('token', data.token);
+
+             localStorage.setItem('token', data.token);
 
             console.log('Login successful:', data);
             navigate('/'); // Redirect to home or dashboard

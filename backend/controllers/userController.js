@@ -36,7 +36,7 @@ function addUser(req, res, next) {
         profile_picture: '',
         about: '',
         password: '',
-        created_at: new Date(),
+
 
     };
     res.json(emptyUser);
@@ -59,7 +59,7 @@ function loadRegister(req, res, next) {
         profile_picture: '',
         about: '',
         password: '',
-        created_at: new Date(),
+
     };
     res.json( emptyUser);
 }
@@ -68,7 +68,7 @@ function register(req, res, next) {
     const newUser = req.body;
 
     userModel.saveUser(newUser)
-        .then(() => res.redirect('/'))
+        .then(() => res.json({register:"DONE"}))
         .catch(err => res.status(500).send('Error saving user: ' + err.message));
 }
 
@@ -77,6 +77,7 @@ function deleteUser(req, res, next) {
         .then(() => res.redirect('/'))
         .catch(err => res.status(500).send('Error deleting user: ' + err.message));
 }
+
 
 
 
