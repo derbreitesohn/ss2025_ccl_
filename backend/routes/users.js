@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const userController = require('../controllers/userController')
-//const authenticationService = require('../services/authentication');
+const authenticationService = require('../services/authentication');
 
-//router.use(authenticationService.authenticateJWT); //runs before every route
-
+router.use(authenticationService.authenticateJWT); //runs before every route
 
 router.get('/', userController.getUsers);
 router.get('/add', userController.addUser);

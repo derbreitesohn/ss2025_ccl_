@@ -25,11 +25,13 @@ router.post('/register', userController.register);
 
 router.route('/login')
     .get((req, res) => {
-        res.json({login: "login successful"});
+        res.render('login');
     })
     .post((req, res) => {
         userModel.getUsers()
-            .then((users) => {authenticationService.authenticateUser(req.body, users, res)})
+            .then((users) => {
+                authenticationService.authenticateUser(req.body, users, res)
+            })
             .catch((err) => {res.sendStatus(500)});
     })
 
@@ -37,6 +39,7 @@ router.get('/logout', (req, res) => {
     res.cookie('accessToken', '', {maxAge: 0});
     res.redirect('/');
 })
+
 
 
 module.exports = router;
