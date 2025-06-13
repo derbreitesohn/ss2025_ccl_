@@ -5,6 +5,7 @@ const userController = require('../controllers/userController')
 
 //router.use(authenticationService.authenticateJWT); //runs before every route
 
+
 router.get('/', userController.getUsers);
 router.get('/add', userController.addUser);
 router.post('/add', userController.saveUser);
