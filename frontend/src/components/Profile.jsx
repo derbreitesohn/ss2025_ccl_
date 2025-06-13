@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
+import LoginPage from "./LoginPage.jsx";
 
 const API_BASE_URL = 'http://localhost:3000';
 
@@ -20,6 +21,7 @@ function Profile() {
                     withCredentials: true // This ensures cookies are sent with the request
                 });
                 setUser(response.data);
+                console.log(response.data);
             } catch (err) {
                 console.error('Error fetching user:', err);
                 setError('Failed to load user data. Please make sure you are logged in.');
@@ -27,7 +29,6 @@ function Profile() {
                 setLoading(false);
             }
         };
-
         fetchUserData();
     }, []);
 

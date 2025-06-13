@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './Navbar';
 
 const API_BASE_URL = 'http://localhost:3000';
 
+
 function AddPet() {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
+        user_id: '1',
         name: '',
         breed: '',
         age: '',
@@ -18,6 +22,28 @@ function AddPet() {
         description: '',
         image_url: ''
     });
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+                const response = await axios.get(`${API_BASE_URL}/users/me`, {
+                    withCredentials: true // This ensures cookies are sent with the request
+                });
+                setFormData(prevState => ({
+                    ...prevState,
+                    user_id: response.data.id,
+                }));
+            } catch (err) {
+                console.error('Error fetching user:', err);
+                setError('Failed to load user data. Please make sure you are logged in.');
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchUserData();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -30,12 +56,32 @@ function AddPet() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            console.log(formData);
             await axios.post(`${API_BASE_URL}/pets/add`, formData, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+
+                body: JSON.stringify({
+                    user_id: '1',
+                    name: formData.name,
+                    breed: formData.breed,
+                    age: formData.age,
+                    gender: formData.gender,
+                    weight: formData.weight,
+                    color: formData.color,
+                    location: formData.location,
+                    description: formData.description,
+                    image_url: formData.image_url
+
+                }),
                 withCredentials: true
             });
             navigate('/profile');
         } catch (error) {
-            console.error('Error adding pet:', error);
+            console.error('Error adding pet:', error.response.data);
             alert('Failed to add pet. Please try again.');
         }
     };
@@ -68,7 +114,7 @@ function AddPet() {
                                     name={name}
                                     value={formData[name]}
                                     onChange={handleChange}
-                                    required={name !== 'image_url'} // optional image URL
+                                    required={name !== 'image_url'}
                                     style={{
                                         width: '100%',
                                         padding: '8px',

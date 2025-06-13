@@ -29,6 +29,7 @@ function updatePet(req, res, next) {
 
 function addPet(req, res, next) {
     const emptyPet = {
+        user_id: '',
         name: '',
         breed: '',
         age: '',
@@ -46,13 +47,13 @@ function savePet(req, res, next) {
     const newPet = req.body;
 
     petModel.savePet(newPet)
-        .then(() => res.redirect('/profile'))
+        .then(() => res.json({register:"DONE"}))
         .catch(err => res.status(500).send('Error saving pet: ' + err.message));
 }
 
 function deletePet(req, res, next) {
     petModel.deletePet(req.params.id)
-        .then(() => res.redirect('/profile'))
+        .then(() => res.json({register:"DONE"}))
         .catch(err => res.status(500).send('Error deleting pet: ' + err.message));
 }
 

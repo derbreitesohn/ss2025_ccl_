@@ -47,13 +47,13 @@ function addListing(req, res, next) {
 function saveListing(req, res, next) {
     const newListing = req.body;
     listingModel.saveListing(newListing)
-        .then(() => res.redirect('/profile'))
+        .then(() => res.json({register:"DONE"}))
         .catch(err => res.status(500).send('Error saving listing: ' + err.message));
 }
 
 function deleteListing(req, res, next) {
     listingModel.deleteListing(req.params.id)
-        .then(() => res.redirect('/profile'))
+        .then(() => res.json({register:"DONE"}))
         .catch(err => res.status(500).send('Error deleting listing: ' + err.message));
 }
 

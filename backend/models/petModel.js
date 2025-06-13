@@ -49,7 +49,7 @@ let savePet = (petData) => new Promise(async (resolve, reject) => {
     });
 });
 
-let updatePet = (petData) => new Promise(async (resolve, reject) => {
+let updatePet = (petData, userId) => new Promise(async (resolve, reject) => {
 
     let sql = "UPDATE pets SET " +
         "user_id = " + db.escape(petData.user_id) +
