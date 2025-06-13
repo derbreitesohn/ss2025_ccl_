@@ -38,7 +38,6 @@ function addPet(req, res, next) {
         color: '',
         location: '',
         about: '',
-        created_at: new Date(),
         pet_picture: ''
     };
     res.json(emptyPet);

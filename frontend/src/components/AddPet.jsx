@@ -9,9 +9,12 @@ function AddPet() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
-        species: '',
         breed: '',
         age: '',
+        gender: '',
+        weight: '',
+        color: '',
+        location: '',
         description: '',
         image_url: ''
     });
@@ -27,7 +30,7 @@ function AddPet() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`${API_BASE_URL}/pets`, formData, {
+            await axios.post(`${API_BASE_URL}/pets/add`, formData, {
                 withCredentials: true
             });
             navigate('/profile');
@@ -47,79 +50,35 @@ function AddPet() {
                     padding: '20px',
                     borderRadius: '8px'
                 }}>
-                    <div style={{ marginBottom: '15px' }}>
-                        <label style={{ display: 'block', marginBottom: '5px' }}>
-                            Name:
-                            <input
-                                type="text"
-                                name="name"
-                                value={formData.name}
-                                onChange={handleChange}
-                                required
-                                style={{
-                                    width: '100%',
-                                    padding: '8px',
-                                    borderRadius: '4px',
-                                    border: '1px solid #ddd'
-                                }}
-                            />
-                        </label>
-                    </div>
-
-                    <div style={{ marginBottom: '15px' }}>
-                        <label style={{ display: 'block', marginBottom: '5px' }}>
-                            Species:
-                            <input
-                                type="text"
-                                name="species"
-                                value={formData.species}
-                                onChange={handleChange}
-                                required
-                                style={{
-                                    width: '100%',
-                                    padding: '8px',
-                                    borderRadius: '4px',
-                                    border: '1px solid #ddd'
-                                }}
-                            />
-                        </label>
-                    </div>
-
-                    <div style={{ marginBottom: '15px' }}>
-                        <label style={{ display: 'block', marginBottom: '5px' }}>
-                            Breed:
-                            <input
-                                type="text"
-                                name="breed"
-                                value={formData.breed}
-                                onChange={handleChange}
-                                style={{
-                                    width: '100%',
-                                    padding: '8px',
-                                    borderRadius: '4px',
-                                    border: '1px solid #ddd'
-                                }}
-                            />
-                        </label>
-                    </div>
-
-                    <div style={{ marginBottom: '15px' }}>
-                        <label style={{ display: 'block', marginBottom: '5px' }}>
-                            Age:
-                            <input
-                                type="number"
-                                name="age"
-                                value={formData.age}
-                                onChange={handleChange}
-                                style={{
-                                    width: '100%',
-                                    padding: '8px',
-                                    borderRadius: '4px',
-                                    border: '1px solid #ddd'
-                                }}
-                            />
-                        </label>
-                    </div>
+                    {[
+                        { label: 'Name', name: 'name', type: 'text' },
+                        { label: 'Breed', name: 'breed', type: 'text' },
+                        { label: 'Age', name: 'age', type: 'number' },
+                        { label: 'Gender', name: 'gender', type: 'text' },
+                        { label: 'Weight (kg)', name: 'weight', type: 'number' },
+                        { label: 'Color', name: 'color', type: 'text' },
+                        { label: 'Location', name: 'location', type: 'text' },
+                        { label: 'Image URL', name: 'image_url', type: 'url' }
+                    ].map(({ label, name, type }) => (
+                        <div key={name} style={{ marginBottom: '15px' }}>
+                            <label style={{ display: 'block', marginBottom: '5px' }}>
+                                {label}:
+                                <input
+                                    type={type}
+                                    name={name}
+                                    value={formData[name]}
+                                    onChange={handleChange}
+                                    required={name !== 'image_url'} // optional image URL
+                                    style={{
+                                        width: '100%',
+                                        padding: '8px',
+                                        borderRadius: '4px',
+                                        border: '1px solid #ddd'
+                                    }}
+                                />
+                            </label>
+                        </div>
+                    ))}
 
                     <div style={{ marginBottom: '15px' }}>
                         <label style={{ display: 'block', marginBottom: '5px' }}>
@@ -128,30 +87,13 @@ function AddPet() {
                                 name="description"
                                 value={formData.description}
                                 onChange={handleChange}
+                                required
                                 style={{
                                     width: '100%',
                                     padding: '8px',
                                     borderRadius: '4px',
                                     border: '1px solid #ddd',
                                     minHeight: '100px'
-                                }}
-                            />
-                        </label>
-                    </div>
-
-                    <div style={{ marginBottom: '15px' }}>
-                        <label style={{ display: 'block', marginBottom: '5px' }}>
-                            Image URL:
-                            <input
-                                type="url"
-                                name="image_url"
-                                value={formData.image_url}
-                                onChange={handleChange}
-                                style={{
-                                    width: '100%',
-                                    padding: '8px',
-                                    borderRadius: '4px',
-                                    border: '1px solid #ddd'
                                 }}
                             />
                         </label>
