@@ -16,6 +16,7 @@ function AddPet() {
         color: '',
         location: '',
         description: '',
+        listing_type: '',
         image_url: ''
     });
 
@@ -58,6 +59,7 @@ function AddPet() {
                         { label: 'Weight (kg)', name: 'weight', type: 'number' },
                         { label: 'Color', name: 'color', type: 'text' },
                         { label: 'Location', name: 'location', type: 'text' },
+                        { label: 'Listing type', name: 'listing type', type: 'text' },
                         { label: 'Image URL', name: 'image_url', type: 'url' }
                     ].map(({ label, name, type }) => (
                         <div key={name} style={{ marginBottom: '15px' }}>

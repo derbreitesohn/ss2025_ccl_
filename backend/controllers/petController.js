@@ -29,7 +29,6 @@ function updatePet(req, res, next) {
 
 function addPet(req, res, next) {
     const emptyPet = {
-        user_id: '',
         name: '',
         breed: '',
         age: '',
