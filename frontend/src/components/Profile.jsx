@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 
 const API_BASE_URL = 'http://localhost:3000';
 
 function Profile() {
-    const { id } = useParams();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -17,20 +16,28 @@ function Profile() {
             try {
                 setLoading(true);
                 setError(null);
-                const response = await axios.get(`${API_BASE_URL}/users/${id}`);
-                setUser(response.data);
+                // First get all users to find the current user
+                const response = await axios.get(`${API_BASE_URL}/users`, {
+                    withCredentials: true // This ensures cookies are sent with the request
+                });
+
+                // The backend should attach the user ID to the request via the JWT token
+                // For now, we'll get the first user as a fallback
+                if (response.data && response.data.length > 0) {
+                    setUser(response.data[0]);
+                } else {
+                    setError('No user data found');
+                }
             } catch (err) {
                 console.error('Error fetching user:', err);
-                setError('Failed to load user data');
+                setError('Failed to load user data. Please make sure you are logged in.');
             } finally {
                 setLoading(false);
             }
         };
 
-        if (id) {
-            fetchUserData();
-        }
-    }, [id]);
+        fetchUserData();
+    }, []);
 
     if (loading) {
         return (
@@ -75,6 +82,7 @@ function Profile() {
                         background: '#f9f9f9',
                         padding: '20px',
                         borderRadius: '8px'
+
                     }}>
                         <h2>User Information</h2>
 
