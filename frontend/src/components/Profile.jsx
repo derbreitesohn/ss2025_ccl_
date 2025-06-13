@@ -84,22 +84,26 @@ function Profile() {
                         borderRadius: '8px'
 
                     }}>
-                        <h2>User Information</h2>
 
-                        {user.profile_picture && (
-                            <div style={{ marginBottom: '15px' }}>
-                                <img
-                                    src={user.profile_picture}
-                                    alt="Profile"
-                                    style={{
-                                        width: '100px',
-                                        height: '100px',
-                                        borderRadius: '50%',
-                                        objectFit: 'cover'
-                                    }}
-                                />
-                            </div>
-                        )}
+
+                        <div style={{color: 'black'}}>
+
+                            <h2>User Information</h2>
+
+                            {user.profile_picture && (
+                                <div style={{ marginBottom: '15px' }}>
+                                    <img
+                                        src={user.profile_picture}
+                                        alt="Profile"
+                                        style={{
+                                            width: '100px',
+                                            height: '100px',
+                                            borderRadius: '50%',
+                                            objectFit: 'cover'
+                                        }}
+                                    />
+                                </div>
+                            )}
 
                         <div style={{ marginBottom: '10px' }}>
                             <strong>Name: </strong>
@@ -129,6 +133,9 @@ function Profile() {
                                 <p>{user.about}</p>
                             </div>
                         )}
+                        </div>
+
+
                     </div>
                 )}
             </div>
