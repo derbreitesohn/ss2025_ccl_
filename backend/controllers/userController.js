@@ -15,6 +15,13 @@ function getUser(req, res, next) {
         .catch(err => res.status(404).send(err.message));
 }
 
+function getCurrentUser(req, res, next) {
+    // req.user is set by the authenticateJWT middleware
+    userModel.getUser(req.user.id)
+        .then(user => res.json(user))
+        .catch(err => res.status(404).send(err.message));
+}
+
 function editUser(req, res, next) {
     userModel.getUser(req.params.id)
         .then(user => res.json(user))
@@ -84,6 +91,7 @@ function deleteUser(req, res, next) {
 module.exports = {
     getUsers,
     getUser,
+    getCurrentUser,
     editUser,
     updateUser,
     addUser,

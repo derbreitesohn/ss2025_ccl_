@@ -27,13 +27,15 @@ router.route('/login')
     .get((req, res) => {
         res.render('login');
     })
-    .post((req, res) => {
-        userModel.getUsers()
-            .then((users) => {
-                authenticationService.authenticateUser(req.body, users, res)
-            })
-            .catch((err) => {res.sendStatus(500)});
-    })
+    .post(async (req, res) => {
+        try {
+            const users = await userModel.getUsers();
+            await authenticationService.authenticateUser(req.body, users, res);
+        } catch (err) {
+            console.error("Login error:", err);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    });
 
 router.get('/logout', (req, res) => {
     res.cookie('accessToken', '', {maxAge: 0});

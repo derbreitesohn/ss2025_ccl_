@@ -10,12 +10,10 @@ import MyListings from './components/MyListings'
 import Favorites from './components/Favorites'
 import Messages from './components/Messages'
 import SignUp from './components/SignUp'
-
-
+import AddPet from './components/AddPet'
 
 function App() {
-  const [count, setCount] = useState(0)
-
+    const [count, setCount] = useState(0)
 
     const fetchAPI = async () => {
         try {
@@ -31,24 +29,23 @@ function App() {
         fetchAPI();
     },[])
 
-  return (
-    <>
-        <Router>
-            <Routes>
-                {/* Public routes */}
-                <Route path="/" element={<HomePage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/mylistings" element={<MyListings />} />
-                <Route path="/favorites" element={<Favorites />} />
-                <Route path="/messages" element={<Messages />} />
-                <Route path="/signup" element={<SignUp />} />
-
-
-            </Routes>
-        </Router>
-    </>
-  )
+    return (
+        <>
+            <Router>
+                <Routes>
+                    {/* Public routes */}
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/mylistings" element={<MyListings />} />
+                    <Route path="/favorites" element={<Favorites />} />
+                    <Route path="/messages" element={<Messages />} />
+                    <Route path="/signup" element={<SignUp />} />
+                    <Route path="/add-pet" element={<AddPet />} />
+                </Routes>
+            </Router>
+        </>
+    )
 }
 
 export default App

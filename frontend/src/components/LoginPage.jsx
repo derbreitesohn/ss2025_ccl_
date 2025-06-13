@@ -26,7 +26,6 @@ function LoginPage() {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-
                 body: JSON.stringify({
                     username: username,
                     password: password
@@ -34,19 +33,17 @@ function LoginPage() {
             });
 
             const data = await response.json();
+            console.log('Login response:', data);
 
-            if (!response.ok) {
-                throw new Error(data.message || 'Login failed');
+            if (data.Login === "success") {
+                console.log('Login successful, redirecting to profile...');
+                navigate('/profile');
+            } else {
+                setError('Invalid username or password');
             }
-
-
-             localStorage.setItem('token', data.token);
-
-            console.log('Login successful:', data);
-            navigate('/'); // Redirect to home or dashboard
-
         } catch (error) {
-            setError(error.message || 'An error occurred during login');
+            console.error('Login error:', error);
+            setError('An error occurred during login');
         } finally {
             setIsLoading(false);
         }

@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt'); // For hashing and checking passwords
-const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET; // Secret key for signing JWTs
+require('dotenv').config();
+
+const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 
 async function checkPassword(password, hash) {
     let pw = await bcrypt.compare(password, hash); //extracts salt from hash, reapplies to pw, hashes same way, checks if result match
@@ -43,13 +45,15 @@ function authenticateJWT(req, res, next) {
         // Verify token using the secret
         jwt.verify(token, ACCESS_TOKEN_SECRET, (err, user) => {
             if (err) {
+                console.error("JWT verification error:", err);
                 return res.sendStatus(403);
             }
-            console.log(user)
+            console.log("Decoded user:", user);
             req.user = user;  // Attach decoded user info to req obj
             next();  // Proceed
         });
     } else {
+        console.log("No token found in cookies");
         res.sendStatus(401);
     }
 }

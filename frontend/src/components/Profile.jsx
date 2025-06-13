@@ -16,18 +16,10 @@ function Profile() {
             try {
                 setLoading(true);
                 setError(null);
-                // First get all users to find the current user
-                const response = await axios.get(`${API_BASE_URL}/users`, {
+                const response = await axios.get(`${API_BASE_URL}/users/me`, {
                     withCredentials: true // This ensures cookies are sent with the request
                 });
-
-                // The backend should attach the user ID to the request via the JWT token
-                // For now, we'll get the first user as a fallback
-                if (response.data && response.data.length > 0) {
-                    setUser(response.data[0]);
-                } else {
-                    setError('No user data found');
-                }
+                setUser(response.data);
             } catch (err) {
                 console.error('Error fetching user:', err);
                 setError('Failed to load user data. Please make sure you are logged in.');
@@ -82,12 +74,8 @@ function Profile() {
                         background: '#f9f9f9',
                         padding: '20px',
                         borderRadius: '8px'
-
                     }}>
-
-
                         <div style={{color: 'black'}}>
-
                             <h2>User Information</h2>
 
                             {user.profile_picture && (
@@ -105,39 +93,64 @@ function Profile() {
                                 </div>
                             )}
 
-                        <div style={{ marginBottom: '10px' }}>
-                            <strong>Name: </strong>
-                            <span>{user.name || 'Not specified'}</span>
-                        </div>
-
-                        <div style={{ marginBottom: '10px' }}>
-                            <strong>Username: </strong>
-                            <span>{user.username}</span>
-                        </div>
-
-                        <div style={{ marginBottom: '10px' }}>
-                            <strong>Email: </strong>
-                            <span>{user.email}</span>
-                        </div>
-
-                        {user.location && (
                             <div style={{ marginBottom: '10px' }}>
-                                <strong>Location: </strong>
-                                <span>{user.location}</span>
+                                <strong>Name: </strong>
+                                <span>{user.name || 'Not specified'}</span>
                             </div>
-                        )}
 
-                        {user.about && (
                             <div style={{ marginBottom: '10px' }}>
-                                <strong>About: </strong>
-                                <p>{user.about}</p>
+                                <strong>Username: </strong>
+                                <span>{user.username}</span>
                             </div>
-                        )}
+
+                            <div style={{ marginBottom: '10px' }}>
+                                <strong>Email: </strong>
+                                <span>{user.email}</span>
+                            </div>
+
+                            {user.location && (
+                                <div style={{ marginBottom: '10px' }}>
+                                    <strong>Location: </strong>
+                                    <span>{user.location}</span>
+                                </div>
+                            )}
+
+                            {user.about && (
+                                <div style={{ marginBottom: '10px' }}>
+                                    <strong>About: </strong>
+                                    <p>{user.about}</p>
+                                </div>
+                            )}
                         </div>
-
-
                     </div>
                 )}
+
+                {/* My Pets Section */}
+                <div style={{ marginTop: '30px' }}>
+                    <h2>My Pets</h2>
+                    <div style={{
+                        background: '#f9f9f9',
+                        padding: '20px',
+                        borderRadius: '8px',
+                        textAlign: 'center'
+                    }}>
+                        <p style={{ marginBottom: '20px' }}>You haven't added any pets yet.</p>
+                        <button
+                            onClick={() => navigate('/add-pet')}
+                            style={{
+                                padding: '10px 20px',
+                                backgroundColor: '#4CAF50',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '4px',
+                                cursor: 'pointer',
+                                fontSize: '16px'
+                            }}
+                        >
+                            Add Pet
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     );
