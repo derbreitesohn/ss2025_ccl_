@@ -65,7 +65,7 @@ function AddPet() {
                 credentials: 'include',
 
                 body: JSON.stringify({
-                    user_id: '1',
+                    user_id: formData.user_id,
                     name: formData.name,
                     breed: formData.breed,
                     age: formData.age,
