@@ -123,6 +123,24 @@ function Profile() {
                     </div>
                     <button onClick={handleEditClick} style={{ background: '#fff', color: '#7C3AED', border: '1.5px solid #7C3AED', borderRadius: 8, fontWeight: 600, fontSize: '1rem', padding: '10px 24px', cursor: 'pointer', transition: '0.2s', marginLeft: 16 }}>Edit Profile</button>
                 </div>
+                {/* Edit Profile Modal/Card */}
+                {editMode && (
+                    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.25)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <form onSubmit={handleEditSubmit} style={{ background: '#fff', borderRadius: 16, padding: '32px 36px', minWidth: 340, boxShadow: '0 2px 16px rgba(0,0,0,0.12)', display: 'flex', flexDirection: 'column', gap: 16 }}>
+                            <h2 style={{ margin: 0, fontWeight: 700, fontSize: '1.3rem', color: '#222' }}>Edit Profile</h2>
+                            <label>Name:<input name="name" value={editData.name || ''} onChange={handleEditChange} style={{ width: '100%', padding: 8, borderRadius: 6, border: '1px solid #ddd', marginTop: 4 }} /></label>
+                            <label>Username:<input name="username" value={editData.username || ''} onChange={handleEditChange} style={{ width: '100%', padding: 8, borderRadius: 6, border: '1px solid #ddd', marginTop: 4 }} /></label>
+                            <label>Email:<input name="email" value={editData.email || ''} onChange={handleEditChange} style={{ width: '100%', padding: 8, borderRadius: 6, border: '1px solid #ddd', marginTop: 4 }} /></label>
+                            <label>Location:<input name="location" value={editData.location || ''} onChange={handleEditChange} style={{ width: '100%', padding: 8, borderRadius: 6, border: '1px solid #ddd', marginTop: 4 }} /></label>
+                            <label>About:<input name="about" value={editData.about || ''} onChange={handleEditChange} style={{ width: '100%', padding: 8, borderRadius: 6, border: '1px solid #ddd', marginTop: 4 }} /></label>
+                            <label>Profile Picture URL:<input name="profile_picture" value={editData.profile_picture || ''} onChange={handleEditChange} style={{ width: '100%', padding: 8, borderRadius: 6, border: '1px solid #ddd', marginTop: 4 }} /></label>
+                            <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
+                                <button type="submit" style={{ flex: 1, padding: '10px 0', background: '#7C3AED', color: 'white', border: 'none', borderRadius: 8, fontWeight: 600, fontSize: '1rem', cursor: 'pointer' }}>Save</button>
+                                <button type="button" onClick={() => setEditMode(false)} style={{ flex: 1, padding: '10px 0', background: '#ccc', color: 'black', border: 'none', borderRadius: 8, fontWeight: 600, fontSize: '1rem', cursor: 'pointer' }}>Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                )}
                 {/* My Pets Section */}
                 <div style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.08)', padding: '32px 32px 40px 32px', marginBottom: 36 }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
@@ -169,32 +187,6 @@ function Profile() {
                         ))}
                     </div>
                 </div>
-                {/* Edit Mode (unchanged) */}
-                {editMode && (
-                    <form onSubmit={handleEditSubmit} style={{ background: '#f9f9f9', padding: '20px', borderRadius: '8px', marginTop: '20px' }}>
-                        <h2>Edit User</h2>
-                        <div style={{ marginBottom: '10px' }}>
-                            <label>Name: <input name="name" value={editData.name || ''} onChange={handleEditChange} /></label>
-                        </div>
-                        <div style={{ marginBottom: '10px' }}>
-                            <label>Username: <input name="username" value={editData.username || ''} onChange={handleEditChange} /></label>
-                        </div>
-                        <div style={{ marginBottom: '10px' }}>
-                            <label>Email: <input name="email" value={editData.email || ''} onChange={handleEditChange} /></label>
-                        </div>
-                        <div style={{ marginBottom: '10px' }}>
-                            <label>Location: <input name="location" value={editData.location || ''} onChange={handleEditChange} /></label>
-                        </div>
-                        <div style={{ marginBottom: '10px' }}>
-                            <label>About: <input name="about" value={editData.about || ''} onChange={handleEditChange} /></label>
-                        </div>
-                        <div style={{ marginBottom: '10px' }}>
-                            <label>Profile Picture URL: <input name="profile_picture" value={editData.profile_picture || ''} onChange={handleEditChange} /></label>
-                        </div>
-                        <button type="submit" style={{ padding: '8px 20px', background: '#7C3AED', color: 'white', border: 'none', borderRadius: '6px', fontWeight: 600, fontSize: '1rem', cursor: 'pointer' }}>Save</button>
-                        <button type="button" onClick={() => setEditMode(false)} style={{ marginLeft: '10px', padding: '8px 20px', background: '#ccc', color: 'black', border: 'none', borderRadius: '6px', fontWeight: 600, fontSize: '1rem', cursor: 'pointer' }}>Cancel</button>
-                    </form>
-                )}
             </div>
         </div>
     );

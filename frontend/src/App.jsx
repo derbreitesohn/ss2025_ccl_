@@ -13,6 +13,7 @@ import SignUp from './components/SignUp'
 import AddPet from './components/AddPet'
 import AddListing from './components/AddListing'
 import ListingDetail from './components/ListingDetail'
+import PetDetail from './components/PetDetail'
 
 function App() {
     const [count, setCount] = useState(0)
@@ -46,6 +47,7 @@ function App() {
                     <Route path="/add-pet" element={<AddPet />} />
                     <Route path="/add-listing" element={<AddListing />} />
                     <Route path="/listings/:id" element={<ListingDetail />} />
+                    <Route path="/pets/:id" element={<PetDetail />} />
                 </Routes>
             </Router>
         </>
