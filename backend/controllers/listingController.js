@@ -29,8 +29,8 @@ function updateListing(req, res, next) {
 
 function addListing(req, res, next) {
     const emptyListing = {
-        user_id: '',
-        name: '',
+       // user_id: '',
+        pet_name: '',
         breed: '',
         age: '',
         gender: '',
@@ -38,17 +38,25 @@ function addListing(req, res, next) {
         color: '',
         location: '',
         about: '',
-        pet_picture: ''
+        photo_url: '',
+        listing_type: ''
     };
     res.json(emptyListing);
 }
 
 function saveListing(req, res, next) {
+    console.log("🔥 DEBUG: req.body = ", req.body);
+    if (!req.body) {
+        return res.status(400).json({ error: "No body received" });
+    }
+
     const newListing = req.body;
+
     listingModel.saveListing(newListing)
-        .then(() => res.json({register:"DONE"}))
+        .then(() => res.json({ register: "DONE" }))
         .catch(err => res.status(500).send('Error saving listing: ' + err.message));
 }
+
 
 function deleteListing(req, res, next) {
     listingModel.deleteListing(req.params.id)
