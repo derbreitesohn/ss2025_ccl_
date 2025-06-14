@@ -4,6 +4,17 @@ const port = 3000;
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require('socket.io');
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:5173",
+        credentials: true,
+    }
+});
+
+
 // CORS configuration
 const corsOptions = {
     origin: "http://localhost:5173", // Your frontend URL
@@ -28,12 +39,43 @@ const usersRouter = require("./routes/users");
 const petsRouter = require("./routes/pets");
 const listingsRouter = require("./routes/listings");
 const favoriteRouter = require("./routes/favorites");
+const messagesRouter = require("./routes/messages");
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/pets", petsRouter);
 app.use("/listings", listingsRouter);
 app.use("/favorites", favoriteRouter);
+app.use('/messages', messagesRouter);
+
+
+
+const onlineUsers = new Map();
+const { saveMessage } = require('./models/messageModel');
+
+io.on('connection', (socket) => {
+    socket.on('register', (userId) => {
+        onlineUsers.set(userId, socket.id);
+        socket.userId = userId;
+    });
+
+    socket.on('private_message', async ({ senderId, receiverId, content }) => {
+        await saveMessage(senderId, receiverId, content);
+        const receiverSocketId = onlineUsers.get(receiverId);
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit('private_message', {
+                senderId, content, timestamp: new Date()
+            });
+        }
+    });
+
+    socket.on('disconnect', () => {
+        if (socket.userId) {
+            onlineUsers.delete(socket.userId);
+        }
+    });
+});
+
 
 function errorHandler(err, req, res, next) {
     console.error('Error:', err);
@@ -42,6 +84,9 @@ function errorHandler(err, req, res, next) {
 
 app.use(errorHandler);
 
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+
+
+server.listen(3000, () => {
+    console.log('Server running at http://localhost:3000');
 });
+

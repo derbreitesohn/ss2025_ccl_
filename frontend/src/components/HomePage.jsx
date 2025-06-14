@@ -79,7 +79,7 @@ function HomePage() {
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', padding: '0 20px' }}>
                                 <button
-                                    onClick={() => navigate('/messages')}
+                                    onClick={() => navigate(`/messages?user=${listing.user_id}`)}
                                     style={{
                                         flex: 1,
                                         padding: '10px 0',

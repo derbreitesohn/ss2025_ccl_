@@ -20,7 +20,7 @@ function AddListing() {
         location: '',
         about: '',
         photo_url: '',
-        listing_type: 'adoption' // default value
+        listing_type: 'adoption'
     });
 
     useEffect(() => {
@@ -58,7 +58,7 @@ function AddListing() {
         try {
             await axios.post(`${API_BASE_URL}/listings/add`, formData, {
                 headers: { 'Content-Type': 'application/json' },
-                withCredentials: true, // <-- this is the key for axios!
+                withCredentials: true,
             });
 
             navigate('/listings');

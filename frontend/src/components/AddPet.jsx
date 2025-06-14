@@ -29,7 +29,7 @@ function AddPet() {
                 setLoading(true);
                 setError(null);
                 const response = await axios.get(`${API_BASE_URL}/users/me`, {
-                    withCredentials: true // This ensures cookies are sent with the request
+                    withCredentials: true
                 });
                 setFormData(prevState => ({
                     ...prevState,
