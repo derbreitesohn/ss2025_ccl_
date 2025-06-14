@@ -11,6 +11,8 @@ function Profile() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const [editMode, setEditMode] = useState(false);
+    const [editData, setEditData] = useState({});
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -31,6 +33,26 @@ function Profile() {
         };
         fetchUserData();
     }, []);
+
+    const handleEditClick = () => {
+        setEditData(user);
+        setEditMode(true);
+    };
+
+    const handleEditChange = (e) => {
+        setEditData({ ...editData, [e.target.name]: e.target.value });
+    };
+
+    const handleEditSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.post(`${API_BASE_URL}/users/${user.id}`, editData, { withCredentials: true });
+            setUser(editData);
+            setEditMode(false);
+        } catch (err) {
+            alert('Error updating user');
+        }
+    };
 
     if (loading) {
         return (
@@ -70,7 +92,7 @@ function Profile() {
             <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
                 <h1 style={{ marginBottom: '20px' }}>My Profile</h1>
 
-                {user && (
+                {user && !editMode && (
                     <div style={{
                         background: '#f9f9f9',
                         padding: '20px',
@@ -122,8 +144,34 @@ function Profile() {
                                     <p>{user.about}</p>
                                 </div>
                             )}
+                            <button onClick={handleEditClick} style={{marginTop: '16px', padding: '8px 20px', background: '#7C3AED', color: 'white', border: 'none', borderRadius: '6px', fontWeight: 600, fontSize: '1rem', cursor: 'pointer'}}>Edit User</button>
                         </div>
                     </div>
+                )}
+                {editMode && (
+                    <form onSubmit={handleEditSubmit} style={{ background: '#f9f9f9', padding: '20px', borderRadius: '8px', marginTop: '20px' }}>
+                        <h2>Edit User</h2>
+                        <div style={{ marginBottom: '10px' }}>
+                            <label>Name: <input name="name" value={editData.name || ''} onChange={handleEditChange} /></label>
+                        </div>
+                        <div style={{ marginBottom: '10px' }}>
+                            <label>Username: <input name="username" value={editData.username || ''} onChange={handleEditChange} /></label>
+                        </div>
+                        <div style={{ marginBottom: '10px' }}>
+                            <label>Email: <input name="email" value={editData.email || ''} onChange={handleEditChange} /></label>
+                        </div>
+                        <div style={{ marginBottom: '10px' }}>
+                            <label>Location: <input name="location" value={editData.location || ''} onChange={handleEditChange} /></label>
+                        </div>
+                        <div style={{ marginBottom: '10px' }}>
+                            <label>About: <input name="about" value={editData.about || ''} onChange={handleEditChange} /></label>
+                        </div>
+                        <div style={{ marginBottom: '10px' }}>
+                            <label>Profile Picture URL: <input name="profile_picture" value={editData.profile_picture || ''} onChange={handleEditChange} /></label>
+                        </div>
+                        <button type="submit" style={{ padding: '8px 20px', background: '#7C3AED', color: 'white', border: 'none', borderRadius: '6px', fontWeight: 600, fontSize: '1rem', cursor: 'pointer' }}>Save</button>
+                        <button type="button" onClick={() => setEditMode(false)} style={{ marginLeft: '10px', padding: '8px 20px', background: '#ccc', color: 'black', border: 'none', borderRadius: '6px', fontWeight: 600, fontSize: '1rem', cursor: 'pointer' }}>Cancel</button>
+                    </form>
                 )}
 
                 {/* My Pets Section */}
