@@ -11,7 +11,7 @@ function AddPet() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
-        user_id: '1',
+        user_id: '',
         name: '',
         breed: '',
         age: '',

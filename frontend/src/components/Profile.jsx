@@ -34,7 +34,7 @@ function Profile() {
 
     if (loading) {
         return (
-            <div>
+            <div style={{ backgroundColor: 'white', color: 'black' }}>
                 <Navbar />
                 <div style={{ padding: '20px', textAlign: 'center' }}>
                     <p>Loading profile...</p>
@@ -65,7 +65,7 @@ function Profile() {
     }
 
     return (
-        <div>
+        <div style={{ backgroundColor: 'white', color: 'black' }}>
             <Navbar />
             <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
                 <h1 style={{ marginBottom: '20px' }}>My Profile</h1>
