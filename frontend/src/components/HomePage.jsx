@@ -3,12 +3,14 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
 import Navbar from './Navbar';
+import { FaHeart } from 'react-icons/fa';
 
 const API_BASE_URL = 'http://localhost:3000';
 
 function HomePage() {
     const [listings, setListings] = useState([]);
     const [error, setError] = useState(null);
+    const [favoriteIds, setFavoriteIds] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -20,7 +22,23 @@ function HomePage() {
                 console.error('Error fetching listings:', error);
                 setError('Failed to load listings');
             });
+        // Fetch favorites
+        axios.get(`${API_BASE_URL}/favorites`, { withCredentials: true })
+            .then(res => {
+                setFavoriteIds(res.data.favorites.map(fav => fav.id));
+            })
+            .catch(() => {});
     }, []);
+
+    const toggleFavorite = async (listingId) => {
+        if (favoriteIds.includes(listingId)) {
+            await axios.delete(`${API_BASE_URL}/favorites/${listingId}`, { withCredentials: true });
+            setFavoriteIds(favoriteIds.filter(id => id !== listingId));
+        } else {
+            await axios.post(`${API_BASE_URL}/favorites/${listingId}`, {}, { withCredentials: true });
+            setFavoriteIds([...favoriteIds, listingId]);
+        }
+    };
 
     return (
         <div style={{ background: '#fff', minHeight: '100vh', color: 'black' }}>
@@ -46,6 +64,21 @@ function HomePage() {
                                 color: 'black'
                             }}
                         >
+                            {/* Heart Icon */}
+                            <FaHeart
+                                onClick={() => toggleFavorite(listing.id)}
+                                style={{
+                                    position: 'absolute',
+                                    top: 16,
+                                    right: 16,
+                                    fontSize: 28,
+                                    color: favoriteIds.includes(listing.id) ? '#E11D48' : '#e5e5e5',
+                                    cursor: 'pointer',
+                                    zIndex: 2,
+                                    transition: 'color 0.2s'
+                                }}
+                                title={favoriteIds.includes(listing.id) ? 'Remove from favorites' : 'Add to favorites'}
+                            />
                             {listing.photo_url && (
                                 <img
                                     src={listing.photo_url}
