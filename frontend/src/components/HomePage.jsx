@@ -23,12 +23,12 @@ function HomePage() {
     }, []);
 
     return (
-        <div style={{ background: '#fff', minHeight: '100vh' }}>
+        <div style={{ background: '#fff', minHeight: '100vh', color: 'black' }}>
             <Navbar />
             <div className="page-content" style={{ maxWidth: '1300px', margin: '0 auto', padding: '30px 20px' }}>
                 <h1 style={{ fontWeight: 700, fontSize: '2.5rem', marginBottom: '10px', color: '#222' }}>Browse Current Listings</h1>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '32px', marginTop: '30px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '32px', marginTop: '30px' }}>
                     {listings.map(listing => (
                         <div
                             key={listing.id}
@@ -42,7 +42,8 @@ function HomePage() {
                                 flexDirection: 'column',
                                 alignItems: 'stretch',
                                 position: 'relative',
-                                minHeight: '420px'
+                                minHeight: '420px',
+                                color: 'black'
                             }}
                         >
                             {listing.photo_url && (

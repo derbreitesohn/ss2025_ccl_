@@ -33,7 +33,7 @@ function Messages() {
             .finally(() => setLoading(false));
     }, [user]);
 
-
+    // Pre-select chat if ?user= is present in URL (runs even if no chats)
     useEffect(() => {
         if (!user) return;
         const params = new URLSearchParams(location.search);
@@ -52,14 +52,14 @@ function Messages() {
         }
     }, [chats, location.search, user]);
 
-
+    // Fetch chat history when a chat is selected
     useEffect(() => {
         if (!selectedChat || !user) return;
         axios.get(`${API_BASE_URL}/messages/history/${selectedChat.otherUserId}`, { withCredentials: true })
             .then(res => setChatHistory(res.data.history || []));
     }, [selectedChat, user]);
 
-
+    // Setup Socket.IO
     useEffect(() => {
         if (!user) return;
         socket = io(API_BASE_URL, { withCredentials: true });
@@ -81,7 +81,7 @@ function Messages() {
         };
     }, [user, selectedChat]);
 
-
+    // Scroll to bottom on new message
     useEffect(() => {
         if (chatEndRef.current) {
             chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -111,12 +111,12 @@ function Messages() {
     return (
         <div>
             <Navbar />
-            <div style={{ display: 'flex', height: '80vh', background: '#f9f9f9' }}>
+            <div style={{ display: 'flex', height: '80vh', background: '#fff' }}>
                 {/* Sidebar */}
                 <div style={{ width: '320px', borderRight: '1.5px solid #e5e5e5', background: '#fff', overflowY: 'auto' }}>
                     <h2 style={{ padding: '20px', margin: 0, borderBottom: '1.5px solid #e5e5e5' }}>Chats</h2>
                     {(!chats || chats.length === 0) && !selectedChat && <p style={{ padding: '20px' }}>No recent chats.</p>}
-                    {/* Show preselected user */}
+                    {/* Show pre-selected user if not in chats */}
                     {selectedChat && !chats.some(
                         c => (c.sender_id === user.id && c.receiver_id === selectedChat.otherUserId) ||
                             (c.receiver_id === user.id && c.sender_id === selectedChat.otherUserId)

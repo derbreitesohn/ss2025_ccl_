@@ -42,7 +42,7 @@ function MyListings() {
     }
 
     return (
-        <div style={{ background: '#fff', minHeight: '100vh' }}>
+        <div style={{ background: '#fff', minHeight: '100vh', color: 'black' }}>
             <Navbar />
             <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '30px 20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
@@ -90,7 +90,8 @@ function MyListings() {
                                     flexDirection: 'column',
                                     alignItems: 'stretch',
                                     position: 'relative',
-                                    minHeight: '420px'
+                                    minHeight: '420px',
+                                    color: 'black'
                                 }}
                             >
                                 {listing.photo_url && (

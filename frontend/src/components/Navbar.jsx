@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './Navbar.css';
+import logo from '../images/logo_patpat.png';
 
 function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,9 +13,9 @@ function Navbar() {
     };
 
     return (
-        <nav className="navbar">
+        <nav className="navbar" style={{ background: '#fff', color: 'black' }}>
             <div className="logo-container">
-                <img src='../images/logo_patpat.png' alt="Logo" className="logo" />
+                <img src={logo} alt="Logo" className="logo" style={{ height: '40px', width: 'auto' }} />
             </div>
 
             <button
