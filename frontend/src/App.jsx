@@ -12,6 +12,7 @@ import Messages from './components/Messages'
 import SignUp from './components/SignUp'
 import AddPet from './components/AddPet'
 import AddListing from './components/AddListing'
+import ListingDetail from './components/ListingDetail'
 
 function App() {
     const [count, setCount] = useState(0)
@@ -44,6 +45,7 @@ function App() {
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/add-pet" element={<AddPet />} />
                     <Route path="/add-listing" element={<AddListing />} />
+                    <Route path="/listings/:id" element={<ListingDetail />} />
                 </Routes>
             </Router>
         </>
