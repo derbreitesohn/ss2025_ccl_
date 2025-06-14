@@ -10,14 +10,22 @@ let saveMessage = (senderId, receiverId, content) => new Promise((resolve, rejec
 
 let getRecentChats = (userId) => new Promise((resolve, reject) => {
     const sql = `
-        SELECT m.*, u.username AS other_username
-        FROM messages m
-                 JOIN user u ON u.id = IF(m.sender_id = ?, m.receiver_id, m.sender_id)
-        WHERE m.sender_id = ? OR m.receiver_id = ?
-        ORDER BY m.timestamp DESC
+        SELECT m1.*, u.username AS other_username FROM messages m1
+                                                           JOIN (
+            SELECT
+                LEAST(sender_id, receiver_id) AS user1,
+                GREATEST(sender_id, receiver_id) AS user2,
+                MAX(id) AS max_id
+            FROM messages
+            WHERE sender_id = ? OR receiver_id = ?
+            GROUP BY user1, user2
+        ) m2 ON m1.id = m2.max_id
+                                                           JOIN user u ON u.id = IF(m1.sender_id = ?, m1.receiver_id, m1.sender_id)
+        WHERE m1.sender_id = ? OR m1.receiver_id = ?
+        ORDER BY m1.timestamp DESC
             LIMIT 20
     `;
-    db.query(sql, [userId, userId, userId], (err, results) => {
+    db.query(sql, [userId, userId, userId, userId, userId], (err, results) => {
         if (err) reject(err);
         else resolve(results);
     });
