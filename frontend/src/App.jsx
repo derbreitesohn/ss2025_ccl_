@@ -11,6 +11,7 @@ import Favorites from './components/Favorites'
 import Messages from './components/Messages'
 import SignUp from './components/SignUp'
 import AddPet from './components/AddPet'
+import AddListing from './components/AddListing'
 
 function App() {
     const [count, setCount] = useState(0)
@@ -42,6 +43,7 @@ function App() {
                     <Route path="/messages" element={<Messages />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/add-pet" element={<AddPet />} />
+                    <Route path="/add-listing" element={<AddListing />} />
                 </Routes>
             </Router>
         </>
