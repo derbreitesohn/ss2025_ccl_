@@ -11,7 +11,6 @@ function AddListing() {
     const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
         user_id: '',
-        pet_id: '',
         pet_name: '',
         breed: '',
         age: '',
@@ -58,11 +57,10 @@ function AddListing() {
         e.preventDefault();
         try {
             await axios.post(`${API_BASE_URL}/listings/add`, formData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true, // <-- this is the key for axios!
             });
+
             navigate('/listings');
         } catch (err) {
             console.error('Error creating listing:', err);

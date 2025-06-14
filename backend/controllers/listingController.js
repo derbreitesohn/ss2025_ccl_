@@ -29,7 +29,8 @@ function updateListing(req, res, next) {
 
 function addListing(req, res, next) {
     const emptyListing = {
-        // user_id: '',
+        user_id: '',
+        pet_id: '',
         pet_name: '',
         breed: '',
         age: '',
@@ -50,7 +51,7 @@ function saveListing(req, res, next) {
         return res.status(400).json({ error: "No body received" });
     }
 
-    const newListing = req.body;
+    const newListing = { ...req.body, user_id: req.user.id };
 
     listingModel.saveListing(newListing)
         .then(() => res.json({ register: "DONE" }))

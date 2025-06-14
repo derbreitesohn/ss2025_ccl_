@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const petController = require('../controllers/petController')
-//const authenticationService = require('../services/authentication');
+const authenticationService = require('../services/authentication');
 
-//router.use(authenticationService.authenticateJWT); //runs before every route
+router.use(authenticationService.authenticateJWT); //runs before every route
 
 router.get("/", petController.getPets);
 router.get('/add', petController.addPet);
