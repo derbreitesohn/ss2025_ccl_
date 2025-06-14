@@ -26,9 +26,10 @@ let getPet = (id) => new Promise((resolve, reject) => {
 
 let savePet = (petData) => new Promise(async (resolve, reject) => {
 
-    let sql = "INSERT INTO pets (user_id, name, breed, age, gender, weight, color, location, about, pet_picture) VALUES (" +
+    let sql = "INSERT INTO pets (user_id, name, animal, breed, age, gender, weight, color, location, about, pet_picture) VALUES (" +
         db.escape(petData.user_id) + "," +
         db.escape(petData.name) + "," +
+        db.escape(petData.animal) + "," +
         db.escape(petData.breed) + "," +
         db.escape(petData.age) + "," +
         db.escape(petData.gender) + "," +
@@ -54,6 +55,7 @@ let updatePet = (petData, userId) => new Promise(async (resolve, reject) => {
     let sql = "UPDATE pets SET " +
         "user_id = " + db.escape(petData.user_id) +
         ", name = " + db.escape(petData.name) +
+        ", animal = " + db.escape(petData.animal) +
         ", breed = " + db.escape(petData.breed) +
         ", age = " + db.escape(petData.age) +
         ", gender = " + db.escape(petData.gender) +

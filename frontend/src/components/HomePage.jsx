@@ -12,6 +12,18 @@ function HomePage() {
     const [error, setError] = useState(null);
     const [favoriteIds, setFavoriteIds] = useState([]);
     const navigate = useNavigate();
+    const [animalTab, setAnimalTab] = useState('all');
+    const animalCounts = {
+        all: listings.length,
+        dogs: listings.filter(l => (l.animal || '').toLowerCase() === 'dog').length,
+        cats: listings.filter(l => (l.animal || '').toLowerCase() === 'cat').length,
+    };
+    const filteredListings = listings.filter(listing => {
+        if (animalTab === 'all') return true;
+        if (animalTab === 'dogs') return (listing.animal || '').toLowerCase() === 'dog';
+        if (animalTab === 'cats') return (listing.animal || '').toLowerCase() === 'cat';
+        return true;
+    });
 
     useEffect(() => {
         axios.get(`${API_BASE_URL}/listings`)
@@ -46,8 +58,14 @@ function HomePage() {
             <div className="page-content" style={{ maxWidth: '1300px', margin: '0 auto', padding: '30px 20px' }}>
                 <h1 style={{ fontWeight: 700, fontSize: '2.5rem', marginBottom: '10px', color: '#222' }}>Browse Current Listings</h1>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
+                {/* Animal Filter Tabs */}
+                <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
+                    <button onClick={() => setAnimalTab('all')} style={{ background: animalTab === 'all' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'all' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>All ({animalCounts.all})</button>
+                    <button onClick={() => setAnimalTab('dogs')} style={{ background: animalTab === 'dogs' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'dogs' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Dogs ({animalCounts.dogs})</button>
+                    <button onClick={() => setAnimalTab('cats')} style={{ background: animalTab === 'cats' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'cats' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Cats ({animalCounts.cats})</button>
+                </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '32px', marginTop: '30px' }}>
-                    {listings.map(listing => (
+                    {filteredListings.map(listing => (
                         <div
                             key={listing.id}
                             style={{
@@ -61,24 +79,24 @@ function HomePage() {
                                 alignItems: 'stretch',
                                 position: 'relative',
                                 minHeight: '420px',
-                                color: 'black'
+                                color: 'black',
+                                overflow: 'hidden'
                             }}
                         >
-                            {/* Heart Icon */}
-                            <FaHeart
-                                onClick={() => toggleFavorite(listing.id)}
-                                style={{
-                                    position: 'absolute',
-                                    top: 16,
-                                    right: 16,
-                                    fontSize: 28,
-                                    color: favoriteIds.includes(listing.id) ? '#E11D48' : '#e5e5e5',
-                                    cursor: 'pointer',
-                                    zIndex: 2,
-                                    transition: 'color 0.2s'
-                                }}
-                                title={favoriteIds.includes(listing.id) ? 'Remove from favorites' : 'Add to favorites'}
-                            />
+                            {/* Heart Icon - always clickable, on top of image */}
+                            <div style={{ position: 'absolute', top: 18, right: 18, zIndex: 10 }}>
+                                <FaHeart
+                                    onClick={e => { e.stopPropagation(); toggleFavorite(listing.id); }}
+                                    style={{
+                                        fontSize: 28,
+                                        color: favoriteIds.includes(listing.id) ? '#E11D48' : '#e5e5e5',
+                                        cursor: 'pointer',
+                                        transition: 'color 0.2s',
+                                        filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.10))'
+                                    }}
+                                    title={favoriteIds.includes(listing.id) ? 'Remove from favorites' : 'Add to favorites'}
+                                />
+                            </div>
                             {listing.photo_url && (
                                 <img
                                     src={listing.photo_url}

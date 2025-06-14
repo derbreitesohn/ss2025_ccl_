@@ -13,6 +13,7 @@ function AddPet() {
     const [formData, setFormData] = useState({
         user_id: '',
         name: '',
+        animal: '',
         breed: '',
         age: '',
         gender: '',
@@ -67,6 +68,7 @@ function AddPet() {
                 body: JSON.stringify({
                     user_id: formData.user_id,
                     name: formData.name,
+                    animal: formData.animal,
                     breed: formData.breed,
                     age: formData.age,
                     gender: formData.gender,
@@ -99,6 +101,7 @@ function AddPet() {
                     {[
                         { label: 'Name', name: 'name', type: 'text' },
                         { label: 'Breed', name: 'breed', type: 'text' },
+                        { label: 'Animal', name: 'animal', type: 'text' },
                         { label: 'Age', name: 'age', type: 'number' },
                         { label: 'Gender', name: 'gender', type: 'text' },
                         { label: 'Weight (kg)', name: 'weight', type: 'number' },

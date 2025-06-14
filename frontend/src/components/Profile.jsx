@@ -19,15 +19,14 @@ function Profile() {
     const [activeTab, setActiveTab] = useState('all');
     const petTypeCounts = {
         all: pets.length,
-        dogs: pets.filter(p => (p.type || '').toLowerCase() === 'dog').length,
-        cats: pets.filter(p => (p.type || '').toLowerCase() === 'cat').length,
+        dogs: pets.filter(p => (p.animal || '').toLowerCase() === 'dog').length,
+        cats: pets.filter(p => (p.animal || '').toLowerCase() === 'cat').length,
         inactive: pets.filter(p => p.inactive).length,
     };
     const filteredPets = pets.filter(pet => {
         if (activeTab === 'all') return true;
-        if (activeTab === 'dogs') return (pet.type || '').toLowerCase() === 'dog';
-        if (activeTab === 'cats') return (pet.type || '').toLowerCase() === 'cat';
-        if (activeTab === 'inactive') return pet.inactive;
+        if (activeTab === 'dogs') return (pet.animal || '').toLowerCase() === 'dog';
+        if (activeTab === 'cats') return (pet.animal || '').toLowerCase() === 'cat';
         return true;
     });
 
@@ -135,7 +134,7 @@ function Profile() {
                         <button onClick={() => setActiveTab('all')} style={{ background: activeTab === 'all' ? '#7C3AED' : '#f3f3f3', color: activeTab === 'all' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>All Pets ({petTypeCounts.all})</button>
                         <button onClick={() => setActiveTab('dogs')} style={{ background: activeTab === 'dogs' ? '#7C3AED' : '#f3f3f3', color: activeTab === 'dogs' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Dogs ({petTypeCounts.dogs})</button>
                         <button onClick={() => setActiveTab('cats')} style={{ background: activeTab === 'cats' ? '#7C3AED' : '#f3f3f3', color: activeTab === 'cats' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Cats ({petTypeCounts.cats})</button>
-                        <button onClick={() => setActiveTab('inactive')} style={{ background: activeTab === 'inactive' ? '#7C3AED' : '#f3f3f3', color: activeTab === 'inactive' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Inactive ({petTypeCounts.inactive})</button>
+
                     </div>
                     {/* Pet Cards Grid */}
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 28 }}>
