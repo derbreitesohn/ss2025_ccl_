@@ -63,7 +63,7 @@ function AddListing() {
                 },
                 credentials: 'include',
             });
-            navigate('/my-listings');
+            navigate('/listings');
         } catch (err) {
             console.error('Error creating listing:', err);
             setError('Failed to create listing. Please try again.');
