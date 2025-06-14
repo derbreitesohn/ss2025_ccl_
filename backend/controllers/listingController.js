@@ -29,7 +29,7 @@ function updateListing(req, res, next) {
 
 function addListing(req, res, next) {
     const emptyListing = {
-       // user_id: '',
+        // user_id: '',
         pet_name: '',
         breed: '',
         age: '',
@@ -64,6 +64,13 @@ function deleteListing(req, res, next) {
         .catch(err => res.status(500).send('Error deleting listing: ' + err.message));
 }
 
+function getMyListings(req, res, next) {
+    const userId = req.user.id;
+    listingModel.getListingsByUserId(userId)
+        .then(listings => res.json({ listings }))
+        .catch(err => res.sendStatus(500));
+}
+
 module.exports = {
     getListings,
     getListing,
@@ -71,5 +78,6 @@ module.exports = {
     updateListing,
     addListing,
     saveListing,
-    deleteListing
+    deleteListing,
+    getMyListings,
 };

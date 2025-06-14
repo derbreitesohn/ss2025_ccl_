@@ -87,6 +87,15 @@ let deleteListing = (id) => new Promise((resolve, reject) => {
         }
     });
 });
+let getListingsByUserId = (userId) => new Promise((resolve, reject) => {
+    db.query('SELECT * FROM listings WHERE user_id = ?', [userId], function (err, listings) {
+        if (err) {
+            reject(err);
+        } else {
+            resolve(listings);
+        }
+    });
+});
 
 module.exports = {
     getListings,
@@ -94,4 +103,6 @@ module.exports = {
     saveListing,
     updateListing,
     deleteListing,
+    getListingsByUserId,
 };
+

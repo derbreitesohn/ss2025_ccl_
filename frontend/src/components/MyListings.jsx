@@ -16,7 +16,7 @@ function MyListings() {
             try {
                 setLoading(true);
                 setError(null);
-                const response = await axios.get(`${API_BASE_URL}/listings`, {
+                const response = await axios.get(`${API_BASE_URL}/listings/mine`, {
                     withCredentials: true
                 });
                 setListings(response.data.listings);
@@ -42,24 +42,25 @@ function MyListings() {
     }
 
     return (
-        <div>
+        <div style={{ background: '#fff', minHeight: '100vh' }}>
             <Navbar />
-            <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
+            <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '30px 20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-                    <h1>My Listings</h1>
+                    <h1 style={{ fontWeight: 700, fontSize: '2.5rem', color: '#222' }}>My Listings</h1>
                     <button
                         onClick={() => navigate('/add-listing')}
                         style={{
-                            padding: '10px 20px',
-                            backgroundColor: '#4CAF50',
+                            padding: '10px 24px',
+                            backgroundColor: '#7C3AED',
                             color: 'white',
                             border: 'none',
-                            borderRadius: '4px',
+                            borderRadius: '8px',
                             cursor: 'pointer',
-                            fontSize: '16px'
+                            fontSize: '1.1rem',
+                            fontWeight: 600
                         }}
                     >
-                        Add New Listing
+                        New Listing
                     </button>
                 </div>
 
@@ -72,18 +73,24 @@ function MyListings() {
                 {listings.length === 0 ? (
                     <div style={{ textAlign: 'center', padding: '40px', background: '#f9f9f9', borderRadius: '8px' }}>
                         <p>You haven't created any listings yet.</p>
-                        <p>Click the "Add New Listing" button to create your first listing!</p>
+                        <p>Click the "New Listing" button to create your first listing!</p>
                     </div>
                 ) : (
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '32px', marginTop: '30px' }}>
                         {listings.map(listing => (
                             <div
                                 key={listing.id}
                                 style={{
-                                    border: '1px solid #ddd',
-                                    borderRadius: '8px',
-                                    padding: '20px',
-                                    background: 'white'
+                                    background: '#fff',
+                                    border: '1.5px solid #e5e5e5',
+                                    borderRadius: '16px',
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                                    padding: '0 0 20px 0',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'stretch',
+                                    position: 'relative',
+                                    minHeight: '420px'
                                 }}
                             >
                                 {listing.photo_url && (
@@ -94,40 +101,79 @@ function MyListings() {
                                             width: '100%',
                                             height: '200px',
                                             objectFit: 'cover',
-                                            borderRadius: '4px',
-                                            marginBottom: '15px'
+                                            borderTopLeftRadius: '16px',
+                                            borderTopRightRadius: '16px',
+                                            marginBottom: '12px'
                                         }}
                                     />
                                 )}
-                                <h3>{listing.pet_name}</h3>
-                                <p><strong>Type:</strong> {listing.listing_type}</p>
-                                <p><strong>Breed:</strong> {listing.breed}</p>
-                                <p><strong>Age:</strong> {listing.age}</p>
-                                <p><strong>Location:</strong> {listing.location}</p>
-                                <div style={{ marginTop: '15px' }}>
+                                <div style={{ padding: '0 20px', flex: 1 }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+                                        <span style={{
+                                            background: listing.listing_type === 'adoption' ? '#6C63FF' : '#FFB347',
+                                            color: '#fff',
+                                            borderRadius: '8px',
+                                            fontSize: '0.85rem',
+                                            fontWeight: 600,
+                                            padding: '3px 12px',
+                                            marginRight: '10px',
+                                            textTransform: 'capitalize'
+                                        }}>{listing.listing_type}</span>
+                                        <span style={{ color: '#888', fontSize: '0.95rem' }}>{listing.location}</span>
+                                    </div>
+                                    <h2 style={{ fontSize: '1.4rem', fontWeight: 700, margin: '0 0 6px 0', color: '#222' }}>{listing.pet_name}</h2>
+                                    <div style={{ color: '#444', fontSize: '1.05rem', marginBottom: '4px' }}><strong>Breed:</strong> {listing.breed}</div>
+                                    <div style={{ color: '#444', fontSize: '1.05rem', marginBottom: '4px' }}><strong>Age:</strong> {listing.age}</div>
+                                    <div style={{ color: '#444', fontSize: '1.05rem', marginBottom: '4px' }}><strong>Gender:</strong> {listing.gender}</div>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', padding: '0 20px' }}>
                                     <button
                                         onClick={() => navigate(`/listings/${listing.id}/edit`)}
                                         style={{
-                                            padding: '8px 15px',
-                                            backgroundColor: '#2196F3',
-                                            color: 'white',
+                                            flex: 1,
+                                            padding: '10px 0',
+                                            background: '#E0E7FF',
+                                            color: '#7C3AED',
                                             border: 'none',
-                                            borderRadius: '4px',
+                                            borderRadius: '6px',
+                                            fontWeight: 600,
+                                            fontSize: '1rem',
                                             cursor: 'pointer',
-                                            marginRight: '10px'
+                                            marginTop: '12px'
                                         }}
                                     >
                                         Edit
                                     </button>
                                     <button
+                                        onClick={() => navigate(`/listings/${listing.id}`)}
+                                        style={{
+                                            flex: 1,
+                                            padding: '10px 0',
+                                            background: '#fff',
+                                            color: '#7C3AED',
+                                            border: '2px solid #7C3AED',
+                                            borderRadius: '6px',
+                                            fontWeight: 600,
+                                            fontSize: '1rem',
+                                            cursor: 'pointer',
+                                            marginTop: '12px'
+                                        }}
+                                    >
+                                        View Details
+                                    </button>
+                                    <button
                                         onClick={() => {/* Add delete functionality */}}
                                         style={{
-                                            padding: '8px 15px',
-                                            backgroundColor: '#f44336',
-                                            color: 'white',
+                                            flex: 1,
+                                            padding: '10px 0',
+                                            background: '#FECACA',
+                                            color: '#B91C1C',
                                             border: 'none',
-                                            borderRadius: '4px',
-                                            cursor: 'pointer'
+                                            borderRadius: '6px',
+                                            fontWeight: 600,
+                                            fontSize: '1rem',
+                                            cursor: 'pointer',
+                                            marginTop: '12px'
                                         }}
                                     >
                                         Delete
