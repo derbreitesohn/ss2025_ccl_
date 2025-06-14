@@ -30,6 +30,7 @@ function Navbar() {
                     <Link to="/profile">Profile</Link>
                     <Link to="/listings">My Listings</Link>
                     <Link to="/favorites">Favorites</Link>
+                    <Link to="/messages">Messages</Link>
                 </div>
             </div>
 
