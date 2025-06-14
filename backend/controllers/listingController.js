@@ -51,7 +51,7 @@ function saveListing(req, res, next) {
         return res.status(400).json({ error: "No body received" });
     }
 
-    const newListing = { ...req.body, user_id: req.user.id };
+    const newListing = req.body;
 
     listingModel.saveListing(newListing)
         .then(() => res.json({ register: "DONE" }))

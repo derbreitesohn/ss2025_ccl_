@@ -65,7 +65,7 @@ function Profile() {
     }
 
     return (
-        <div style={{ backgroundColor: 'white', color: 'black' }}>
+        <div>
             <Navbar />
             <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
                 <h1 style={{ marginBottom: '20px' }}>My Profile</h1>
