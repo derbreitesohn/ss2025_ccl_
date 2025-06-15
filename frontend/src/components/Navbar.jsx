@@ -1,11 +1,22 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
 import logo from '../images/logo_patpat.png';
 
 function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [atTop, setAtTop] = useState(true);
     const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setAtTop(window.scrollY === 0);
+        };
+        window.addEventListener('scroll', handleScroll);
+        handleScroll();
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -13,9 +24,9 @@ function Navbar() {
     };
 
     return (
-        <nav className="navbar" style={{ background: '#fff', color: 'black' }}>
+        <nav className={`navbar${atTop ? ' at-top' : ''}`} style={{ background: '#fff', color: 'black' }}>
             <div className="logo-container">
-                <img src={logo} alt="Logo" className="logo" style={{ height: '40px', width: 'auto' }} />
+                <img src={logo} alt="Logo" className="logo" style={{ height: '60px', width: 'auto' }} />
             </div>
 
             <button
@@ -27,11 +38,11 @@ function Navbar() {
 
             <div className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
                 <div className="nav-links-left">
-                    <Link to="/">Home</Link>
-                    <Link to="/profile">Profile</Link>
-                    <Link to="/listings">My Listings</Link>
-                    <Link to="/favorites">Favorites</Link>
-                    <Link to="/messages">Messages</Link>
+                    <Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link>
+                    <Link to="/profile" className={location.pathname === '/profile' ? 'active' : ''}>Profile</Link>
+                    <Link to="/listings" className={location.pathname === '/listings' ? 'active' : ''}>My Listings</Link>
+                    <Link to="/favorites" className={location.pathname === '/favorites' ? 'active' : ''}>Favorites</Link>
+                    <Link to="/messages" className={location.pathname === '/messages' ? 'active' : ''}>Messages</Link>
                 </div>
             </div>
 

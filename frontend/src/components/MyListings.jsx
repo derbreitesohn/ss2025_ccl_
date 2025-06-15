@@ -91,7 +91,8 @@ function MyListings() {
                                         alignItems: 'stretch',
                                         position: 'relative',
                                         minHeight: '420px',
-                                        color: 'black'
+                                        color: 'black',
+                                        overflow: 'hidden'
                                     }}
                                 >
                                     {listing.photo_url && (

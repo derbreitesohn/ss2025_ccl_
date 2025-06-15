@@ -106,7 +106,7 @@ function Profile() {
     }
 
     return (
-        <div style={{ background: '#18181b', minHeight: '100vh' }}>
+        <div style={{ background: '#fff', minHeight: '100vh', color: 'black' }}>
             <Navbar />
             <div style={{ maxWidth: 900, margin: '0 auto', padding: '40px 0' }}>
                 {/* Profile Header Card */}
@@ -123,7 +123,7 @@ function Profile() {
                     </div>
                     <button onClick={handleEditClick} style={{ background: '#fff', color: '#7C3AED', border: '1.5px solid #7C3AED', borderRadius: 8, fontWeight: 600, fontSize: '1rem', padding: '10px 24px', cursor: 'pointer', transition: '0.2s', marginLeft: 16 }}>Edit Profile</button>
                 </div>
-                {/* Edit Profile Modal/Card */}
+                {/* Edit Profile */}
                 {editMode && (
                     <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.25)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <form onSubmit={handleEditSubmit} style={{ background: '#fff', borderRadius: 16, padding: '32px 36px', minWidth: 340, boxShadow: '0 2px 16px rgba(0,0,0,0.12)', display: 'flex', flexDirection: 'column', gap: 16 }}>

@@ -12,6 +12,7 @@ function AddListing() {
     const [formData, setFormData] = useState({
         user_id: '',
         pet_name: '',
+        animal: '',
         breed: '',
         age: '',
         gender: '',
@@ -120,6 +121,7 @@ function AddListing() {
 
                     {[
                         { label: 'Pet Name', name: 'pet_name', type: 'text' },
+                        { label: 'Animal', name: 'animal', type: 'text' },
                         { label: 'Breed', name: 'breed', type: 'text' },
                         { label: 'Age', name: 'age', type: 'number' },
                         { label: 'Gender', name: 'gender', type: 'text' },

@@ -34,6 +34,7 @@ function ListingDetail() {
                     <img src={listing.photo_url} alt={listing.pet_name} style={{ width: '100%', borderRadius: '12px', marginBottom: '24px' }} />
                 )}
                 <h1 style={{ fontSize: '2rem', fontWeight: 700 }}>{listing.pet_name}</h1>
+                <p><strong>Animal:</strong> {listing.animal}</p>
                 <p><strong>Type:</strong> {listing.listing_type}</p>
                 <p><strong>Breed:</strong> {listing.breed}</p>
                 <p><strong>Age:</strong> {listing.age}</p>

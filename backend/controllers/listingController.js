@@ -32,6 +32,7 @@ function addListing(req, res, next) {
         user_id: '',
         pet_id: '',
         pet_name: '',
+        animal: '',
         breed: '',
         age: '',
         gender: '',

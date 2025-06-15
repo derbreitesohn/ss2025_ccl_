@@ -11,6 +11,7 @@ function HomePage() {
     const [listings, setListings] = useState([]);
     const [error, setError] = useState(null);
     const [favoriteIds, setFavoriteIds] = useState([]);
+    const [user, setUser] = useState(null);
     const navigate = useNavigate();
     const [animalTab, setAnimalTab] = useState('all');
     const animalCounts = {
@@ -34,12 +35,16 @@ function HomePage() {
                 console.error('Error fetching listings:', error);
                 setError('Failed to load listings');
             });
-        // Fetch favorites
+
         axios.get(`${API_BASE_URL}/favorites`, { withCredentials: true })
             .then(res => {
                 setFavoriteIds(res.data.favorites.map(fav => fav.id));
             })
             .catch(() => {});
+
+        axios.get(`${API_BASE_URL}/users/me`, { withCredentials: true })
+            .then(res => setUser(res.data))
+            .catch(() => setUser(null));
     }, []);
 
     const toggleFavorite = async (listingId) => {
@@ -55,6 +60,11 @@ function HomePage() {
     return (
         <div style={{ background: '#fff', minHeight: '100vh', color: 'black' }}>
             <Navbar />
+            {user && (
+                <div style={{ background: '#7C3AED', color: '#fff', padding: '18px 0', textAlign: 'center', fontWeight: 600, fontSize: '1.3rem', borderRadius: '0 0 18px 18px', marginBottom: 24 }}>
+                    Welcome Back, {user.name}
+                </div>
+            )}
             <div className="page-content" style={{ maxWidth: '1300px', margin: '0 auto', padding: '30px 20px' }}>
                 <h1 style={{ fontWeight: 700, fontSize: '2.5rem', marginBottom: '10px', color: '#222' }}>Browse Current Listings</h1>
                 {error && <p style={{ color: 'red' }}>{error}</p>}

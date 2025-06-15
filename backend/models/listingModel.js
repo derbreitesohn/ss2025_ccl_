@@ -24,10 +24,11 @@ let getListing = (id) => new Promise((resolve, reject) => {
 });
 
 let saveListing = (listingData) => new Promise((resolve, reject) => {
-    let sql = "INSERT INTO listings (user_id, pet_id, pet_name, breed, age, gender, weight, color, location, about, photo_url, listing_type) VALUES (" +
+    let sql = "INSERT INTO listings (user_id, pet_id, pet_name, animal, breed, age, gender, weight, color, location, about, photo_url, listing_type) VALUES (" +
         db.escape(listingData.user_id) + "," +
         db.escape(listingData.pet_id) + "," +
         db.escape(listingData.pet_name) + "," +
+        db.escape(listingData.animal) + "," +
         db.escape(listingData.breed) + "," +
         db.escape(listingData.age) + "," +
         db.escape(listingData.gender) + "," +
@@ -54,6 +55,7 @@ let updateListing = (listingData) => new Promise((resolve, reject) => {
         "user_id = " + db.escape(listingData.user_id) +
         ", pet_id = " + db.escape(listingData.pet_id) +
         ", pet_name = " + db.escape(listingData.pet_name) +
+        ", animal = " + db.escape(listingData.animal) +
         ", breed = " + db.escape(listingData.breed) +
         ", age = " + db.escape(listingData.age) +
         ", gender = " + db.escape(listingData.gender) +

@@ -1,4 +1,4 @@
-/* Navbar Styles */
+
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -21,7 +21,7 @@
 }
 
 .logo {
-    height: 40px;
+    height: 60px;
     width: auto;
 }
 
@@ -78,12 +78,12 @@
     background-color: #fee2e2;
 }
 
-/* Page Content */
+
 .page-content {
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
-    margin-top: 80px; /* Add top margin to account for fixed navbar */
+    margin-top: 80px;
 }
 
 /* Mobile Menu */
@@ -94,4 +94,11 @@
     font-size: 1.5rem;
     cursor: pointer;
 }
+
+.nav-links a.active {
+    color: #7C3AED;
+    border-bottom: 3px solid #7C3AED;
+    padding-bottom: 2px;
+}
+
 
