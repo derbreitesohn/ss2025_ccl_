@@ -262,7 +262,7 @@ function Profile() {
                             onClick={() => setActiveTab('playdate')}
                             className={`tab-button ${activeTab === 'playdate' ? 'active' : ''}`}
                         >
-                            Play-Date ({petTypeCounts.playdate})
+                            Playdate ({petTypeCounts.playdate})
                         </button>
                         <button
                             onClick={() => setActiveTab('adoption')}

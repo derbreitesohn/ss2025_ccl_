@@ -10,6 +10,8 @@ function AddListing() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [pets, setPets] = useState([]);
+    const [selectedPet, setSelectedPet] = useState(null);
     const [formData, setFormData] = useState({
         user_id: '',
         pet_name: '',
@@ -26,25 +28,27 @@ function AddListing() {
     });
 
     useEffect(() => {
-        const fetchUserData = async () => {
+        const fetchData = async () => {
             try {
                 setLoading(true);
                 setError(null);
-                const response = await axios.get(`${API_BASE_URL}/users/me`, {
-                    withCredentials: true
-                });
+                const [userResponse, petsResponse] = await Promise.all([
+                    axios.get(`${API_BASE_URL}/users/me`, { withCredentials: true }),
+                    axios.get(`${API_BASE_URL}/pets`, { withCredentials: true })
+                ]);
                 setFormData(prevState => ({
                     ...prevState,
-                    user_id: response.data.id,
+                    user_id: userResponse.data.id,
                 }));
+                setPets(petsResponse.data.filter(pet => pet.user_id === userResponse.data.id));
             } catch (err) {
-                console.error('Error fetching user:', err);
-                setError('Failed to load user data. Please make sure you are logged in.');
+                console.error('Error fetching data:', err);
+                setError('Failed to load data. Please make sure you are logged in.');
             } finally {
                 setLoading(false);
             }
         };
-        fetchUserData();
+        fetchData();
     }, []);
 
     const handleChange = (e) => {
@@ -52,6 +56,23 @@ function AddListing() {
         setFormData(prevState => ({
             ...prevState,
             [name]: value
+        }));
+    };
+
+    const handlePetSelect = (pet) => {
+        setSelectedPet(pet);
+        setFormData(prevState => ({
+            ...prevState,
+            pet_name: pet.name,
+            animal: pet.animal,
+            breed: pet.breed,
+            age: pet.age,
+            gender: pet.gender,
+            weight: pet.weight,
+            color: pet.color,
+            location: pet.location,
+            about: pet.description,
+            photo_url: pet.image_url
         }));
     };
 
@@ -101,6 +122,38 @@ function AddListing() {
                 <div className="card">
                     <div className="card-body">
                         <h1 className="h4 text-center mb-4">Create New Listing</h1>
+
+                        {pets.length > 0 && (
+                            <div className="mb-4">
+                                <h5>Choose an existing pet or create a new listing:</h5>
+                                <div className="pets-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px', marginTop: '16px' }}>
+                                    {pets.map(pet => (
+                                        <div
+                                            key={pet.id}
+                                            onClick={() => handlePetSelect(pet)}
+                                            style={{
+                                                padding: '16px',
+                                                border: `2px solid ${selectedPet?.id === pet.id ? '#7C3AED' : '#e5e5e5'}`,
+                                                borderRadius: '8px',
+                                                cursor: 'pointer',
+                                                backgroundColor: selectedPet?.id === pet.id ? '#F3E8FF' : '#fff'
+                                            }}
+                                        >
+                                            {pet.image_url && (
+                                                <img
+                                                    src={pet.image_url}
+                                                    alt={pet.name}
+                                                    style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '4px', marginBottom: '8px' }}
+                                                />
+                                            )}
+                                            <h6 style={{ margin: '0 0 4px 0' }}>{pet.name}</h6>
+                                            <p style={{ margin: '0', fontSize: '0.9rem', color: '#666' }}>{pet.breed}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
                                 <label>
@@ -118,52 +171,124 @@ function AddListing() {
                                 </label>
                             </div>
 
-                            {[
-                                { label: 'Pet Name', name: 'pet_name', type: 'text' },
-                                { label: 'Animal', name: 'animal', type: 'text' },
-                                { label: 'Breed', name: 'breed', type: 'text' },
-                                { label: 'Age', name: 'age', type: 'number' },
-                                { label: 'Gender', name: 'gender', type: 'text' },
-                                { label: 'Weight', name: 'weight', type: 'number' },
-                                { label: 'Color', name: 'color', type: 'text' },
-                                { label: 'Location', name: 'location', type: 'text' },
-                                { label: 'Photo URL', name: 'photo_url', type: 'url' }
-                            ].map(({ label, name, type }) => (
-                                <div key={name} className="form-group">
-                                    <label>
-                                        {label}:
-                                        <input
-                                            type={type}
-                                            name={name}
-                                            value={formData[name]}
-                                            onChange={handleChange}
-                                            required={name !== 'photo_url'}
-                                            className="form-control"
-                                        />
-                                    </label>
-                                </div>
-                            ))}
-
                             <div className="form-group">
-                                <label>
-                                    About:
-                                    <textarea
-                                        name="about"
-                                        value={formData.about}
+                                <label>Pet Name:
+                                    <input
+                                        name="pet_name"
+                                        value={formData.pet_name}
                                         onChange={handleChange}
                                         required
                                         className="form-control"
-                                        style={{ minHeight: '100px' }}
                                     />
                                 </label>
                             </div>
 
-                            <button
-                                type="submit"
-                                className="btn btn-primary"
-                            >
-                                Create Listing
-                            </button>
+                            <div className="form-group">
+                                <label>Animal:
+                                    <input
+                                        name="animal"
+                                        value={formData.animal}
+                                        onChange={handleChange}
+                                        required
+                                        className="form-control"
+                                    />
+                                </label>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Breed:
+                                    <input
+                                        name="breed"
+                                        value={formData.breed}
+                                        onChange={handleChange}
+                                        className="form-control"
+                                    />
+                                </label>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Age:
+                                    <input
+                                        name="age"
+                                        value={formData.age}
+                                        onChange={handleChange}
+                                        className="form-control"
+                                    />
+                                </label>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Gender:
+                                    <input
+                                        name="gender"
+                                        value={formData.gender}
+                                        onChange={handleChange}
+                                        className="form-control"
+                                    />
+                                </label>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Weight:
+                                    <input
+                                        name="weight"
+                                        value={formData.weight}
+                                        onChange={handleChange}
+                                        className="form-control"
+                                    />
+                                </label>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Color:
+                                    <input
+                                        name="color"
+                                        value={formData.color}
+                                        onChange={handleChange}
+                                        className="form-control"
+                                    />
+                                </label>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Location:
+                                    <input
+                                        name="location"
+                                        value={formData.location}
+                                        onChange={handleChange}
+                                        required
+                                        className="form-control"
+                                    />
+                                </label>
+                            </div>
+
+                            <div className="form-group">
+                                <label>About:
+                                    <textarea
+                                        name="about"
+                                        value={formData.about}
+                                        onChange={handleChange}
+                                        className="form-control"
+                                        rows="4"
+                                    />
+                                </label>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Photo URL:
+                                    <input
+                                        name="photo_url"
+                                        value={formData.photo_url}
+                                        onChange={handleChange}
+                                        className="form-control"
+                                    />
+                                </label>
+                            </div>
+
+                            <div className="d-flex gap-2">
+                                <button type="submit" className="btn btn-primary flex-grow-1">Create Listing</button>
+                                <button type="button" onClick={() => navigate('/listings')} className="btn btn-secondary flex-grow-1">Cancel</button>
+                            </div>
                         </form>
                     </div>
                 </div>
