@@ -26,6 +26,9 @@ function Favorites() {
     return (
         <div style={{ background: '#fff', minHeight: '100vh', color: 'black' }}>
             <Navbar />
+            <div style={{ width: '100%', background: '#7C3AED', color: '#fff', padding: '18px 0', textAlign: 'center', fontWeight: 600, fontSize: '1.3rem', borderRadius: '0 0 18px 18px', marginBottom: 24 }}>
+                My Favorites
+            </div>
             <div className="page-content" style={{ maxWidth: '1300px', margin: '0 auto', padding: '30px 20px' }}>
                 <h1 style={{ fontWeight: 700, fontSize: '2.5rem', marginBottom: '10px', color: '#222' }}>My Favorites</h1>
                 {favorites.length === 0 ? (

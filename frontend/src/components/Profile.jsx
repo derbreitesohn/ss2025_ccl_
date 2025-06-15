@@ -110,20 +110,20 @@ function Profile() {
             <Navbar />
             <div style={{ maxWidth: 900, margin: '0 auto', padding: '40px 0' }}>
                 {/* Profile Header Card */}
-                <div style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.08)', padding: '32px 40px', display: 'flex', alignItems: 'center', gap: 32, marginBottom: 36 }}>
+                <div style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.08)', padding: '32px 40px', display: 'flex', alignItems: 'flex-start', gap: 32, marginBottom: 36, justifyContent: 'flex-start', textAlign: 'left' }}>
                     <img src={user?.profile_picture || 'https://api.dicebear.com/7.x/avataaars/svg?seed=PatPat'} alt="Profile" style={{ width: 90, height: 90, borderRadius: '50%', objectFit: 'cover', border: '3px solid #e5e5e5' }} />
                     <div style={{ flex: 1 }}>
-                        <div style={{ fontWeight: 700, fontSize: '1.5rem', color: '#222' }}>{user?.name || 'Name'}</div>
-                        <div style={{ color: '#888', fontSize: '1.1rem', marginBottom: 8 }}>@{user?.username}</div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 18, color: '#888', fontSize: '1rem', marginBottom: 8 }}>
+                        <div style={{ fontWeight: 700, fontSize: '1.5rem', color: '#222', textAlign: 'left' }}>{user?.name || 'Name'}</div>
+                        <div style={{ color: '#888', fontSize: '1.1rem', marginBottom: 8, textAlign: 'left' }}>@{user?.username}</div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 18, color: '#888', fontSize: '1rem', marginBottom: 8, textAlign: 'left' }}>
                             <span><FaMapMarkerAlt style={{ marginRight: 4 }} /> {user?.location || 'Vienna'}</span>
                             <span><BsCalendar3 style={{ marginRight: 4 }} /> Member since March 2025</span>
                         </div>
-                        <div style={{ color: '#444', fontSize: '1.05rem', marginBottom: 0 }}>{user?.about || 'Cymbro on the outside Dog lover on the inside <3'}</div>
+                        <div style={{ color: '#444', fontSize: '1.05rem', marginBottom: 0, textAlign: 'left' }}>{user?.about || 'Cymbro on the outside Dog lover on the inside <3'}</div>
                     </div>
                     <button onClick={handleEditClick} style={{ background: '#fff', color: '#7C3AED', border: '1.5px solid #7C3AED', borderRadius: 8, fontWeight: 600, fontSize: '1rem', padding: '10px 24px', cursor: 'pointer', transition: '0.2s', marginLeft: 16 }}>Edit Profile</button>
                 </div>
-                {/* Edit Profile */}
+                {/* Edit Profile Modal/Card */}
                 {editMode && (
                     <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.25)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <form onSubmit={handleEditSubmit} style={{ background: '#fff', borderRadius: 16, padding: '32px 36px', minWidth: 340, boxShadow: '0 2px 16px rgba(0,0,0,0.12)', display: 'flex', flexDirection: 'column', gap: 16 }}>

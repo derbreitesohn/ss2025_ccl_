@@ -36,14 +36,12 @@ function MyListings() {
         dogs: listings.filter(l => (l.animal || '').trim().toLowerCase() === 'dog').length,
         cats: listings.filter(l => (l.animal || '').trim().toLowerCase() === 'cat').length,
         playdate: listings.filter(l =>(l.listing_type || '').trim().toLowerCase() === 'playdate').length,
-        adoption: listings.filter(l => (l.listing_type || '').trim().toLowerCase() === 'adopt').length,
     };
     const filteredListings = listings.filter(listing => {
         if (animalTab === 'all') return true;
         if (animalTab === 'dogs') return (listing.animal || '').trim().toLowerCase() === 'dog';
         if (animalTab === 'cats') return (listing.animal || '').trim().toLowerCase() === 'cat';
         if (animalTab === 'playdate') return (listing.animal || '').trim().toLowerCase() === 'playdate';
-        if (animalTab === 'adopt') return (listing.animal || '').trim().toLowerCase() === 'adoption';
         return true;
     });
 
@@ -61,6 +59,9 @@ function MyListings() {
     return (
         <div style={{ background: '#fff', minHeight: '100vh', color: 'black' }}>
             <Navbar />
+            <div style={{ width: '100%', background: '#7C3AED', color: '#fff', padding: '18px 0', textAlign: 'center', fontWeight: 600, fontSize: '1.3rem', borderRadius: '0 0 18px 18px', marginBottom: 24 }}>
+                My Listings
+            </div>
             <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '30px 20px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
                     <h1 style={{ fontWeight: 700, fontSize: '2.5rem', color: '#222', margin: 0 }}>My Listings</h1>
@@ -86,7 +87,6 @@ function MyListings() {
                     <button onClick={() => setAnimalTab('dogs')} style={{ background: animalTab === 'dogs' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'dogs' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Dogs ({animalCounts.dogs})</button>
                     <button onClick={() => setAnimalTab('cats')} style={{ background: animalTab === 'cats' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'cats' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Cats ({animalCounts.cats})</button>
                     <button onClick={() => setAnimalTab('playdate')} style={{ background: animalTab === 'playdate' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'playdate' ? 'fff' : '444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Playdate ({animalCounts.playdate})</button>
-                    <button onClick={() => setAnimalTab('adoption')} style={{ background: animalTab === 'adoption' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'adoption' ? 'fff' : '444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Adoption ({animalCounts.adoption})</button>
                 </div>
                 {error && (
                     <div style={{ color: 'red', textAlign: 'center', marginBottom: '20px' }}>
@@ -106,7 +106,7 @@ function MyListings() {
                                     <img src={listing.photo_url} alt={listing.pet_name} style={{ width: '100%', height: '140px', objectFit: 'cover', borderTopLeftRadius: 12, borderTopRightRadius: 12, marginBottom: 10 }} />
                                 )}
                                 {/* Badge */}
-                                <span style={{ position: 'absolute', top: 12, right: 12, background: listing.animal && listing.animal.trim().toLowerCase() === 'dog' ? '#7C3AED' : '#FFB347', color: '#fff', borderRadius: 8, fontWeight: 600, fontSize: '0.95rem', padding: '3px 12px', zIndex: 2 }}>{listing.listing_type ? listing.listing_type.charAt(0).toUpperCase() + listing.listing_type.slice(1) : ''}</span>
+                                <span style={{ position: 'absolute', top: 12, right: 12, background: '#fff', color: '#7C3AED', border: '2px solid #7C3AED', borderRadius: 8, fontWeight: 600, fontSize: '0.95rem', padding: '3px 12px', zIndex: 2 }}>{listing.listing_type ? listing.listing_type.charAt(0).toUpperCase() + listing.listing_type.slice(1) : ''}</span>
                                 <div style={{ padding: '0 18px', flex: 1 }}>
                                     <h3 style={{ fontSize: '1.2rem', fontWeight: 700, margin: '10px 0 6px 0', color: '#222' }}>{listing.pet_name}</h3>
                                     <div style={{ color: '#444', fontSize: '1rem', marginBottom: 2 }}><strong>Breed:</strong> {listing.breed}</div>

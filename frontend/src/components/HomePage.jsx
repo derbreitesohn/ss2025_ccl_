@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './HomePage.css';
 import Navbar from './Navbar';
 import { FaHeart } from 'react-icons/fa';
 
@@ -64,7 +63,11 @@ function HomePage() {
     return (
         <div style={{ background: '#fff', minHeight: '100vh', color: 'black' }}>
             <Navbar />
-
+            {user && (
+                <div style={{ width: '100%', background: '#7C3AED', color: '#fff', padding: '18px 0', textAlign: 'center', fontWeight: 600, fontSize: '1.3rem', borderRadius: '0 0 18px 18px', marginBottom: 24 }}>
+                    Welcome Back, {user.name}
+                </div>
+            )}
             <div className="page-content" style={{ maxWidth: '1300px', margin: '0 auto', padding: '30px 20px' }}>
                 <h1 style={{ fontWeight: 700, fontSize: '2.5rem', marginBottom: '20px', color: '#222' }}>Browse Current Listings</h1>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
