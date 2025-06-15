@@ -398,7 +398,9 @@
     position: absolute;
     top: 12px;
     right: 12px;
-    color: #fff;
+    color: #7C3AED;
+    background: #ffffff;
+    border: #7C3AED 1px solid;
     border-radius: 8px;
     font-weight: 600;
     font-size: 0.95rem;
@@ -406,13 +408,6 @@
     z-index: 2;
 }
 
-.pet-badge.dog-badge {
-    background: #7C3AED;
-}
-
-.pet-badge.cat-badge {
-    background: #FFB347;
-}
 
 .pet-info {
     padding: 0 18px;
