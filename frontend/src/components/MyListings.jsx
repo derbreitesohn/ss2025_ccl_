@@ -9,6 +9,7 @@ function MyListings() {
     const [listings, setListings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [animalTab, setAnimalTab] = useState('all');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,6 +31,22 @@ function MyListings() {
         fetchListings();
     }, []);
 
+    const animalCounts = {
+        all: listings.length,
+        dogs: listings.filter(l => (l.animal || '').trim().toLowerCase() === 'dog').length,
+        cats: listings.filter(l => (l.animal || '').trim().toLowerCase() === 'cat').length,
+        playdate: listings.filter(l =>(l.listing_type || '').trim().toLowerCase() === 'playdate').length,
+        adoption: listings.filter(l => (l.listing_type || '').trim().toLowerCase() === 'adopt').length,
+    };
+    const filteredListings = listings.filter(listing => {
+        if (animalTab === 'all') return true;
+        if (animalTab === 'dogs') return (listing.animal || '').trim().toLowerCase() === 'dog';
+        if (animalTab === 'cats') return (listing.animal || '').trim().toLowerCase() === 'cat';
+        if (animalTab === 'playdate') return (listing.animal || '').trim().toLowerCase() === 'playdate';
+        if (animalTab === 'adopt') return (listing.animal || '').trim().toLowerCase() === 'adoption';
+        return true;
+    });
+
     if (loading) {
         return (
             <div>
@@ -41,158 +58,80 @@ function MyListings() {
         );
     }
 
-        return (
-            <div style={{ background: '#fff', minHeight: '100vh', color: 'black' }}>
-                <Navbar />
-                <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '30px 20px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-                        <h1 style={{ fontWeight: 700, fontSize: '2.5rem', color: '#222' }}>My Listings</h1>
-                        <button
-                            onClick={() => navigate('/add-listing')}
-                            style={{
-                                padding: '10px 24px',
-                                backgroundColor: '#7C3AED',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '8px',
-                                cursor: 'pointer',
-                                fontSize: '1.1rem',
-                                fontWeight: 600
-                            }}
-                        >
-                            New Listing
-                        </button>
-                    </div>
-
-                    {error && (
-                        <div style={{ color: 'red', textAlign: 'center', marginBottom: '20px' }}>
-                            {error}
-                        </div>
-                    )}
-
-                    {listings.length === 0 ? (
-                        <div style={{ textAlign: 'center', padding: '40px', background: '#f9f9f9', borderRadius: '8px' }}>
-                            <p>You haven't created any listings yet.</p>
-                            <p>Click the "New Listing" button to create your first listing!</p>
-                        </div>
-                    ) : (
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '32px', marginTop: '30px' }}>
-                            {listings.map(listing => (
-                                <div
-                                    key={listing.id}
-                                    style={{
-                                        background: '#fff',
-                                        border: '1.5px solid #e5e5e5',
-                                        borderRadius: '16px',
-                                        boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-                                        padding: '0 0 20px 0',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'stretch',
-                                        position: 'relative',
-                                        minHeight: '420px',
-                                        color: 'black',
-                                        overflow: 'hidden'
-                                    }}
-                                >
-                                    {listing.photo_url && (
-                                        <img
-                                            src={listing.photo_url}
-                                            alt={listing.pet_name}
-                                            style={{
-                                                width: '100%',
-                                                height: '200px',
-                                                objectFit: 'cover',
-                                                borderTopLeftRadius: '16px',
-                                                borderTopRightRadius: '16px',
-                                                marginBottom: '12px'
-                                            }}
-                                        />
-                                    )}
-                                    <div style={{ padding: '0 20px', flex: 1 }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-                                        <span style={{
-                                            background: listing.listing_type === 'adoption' ? '#6C63FF' : '#FFB347',
-                                            color: '#fff',
-                                            borderRadius: '8px',
-                                            fontSize: '0.85rem',
-                                            fontWeight: 600,
-                                            padding: '3px 12px',
-                                            marginRight: '10px',
-                                            textTransform: 'capitalize'
-                                        }}>{listing.listing_type}</span>
-                                            <span style={{ color: '#888', fontSize: '0.95rem' }}>{listing.location}</span>
-                                        </div>
-                                        <h2 style={{ fontSize: '1.4rem', fontWeight: 700, margin: '0 0 6px 0', color: '#222' }}>{listing.pet_name}</h2>
-                                        <div style={{ color: '#444', fontSize: '1.05rem', marginBottom: '4px' }}><strong>Breed:</strong> {listing.breed}</div>
-                                        <div style={{ color: '#444', fontSize: '1.05rem', marginBottom: '4px' }}><strong>Age:</strong> {listing.age}</div>
-                                        <div style={{ color: '#444', fontSize: '1.05rem', marginBottom: '4px' }}><strong>Gender:</strong> {listing.gender}</div>
-                                    </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', padding: '0 20px' }}>
-                                        <button
-                                            onClick={() => navigate(`/listings/${listing.id}/edit`)}
-                                            style={{
-                                                flex: 1,
-                                                padding: '10px 0',
-                                                background: '#E0E7FF',
-                                                color: '#7C3AED',
-                                                border: 'none',
-                                                borderRadius: '6px',
-                                                fontWeight: 600,
-                                                fontSize: '1rem',
-                                                cursor: 'pointer',
-                                                marginTop: '12px'
-                                            }}
-                                        >
-                                            Edit
-                                        </button>
-                                        <button
-                                            onClick={() => navigate(`/listings/${listing.id}`)}
-                                            style={{
-                                                flex: 1,
-                                                padding: '10px 0',
-                                                background: '#fff',
-                                                color: '#7C3AED',
-                                                border: '2px solid #7C3AED',
-                                                borderRadius: '6px',
-                                                fontWeight: 600,
-                                                fontSize: '1rem',
-                                                cursor: 'pointer',
-                                                marginTop: '12px'
-                                            }}
-                                        >
-                                            View Details
-                                        </button>
-                                        <button
-                                            onClick={async () => {
-                                                if(window.confirm('Are you sure you want to delete this listing?')) {
-                                                    await axios.post(`${API_BASE_URL}/listings/${listing.id}/delete`, {}, { withCredentials: true });
-                                                    window.location.reload();
-                                                }
-                                            }}
-                                            style={{
-                                                flex: 1,
-                                                padding: '10px 0',
-                                                background: '#FECACA',
-                                                color: '#B91C1C',
-                                                border: 'none',
-                                                borderRadius: '6px',
-                                                fontWeight: 600,
-                                                fontSize: '1rem',
-                                                cursor: 'pointer',
-                                                marginTop: '12px'
-                                            }}
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
+    return (
+        <div style={{ background: '#fff', minHeight: '100vh', color: 'black' }}>
+            <Navbar />
+            <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '30px 20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
+                    <h1 style={{ fontWeight: 700, fontSize: '2.5rem', color: '#222', margin: 0 }}>My Listings</h1>
+                    <button
+                        onClick={() => navigate('/add-listing')}
+                        style={{
+                            background: '#7C3AED',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: 8,
+                            fontWeight: 600,
+                            fontSize: '1rem',
+                            padding: '8px 22px',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        + Add New Listing
+                    </button>
                 </div>
+                {/* Animal Filter Tabs */}
+                <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
+                    <button onClick={() => setAnimalTab('all')} style={{ background: animalTab === 'all' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'all' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>All ({animalCounts.all})</button>
+                    <button onClick={() => setAnimalTab('dogs')} style={{ background: animalTab === 'dogs' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'dogs' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Dogs ({animalCounts.dogs})</button>
+                    <button onClick={() => setAnimalTab('cats')} style={{ background: animalTab === 'cats' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'cats' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Cats ({animalCounts.cats})</button>
+                    <button onClick={() => setAnimalTab('playdate')} style={{ background: animalTab === 'playdate' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'playdate' ? 'fff' : '444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Playdate ({animalCounts.playdate})</button>
+                    <button onClick={() => setAnimalTab('adoption')} style={{ background: animalTab === 'adoption' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'adoption' ? 'fff' : '444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Adoption ({animalCounts.adoption})</button>
+                </div>
+                {error && (
+                    <div style={{ color: 'red', textAlign: 'center', marginBottom: '20px' }}>
+                        {error}
+                    </div>
+                )}
+                {filteredListings.length === 0 ? (
+                    <div style={{ textAlign: 'center', padding: '40px', background: '#f9f9f9', borderRadius: '8px' }}>
+                        <p>You haven't created any listings yet.</p>
+                        <p>Click the "+ Add New Listing" button to create your first listing!</p>
+                    </div>
+                ) : (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 28 }}>
+                        {filteredListings.map(listing => (
+                            <div key={listing.id} style={{ background: '#fff', borderRadius: 12, boxShadow: '0 1px 4px rgba(0,0,0,0.06)', padding: '0 0 18px 0', display: 'flex', flexDirection: 'column', alignItems: 'stretch', position: 'relative', minHeight: 320, border: '1.5px solid #e5e5e5' }}>
+                                {listing.photo_url && (
+                                    <img src={listing.photo_url} alt={listing.pet_name} style={{ width: '100%', height: '140px', objectFit: 'cover', borderTopLeftRadius: 12, borderTopRightRadius: 12, marginBottom: 10 }} />
+                                )}
+                                {/* Badge */}
+                                <span style={{ position: 'absolute', top: 12, right: 12, background: listing.animal && listing.animal.trim().toLowerCase() === 'dog' ? '#7C3AED' : '#FFB347', color: '#fff', borderRadius: 8, fontWeight: 600, fontSize: '0.95rem', padding: '3px 12px', zIndex: 2 }}>{listing.listing_type ? listing.listing_type.charAt(0).toUpperCase() + listing.listing_type.slice(1) : ''}</span>
+                                <div style={{ padding: '0 18px', flex: 1 }}>
+                                    <h3 style={{ fontSize: '1.2rem', fontWeight: 700, margin: '10px 0 6px 0', color: '#222' }}>{listing.pet_name}</h3>
+                                    <div style={{ color: '#444', fontSize: '1rem', marginBottom: 2 }}><strong>Breed:</strong> {listing.breed}</div>
+                                    <div style={{ color: '#444', fontSize: '1rem', marginBottom: 2 }}><strong>Age:</strong> {listing.age}</div>
+                                    <div style={{ color: '#444', fontSize: '1rem', marginBottom: 2 }}><strong>Gender:</strong> {listing.gender}</div>
+                                    <div style={{ color: '#444', fontSize: '1rem', marginBottom: 2 }}><strong>Weight:</strong> {listing.weight}</div>
+                                    <div style={{ color: '#444', fontSize: '1rem', marginBottom: 2 }}><strong>Color:</strong> {listing.color}</div>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, padding: '0 18px' }}>
+                                    <button onClick={() => navigate(`/listings/${listing.id}/edit`)} style={{ flex: 1, padding: '8px 0', background: '#E0E7FF', color: '#7C3AED', border: 'none', borderRadius: 6, fontWeight: 600, fontSize: '1rem', cursor: 'pointer', marginTop: 12 }}>Edit</button>
+                                    <button onClick={() => navigate(`/listings/${listing.id}`)} style={{ flex: 1, padding: '8px 0', background: '#fff', color: '#7C3AED', border: '2px solid #7C3AED', borderRadius: 6, fontWeight: 600, fontSize: '1rem', cursor: 'pointer', marginTop: 12 }}>View Details</button>
+                                    <button onClick={async () => {
+                                        if(window.confirm('Are you sure you want to delete this listing?')) {
+                                            await axios.post(`${API_BASE_URL}/listings/${listing.id}/delete`, {}, { withCredentials: true });
+                                            window.location.reload();
+                                        }
+                                    }} style={{ flex: 1, padding: '8px 0', background: '#FECACA', color: '#B91C1C', border: 'none', borderRadius: 6, fontWeight: 600, fontSize: '1rem', cursor: 'pointer', marginTop: 12 }}>Delete</button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
-        );
-    }
+        </div>
+    );
+}
 
-    export default MyListings;
+export default MyListings;

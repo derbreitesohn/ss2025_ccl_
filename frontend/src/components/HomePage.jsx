@@ -18,11 +18,15 @@ function HomePage() {
         all: listings.length,
         dogs: listings.filter(l => (l.animal || '').toLowerCase() === 'dog').length,
         cats: listings.filter(l => (l.animal || '').toLowerCase() === 'cat').length,
+        playdate: listings.filter(l => (l.listing_type || '').toLowerCase() === 'playdate').length,
+        adoption: listings.filter(l => (l.listing_type || '').toLowerCase() === 'adoption').length,
     };
     const filteredListings = listings.filter(listing => {
         if (animalTab === 'all') return true;
         if (animalTab === 'dogs') return (listing.animal || '').toLowerCase() === 'dog';
         if (animalTab === 'cats') return (listing.animal || '').toLowerCase() === 'cat';
+        if (animalTab === 'playdate') return (listing.listing_type || '').toLowerCase() === 'playdate';
+        if (animalTab === 'adoption') return (listing.listing_type || '').toLowerCase() === 'adoption';
         return true;
     });
 
@@ -60,19 +64,17 @@ function HomePage() {
     return (
         <div style={{ background: '#fff', minHeight: '100vh', color: 'black' }}>
             <Navbar />
-            {user && (
-                <div style={{ background: '#7C3AED', color: '#fff', padding: '18px 0', textAlign: 'center', fontWeight: 600, fontSize: '1.3rem', borderRadius: '0 0 18px 18px', marginBottom: 24 }}>
-                    Welcome Back, {user.name}
-                </div>
-            )}
+
             <div className="page-content" style={{ maxWidth: '1300px', margin: '0 auto', padding: '30px 20px' }}>
-                <h1 style={{ fontWeight: 700, fontSize: '2.5rem', marginBottom: '10px', color: '#222' }}>Browse Current Listings</h1>
+                <h1 style={{ fontWeight: 700, fontSize: '2.5rem', marginBottom: '20px', color: '#222' }}>Browse Current Listings</h1>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
-                {/* Animal Filter Tabs */}
+
                 <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
                     <button onClick={() => setAnimalTab('all')} style={{ background: animalTab === 'all' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'all' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>All ({animalCounts.all})</button>
                     <button onClick={() => setAnimalTab('dogs')} style={{ background: animalTab === 'dogs' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'dogs' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Dogs ({animalCounts.dogs})</button>
                     <button onClick={() => setAnimalTab('cats')} style={{ background: animalTab === 'cats' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'cats' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Cats ({animalCounts.cats})</button>
+                    <button onClick={() => setAnimalTab('playdate')} style={{ background: animalTab === 'playdate' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'playdate' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Playdate ({animalCounts.playdate})</button>
+                    <button onClick={() => setAnimalTab('adoption')} style={{ background: animalTab === 'adoption' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'adoption' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Adoption ({animalCounts.adoption})</button>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '32px', marginTop: '30px' }}>
                     {filteredListings.map(listing => (
@@ -93,7 +95,7 @@ function HomePage() {
                                 overflow: 'hidden'
                             }}
                         >
-                            {/* Heart Icon - always clickable, on top of image */}
+
                             <div style={{ position: 'absolute', top: 18, right: 18, zIndex: 10 }}>
                                 <FaHeart
                                     onClick={e => { e.stopPropagation(); toggleFavorite(listing.id); }}
