@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './Navbar';
+import './style.css';
 
 const API_BASE_URL = 'http://localhost:3000';
-
 
 function AddPet() {
     const navigate = useNavigate();
@@ -91,95 +91,69 @@ function AddPet() {
     return (
         <div>
             <Navbar />
-            <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
-                <h1 style={{ marginBottom: '20px' }}>Add New Pet</h1>
-                <form onSubmit={handleSubmit} style={{
-                    background: '#f9f9f9',
-                    padding: '20px',
-                    borderRadius: '8px'
-                }}>
-                    {[
-                        { label: 'Name', name: 'name', type: 'text' },
-                        { label: 'Breed', name: 'breed', type: 'text' },
-                        { label: 'Animal', name: 'animal', type: 'text' },
-                        { label: 'Age', name: 'age', type: 'number' },
-                        { label: 'Gender', name: 'gender', type: 'text' },
-                        { label: 'Weight (kg)', name: 'weight', type: 'number' },
-                        { label: 'Color', name: 'color', type: 'text' },
-                        { label: 'Location', name: 'location', type: 'text' },
-                        { label: 'Image URL', name: 'image_url', type: 'url' }
-                    ].map(({ label, name, type }) => (
-                        <div key={name} style={{ marginBottom: '15px' }}>
-                            <label style={{ display: 'block', marginBottom: '5px' }}>
-                                {label}:
-                                <input
-                                    type={type}
-                                    name={name}
-                                    value={formData[name]}
-                                    onChange={handleChange}
-                                    required={name !== 'image_url'}
-                                    style={{
-                                        width: '100%',
-                                        padding: '8px',
-                                        borderRadius: '4px',
-                                        border: '1px solid #ddd'
-                                    }}
-                                />
-                            </label>
-                        </div>
-                    ))}
+            <div className="container">
+                <div className="card">
+                    <div className="card-body">
+                        <h1 className="h4 mb-4">Add New Pet</h1>
+                        <form onSubmit={handleSubmit}>
+                            {[
+                                { label: 'Name', name: 'name', type: 'text' },
+                                { label: 'Breed', name: 'breed', type: 'text' },
+                                { label: 'Animal', name: 'animal', type: 'text' },
+                                { label: 'Age', name: 'age', type: 'number' },
+                                { label: 'Gender', name: 'gender', type: 'text' },
+                                { label: 'Weight (kg)', name: 'weight', type: 'number' },
+                                { label: 'Color', name: 'color', type: 'text' },
+                                { label: 'Location', name: 'location', type: 'text' },
+                                { label: 'Image URL', name: 'image_url', type: 'url' }
+                            ].map(({ label, name, type }) => (
+                                <div key={name} className="form-group">
+                                    <label>
+                                        {label}:
+                                        <input
+                                            type={type}
+                                            name={name}
+                                            value={formData[name]}
+                                            onChange={handleChange}
+                                            required={name !== 'image_url'}
+                                            className="form-control"
+                                        />
+                                    </label>
+                                </div>
+                            ))}
 
-                    <div style={{ marginBottom: '15px' }}>
-                        <label style={{ display: 'block', marginBottom: '5px' }}>
-                            Description:
-                            <textarea
-                                name="description"
-                                value={formData.description}
-                                onChange={handleChange}
-                                required
-                                style={{
-                                    width: '100%',
-                                    padding: '8px',
-                                    borderRadius: '4px',
-                                    border: '1px solid #ddd',
-                                    minHeight: '100px'
-                                }}
-                            />
-                        </label>
-                    </div>
+                            <div className="form-group">
+                                <label>
+                                    Description:
+                                    <textarea
+                                        name="description"
+                                        value={formData.description}
+                                        onChange={handleChange}
+                                        required
+                                        className="form-control"
+                                        style={{ minHeight: '100px' }}
+                                    />
+                                </label>
+                            </div>
 
-                    <div style={{ display: 'flex', gap: '10px' }}>
-                        <button
-                            type="submit"
-                            style={{
-                                padding: '10px 20px',
-                                backgroundColor: '#4CAF50',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '4px',
-                                cursor: 'pointer',
-                                fontSize: '16px'
-                            }}
-                        >
-                            Add Pet
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => navigate('/profile')}
-                            style={{
-                                padding: '10px 20px',
-                                backgroundColor: '#f44336',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '4px',
-                                cursor: 'pointer',
-                                fontSize: '16px'
-                            }}
-                        >
-                            Cancel
-                        </button>
+                            <div className="d-flex gap-2">
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                >
+                                    Add Pet
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => navigate('/profile')}
+                                    className="btn btn-danger"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './Navbar';
+import './style.css';
 
 const API_BASE_URL = 'http://localhost:3000';
 
@@ -73,7 +74,7 @@ function AddListing() {
         return (
             <div>
                 <Navbar />
-                <div style={{ padding: '20px', textAlign: 'center' }}>
+                <div className="container text-center">
                     <p>Loading...</p>
                 </div>
             </div>
@@ -84,8 +85,10 @@ function AddListing() {
         return (
             <div>
                 <Navbar />
-                <div style={{ padding: '20px', textAlign: 'center', color: 'red' }}>
-                    <p>{error}</p>
+                <div className="container">
+                    <div className="alert alert-danger text-center">
+                        <p>{error}</p>
+                    </div>
                 </div>
             </div>
         );
@@ -94,96 +97,76 @@ function AddListing() {
     return (
         <div>
             <Navbar />
-            <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
-                <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Create New Listing</h1>
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                    <div>
-                        <label style={{ display: 'block', marginBottom: '5px' }}>
-                            Listing Type:
-                            <select
-                                name="listing_type"
-                                value={formData.listing_type}
-                                onChange={handleChange}
-                                required
-                                style={{
-                                    width: '100%',
-                                    padding: '8px',
-                                    borderRadius: '4px',
-                                    border: '1px solid #ddd'
-                                }}
+            <div className="container">
+                <div className="card">
+                    <div className="card-body">
+                        <h1 className="h4 text-center mb-4">Create New Listing</h1>
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label>
+                                    Listing Type:
+                                    <select
+                                        name="listing_type"
+                                        value={formData.listing_type}
+                                        onChange={handleChange}
+                                        required
+                                        className="form-control"
+                                    >
+                                        <option value="adoption">Adoption</option>
+                                        <option value="playdate">Playdate</option>
+                                    </select>
+                                </label>
+                            </div>
+
+                            {[
+                                { label: 'Pet Name', name: 'pet_name', type: 'text' },
+                                { label: 'Animal', name: 'animal', type: 'text' },
+                                { label: 'Breed', name: 'breed', type: 'text' },
+                                { label: 'Age', name: 'age', type: 'number' },
+                                { label: 'Gender', name: 'gender', type: 'text' },
+                                { label: 'Weight', name: 'weight', type: 'number' },
+                                { label: 'Color', name: 'color', type: 'text' },
+                                { label: 'Location', name: 'location', type: 'text' },
+                                { label: 'Photo URL', name: 'photo_url', type: 'url' }
+                            ].map(({ label, name, type }) => (
+                                <div key={name} className="form-group">
+                                    <label>
+                                        {label}:
+                                        <input
+                                            type={type}
+                                            name={name}
+                                            value={formData[name]}
+                                            onChange={handleChange}
+                                            required={name !== 'photo_url'}
+                                            className="form-control"
+                                        />
+                                    </label>
+                                </div>
+                            ))}
+
+                            <div className="form-group">
+                                <label>
+                                    About:
+                                    <textarea
+                                        name="about"
+                                        value={formData.about}
+                                        onChange={handleChange}
+                                        required
+                                        className="form-control"
+                                        style={{ minHeight: '100px' }}
+                                    />
+                                </label>
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="btn btn-primary"
                             >
-                                <option value="adoption">Adoption</option>
-                                <option value="playdate">Playdate</option>
-                                <option value="walking">Dog Walking</option>
-                            </select>
-                        </label>
+                                Create Listing
+                            </button>
+                        </form>
                     </div>
-
-                    {[
-                        { label: 'Pet Name', name: 'pet_name', type: 'text' },
-                        { label: 'Animal', name: 'animal', type: 'text' },
-                        { label: 'Breed', name: 'breed', type: 'text' },
-                        { label: 'Age', name: 'age', type: 'number' },
-                        { label: 'Gender', name: 'gender', type: 'text' },
-                        { label: 'Weight', name: 'weight', type: 'number' },
-                        { label: 'Color', name: 'color', type: 'text' },
-                        { label: 'Location', name: 'location', type: 'text' },
-                        { label: 'Photo URL', name: 'photo_url', type: 'url' }
-                    ].map(({ label, name, type }) => (
-                        <div key={name}>
-                            <label style={{ display: 'block', marginBottom: '5px' }}>
-                                {label}:
-                                <input
-                                    type={type}
-                                    name={name}
-                                    value={formData[name]}
-                                    onChange={handleChange}
-                                    required={name !== 'photo_url'}
-                                    style={{
-                                        width: '100%',
-                                        padding: '8px',
-                                        borderRadius: '4px',
-                                        border: '1px solid #ddd'
-                                    }}
-                                />
-                            </label>
-                        </div>
-                    ))}
-
-                    <div>
-                        <label style={{ display: 'block', marginBottom: '5px' }}>
-                            About:
-                            <textarea
-                                name="about"
-                                value={formData.about}
-                                onChange={handleChange}
-                                required
-                                style={{
-                                    width: '100%',
-                                    padding: '8px',
-                                    borderRadius: '4px',
-                                    border: '1px solid #ddd',
-                                    minHeight: '100px'
-                                }}
-                            />
-                        </label>
-                    </div>
-
-                    <button
-                        type="submit"
-                        style={{
-                            padding: '10px 20px',
-                            backgroundColor: '#4CAF50',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '4px',
-                            cursor: 'pointer',
-                            fontSize: '16px'
-                        }}
-                    >
-                        Create Listing
-                    </button>
-                </form>
+                </div>
             </div>
         </div>
     );
