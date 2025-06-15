@@ -38,6 +38,15 @@ function PetDetail() {
         <div>
             <Navbar />
             <div style={{ maxWidth: '700px', margin: '40px auto', background: '#fff', borderRadius: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', padding: '32px' }}>
+                <div style={{ marginBottom: '24px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#666', fontSize: '0.95rem' }}>
+                        <a href="/" style={{ color: '#7C3AED', textDecoration: 'none' }}>Home</a>
+                        <span>></span>
+                        <a href="/profile" style={{ color: '#7C3AED', textDecoration: 'none' }}>Profile</a>
+                        <span>></span>
+                        <span>Pet Detail</span>
+                    </div>
+                </div>
                 {pet.pet_picture && (
                     <img src={pet.pet_picture} alt={pet.name} style={{ width: '100%', borderRadius: '12px', marginBottom: '24px' }} />
                 )}
