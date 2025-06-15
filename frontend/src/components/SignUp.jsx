@@ -31,8 +31,8 @@ function SignUp() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setIsLoading(true); // ADD THIS LINE - you were missing it
-        setError(''); // Clear previous errors
+        setIsLoading(true);
+        setError('');
 
         try {
             const response = await fetch(`${API_BASE_URL}/register`, {
@@ -54,7 +54,7 @@ function SignUp() {
                 })
             });
 
-            // Get response text first, then try to parse as JSON
+
             const responseText = await response.text();
 
             let data;
@@ -70,7 +70,7 @@ function SignUp() {
             }
 
             console.log('Signup successful:', data);
-            navigate('/'); // Redirect to home or dashboard
+            navigate('/');
 
         } catch (error) {
             console.error('Signup error:', error); // Add this for debugging

@@ -52,6 +52,12 @@ function EditPet() {
                                     <input name="name" value={formData.name || ''} onChange={handleChange} required className="form-control" />
                                 </label>
                             </div>
+
+                            <div className="form-group">
+                                <label>Pet Type:
+                                    <input name="pet_type" value={formData.pet_type || ''} onChange={handleChange} required className="form-control" />
+                                </label>
+                            </div>
                             <div className="form-group">
                                 <label>Animal:
                                     <input name="animal" value={formData.animal || ''} onChange={handleChange} required className="form-control" />

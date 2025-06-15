@@ -42,6 +42,7 @@ function PetDetail() {
                     <img src={pet.pet_picture} alt={pet.name} style={{ width: '100%', borderRadius: '12px', marginBottom: '24px' }} />
                 )}
                 <h1 style={{ fontSize: '2rem', fontWeight: 700 }}>{pet.name}</h1>
+                <p><strong>Pet Type</strong> {pet.pet_type}</p>
                 <p><strong>Type:</strong> {pet.animal}</p>
                 <p><strong>Breed:</strong> {pet.breed}</p>
                 <p><strong>Age:</strong> {pet.age}</p>

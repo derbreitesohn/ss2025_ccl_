@@ -31,6 +31,7 @@ function addPet(req, res, next) {
     const emptyPet = {
         user_id: '',
         name: '',
+        pet_type: '',
         animal: '',
         breed: '',
         age: '',
