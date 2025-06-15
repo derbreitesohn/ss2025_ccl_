@@ -6,14 +6,17 @@ const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 
 async function checkPassword(password, hash) {
     let pw = await bcrypt.compare(password, hash); //extracts salt from hash, reapplies to pw, hashes same way, checks if result match
+    console.log("Password match:", pw);
     return pw;
 }
 
 // Authenticates user, checking credentials, setting JWT if valid
-async function authenticateUser({username, password}, users, res) { //{} for destructuring, cleaner
+async function authenticateUser({username, password}, users, res) {
+    console.log("Raw password input:", password);
     const user = users.find( u => {
         return u.username === username;
     });
+    console.log("Attempting login for user:", user);
 
     // If user exists and pw correct
     if (user && await checkPassword(password, user.password)) {
@@ -29,6 +32,8 @@ async function authenticateUser({username, password}, users, res) { //{} for des
 
         res.json({Login: "success"});
     } else {
+        res.clearCookie('accessToken');
+        console.log("Login failed. Cleared accessToken cookie.");
         res.json({Login: "Fail"});
     }
 }
