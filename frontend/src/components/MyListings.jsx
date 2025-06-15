@@ -36,12 +36,14 @@ function MyListings() {
         dogs: listings.filter(l => (l.animal || '').trim().toLowerCase() === 'dog').length,
         cats: listings.filter(l => (l.animal || '').trim().toLowerCase() === 'cat').length,
         playdate: listings.filter(l =>(l.listing_type || '').trim().toLowerCase() === 'playdate').length,
+        adoption: listings.filter(l =>(l.listing_type || '').trim().toLowerCase() === 'adoption').length,
     };
     const filteredListings = listings.filter(listing => {
         if (animalTab === 'all') return true;
         if (animalTab === 'dogs') return (listing.animal || '').trim().toLowerCase() === 'dog';
         if (animalTab === 'cats') return (listing.animal || '').trim().toLowerCase() === 'cat';
         if (animalTab === 'playdate') return (listing.animal || '').trim().toLowerCase() === 'playdate';
+        if (animalTab === 'adoption') return (listing.animal || '').trim().toLowerCase() === 'adoption';
         return true;
     });
 
@@ -86,7 +88,8 @@ function MyListings() {
                     <button onClick={() => setAnimalTab('all')} style={{ background: animalTab === 'all' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'all' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>All ({animalCounts.all})</button>
                     <button onClick={() => setAnimalTab('dogs')} style={{ background: animalTab === 'dogs' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'dogs' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Dogs ({animalCounts.dogs})</button>
                     <button onClick={() => setAnimalTab('cats')} style={{ background: animalTab === 'cats' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'cats' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Cats ({animalCounts.cats})</button>
-                    <button onClick={() => setAnimalTab('playdate')} style={{ background: animalTab === 'playdate' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'playdate' ? 'fff' : '444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Playdate ({animalCounts.playdate})</button>
+                    <button onClick={() => setAnimalTab('playdate')} style={{ background: animalTab === 'playdate' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'playdate' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Playdate ({animalCounts.playdate})</button>
+                    <button onClick={() => setAnimalTab('adoption')} style={{ background: animalTab === 'adoption' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'adoption' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Adoption ({animalCounts.adoption})</button>
                 </div>
                 {error && (
                     <div style={{ color: 'red', textAlign: 'center', marginBottom: '20px' }}>
