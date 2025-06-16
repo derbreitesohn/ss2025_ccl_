@@ -273,7 +273,7 @@
 .cancel-button {
     flex: 1;
     padding: 10px 0;
-    background: #ccc;
+    background: #f4efef;
     color: black;
     border: none;
     border-radius: 8px;
@@ -473,8 +473,8 @@
 .delete-pet-button {
     flex: 1;
     padding: 8px 0;
-    background: #FECACA;
-    color: #B91C1C;
+    background: #ef6666;
+    color: #ffffff;
     border: none;
     border-radius: 6px;
     font-weight: 600;

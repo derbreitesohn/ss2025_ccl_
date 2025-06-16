@@ -62,8 +62,8 @@ function PetDetail() {
                 <p><strong>About:</strong> {pet.about}</p>
                 {user && user.id === pet.user_id && (
                     <div style={{ display: 'flex', gap: 12, marginTop: 24 }}>
-                        <button onClick={() => navigate(`/edit-pet/${pet.id}`)} style={{ flex: 1, padding: '10px 0', background: '#E0E7FF', color: '#7C3AED', border: 'none', borderRadius: 8, fontWeight: 600, fontSize: '1rem', cursor: 'pointer' }}>Edit</button>
-                        <button onClick={handleDelete} style={{ flex: 1, padding: '10px 0', background: '#FECACA', color: '#B91C1C', border: 'none', borderRadius: 8, fontWeight: 600, fontSize: '1rem', cursor: 'pointer' }}>Delete</button>
+                        <button onClick={() => navigate(`/edit-pet/${pet.id}`)} style={{ flex: 1, padding: '10px 0', background: '#E0E7FF', color: '#000000', border: 'none', borderRadius: 8, fontWeight: 600, fontSize: '1rem', cursor: 'pointer' }}>Edit</button>
+                        <button onClick={handleDelete} style={{ flex: 1, padding: '10px 0', background: '#ef6666', color: '#ffffff', border: 'none', borderRadius: 8, fontWeight: 600, fontSize: '1rem', cursor: 'pointer' }}>Delete</button>
                     </div>
                 )}
             </div>

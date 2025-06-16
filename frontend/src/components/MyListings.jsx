@@ -42,8 +42,8 @@ function MyListings() {
         if (animalTab === 'all') return true;
         if (animalTab === 'dogs') return (listing.animal || '').trim().toLowerCase() === 'dog';
         if (animalTab === 'cats') return (listing.animal || '').trim().toLowerCase() === 'cat';
-        if (animalTab === 'playdate') return (listing.animal || '').trim().toLowerCase() === 'playdate';
-        if (animalTab === 'adoption') return (listing.animal || '').trim().toLowerCase() === 'adoption';
+        if (animalTab === 'playdate') return (listing.listing_type || '').trim().toLowerCase() === 'playdate';
+        if (animalTab === 'adoption') return (listing.listing_type || '').trim().toLowerCase() === 'adoption';
         return true;
     });
 
@@ -61,9 +61,6 @@ function MyListings() {
     return (
         <div style={{ background: '#fff', minHeight: '100vh', color: 'black' }}>
             <Navbar />
-            <div style={{ width: '100%', background: '#7C3AED', color: '#fff', padding: '18px 0', textAlign: 'center', fontWeight: 600, fontSize: '1.3rem', borderRadius: '0 0 18px 18px', marginBottom: 24 }}>
-                My Listings
-            </div>
             <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '30px 20px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
                     <h1 style={{ fontWeight: 700, fontSize: '2.5rem', color: '#222', margin: 0 }}>My Listings</h1>
@@ -119,14 +116,14 @@ function MyListings() {
                                     <div style={{ color: '#444', fontSize: '1rem', marginBottom: 2 }}><strong>Color:</strong> {listing.color}</div>
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, padding: '0 18px' }}>
-                                    <button onClick={() => navigate(`/listings/${listing.id}/edit`)} style={{ flex: 1, padding: '8px 0', background: '#E0E7FF', color: '#7C3AED', border: 'none', borderRadius: 6, fontWeight: 600, fontSize: '1rem', cursor: 'pointer', marginTop: 12 }}>Edit</button>
+                                    <button onClick={() => navigate(`/listings/${listing.id}/edit`)} style={{ flex: 1, padding: '8px 0', background: '#E0E7FF', color: '#000000', border: 'none', borderRadius: 6, fontWeight: 600, fontSize: '1rem', cursor: 'pointer', marginTop: 12 }}>Edit</button>
                                     <button onClick={() => navigate(`/listings/${listing.id}`)} style={{ flex: 1, padding: '8px 0', background: '#fff', color: '#7C3AED', border: '2px solid #7C3AED', borderRadius: 6, fontWeight: 600, fontSize: '1rem', cursor: 'pointer', marginTop: 12 }}>View Details</button>
                                     <button onClick={async () => {
                                         if(window.confirm('Are you sure you want to delete this listing?')) {
                                             await axios.post(`${API_BASE_URL}/listings/${listing.id}/delete`, {}, { withCredentials: true });
                                             window.location.reload();
                                         }
-                                    }} style={{ flex: 1, padding: '8px 0', background: '#FECACA', color: '#B91C1C', border: 'none', borderRadius: 6, fontWeight: 600, fontSize: '1rem', cursor: 'pointer', marginTop: 12 }}>Delete</button>
+                                    }} style={{ flex: 1, padding: '8px 0', background: '#ef6666', color: '#ffffff', border: 'none', borderRadius: 6, fontWeight: 600, fontSize: '1rem', cursor: 'pointer', marginTop: 12 }}>Delete</button>
                                 </div>
                             </div>
                         ))}
