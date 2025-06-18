@@ -111,7 +111,7 @@ function Messages() {
     return (
         <div style={{ background: '#fff', minHeight: '100vh' }}>
             <Navbar />
-            <div style={{ display: 'flex', height: 'calc(100vh - 80px)', background: '#f4f4fa', padding: '0 0', marginTop: 0 }}>
+            <div style={{ display: 'flex', height: 'calc(100vh - 80px)', background: '#ffffff', padding: '0 0', marginTop: 0 }}>
                 {/* Sidebar */}
                 <div style={{ width: '370px', borderRight: '1.5px solid #e5e5e5', background: '#fff', overflowY: 'auto', borderRadius: '18px 0 0 18px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', margin: '32px 0 32px 32px', height: 'calc(100vh - 144px)' }}>
                     <h2 style={{ padding: '28px 24px 18px 24px', margin: 0, borderBottom: '1.5px solid #e5e5e5', fontWeight: 700, fontSize: '1.3rem' }}>Messages</h2>

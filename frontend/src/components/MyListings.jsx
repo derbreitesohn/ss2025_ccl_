@@ -38,6 +38,7 @@ function MyListings() {
         playdate: listings.filter(l =>(l.listing_type || '').trim().toLowerCase() === 'playdate').length,
         adoption: listings.filter(l =>(l.listing_type || '').trim().toLowerCase() === 'adoption').length,
     };
+
     const filteredListings = listings.filter(listing => {
         if (animalTab === 'all') return true;
         if (animalTab === 'dogs') return (listing.animal || '').trim().toLowerCase() === 'dog';
@@ -101,7 +102,7 @@ function MyListings() {
                 ) : (
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 28 }}>
                         {filteredListings.map(listing => (
-                            <div key={listing.id} style={{ background: '#fff', borderRadius: 12, boxShadow: '0 1px 4px rgba(0,0,0,0.06)', padding: '0 0 18px 0', display: 'flex', flexDirection: 'column', alignItems: 'stretch', position: 'relative', minHeight: 320, border: '1.5px solid #e5e5e5' }}>
+                            <div key={listing.id} className="pet-card">
                                 {listing.photo_url && (
                                     <img src={listing.photo_url} alt={listing.pet_name} style={{ width: '100%', height: '140px', objectFit: 'cover', borderTopLeftRadius: 12, borderTopRightRadius: 12, marginBottom: 10 }} />
                                 )}

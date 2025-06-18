@@ -32,6 +32,8 @@ function ListingDetail() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#666', fontSize: '0.95rem' }}>
                 <a href="/" style={{ color: '#7C3AED', textDecoration: 'none' }}>Home</a>
                 <span>></span>
+                <a href="/listings" style={{ color: '#7C3AED', textDecoration: 'none' }}>My Listings</a>
+                <span>></span>
                 <span>Listing Detail</span>
             </div>
             <div style={{ maxWidth: '700px', margin: '40px auto', background: '#fff', borderRadius: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', padding: '32px' }}>
