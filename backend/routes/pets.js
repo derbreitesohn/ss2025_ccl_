@@ -13,6 +13,6 @@ router.get('/:id', petController.getPet);
 router.get('/:id/edit', petController.editPet);
 router.post('/:id', petController.updatePet);
 
-router.post(':id/delete', petController.deletePet);
+router.post('/:id/delete', petController.deletePet);
 
 module.exports = router;
