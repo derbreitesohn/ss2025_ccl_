@@ -286,6 +286,19 @@
     background: #bbb;
 }
 
+.delete-profile-button {
+    background: #ef6666;
+    color: #ffffff;
+    border: 1.5px solid #ef6666;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 10px 24px;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-left: 16px;
+}
+
 /* Pets Section */
 .pets-section {
     background: #fff;

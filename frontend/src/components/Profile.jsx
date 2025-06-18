@@ -78,6 +78,19 @@ function Profile() {
         }
     };
 
+    const handleDeleteUser = async () => {
+        if(window.confirm('Are you sure you want to delete your account? This action cannot be undone and will delete all your pets and data.')) {
+            try {
+                await axios.post(`${API_BASE_URL}/users/${user.id}/delete`, {}, { withCredentials: true });
+                navigate('/');
+            } catch (err) {
+                console.error('Error deleting user:', err);
+                alert('Error deleting account. Please try again.');
+            }
+        }
+    };
+
+
     const handleDeletePet = async (petId) => {
         if(window.confirm('Are you sure you want to delete this pet?')) {
             await axios.post(`${API_BASE_URL}/pets/${petId}/delete`, {}, { withCredentials: true });
@@ -143,6 +156,10 @@ function Profile() {
                     </div>
                     <button onClick={handleEditClick} className="edit-profile-button">
                         Edit Profile
+                    </button>
+
+                    <button onClick={handleDeleteUser} className="delete-profile-button">
+                        Delete Profile
                     </button>
                 </div>
 
