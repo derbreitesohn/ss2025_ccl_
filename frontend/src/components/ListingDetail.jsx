@@ -3,7 +3,7 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './Navbar';
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'https://cc241045-10757.node.fhstp.cc/api';
 
 function ListingDetail() {
     const { id } = useParams();
@@ -56,9 +56,7 @@ function ListingDetail() {
                 {listing.photo_url && (
                     <div style={{ position: 'relative' }}>
                         <img src={listing.photo_url} alt={listing.pet_name} />
-                        {/* Type badge on photo */}
                         <span className="listing-badge" style={{ top: 18, right: 18, left: 'unset', bottom: 'unset' }}>{listing.listing_type ? listing.listing_type.charAt(0).toUpperCase() + listing.listing_type.slice(1) : ''}</span>
-                        {/* Location under photo, right-aligned */}
                         <div style={{ textAlign: 'right', color: '#888', fontWeight: 500, marginTop: 8, marginBottom: 8, fontSize: '1.08rem' }}>{listing.location}</div>
                     </div>
                 )}
@@ -74,7 +72,6 @@ function ListingDetail() {
                 <div style={{margin: '32px 0 18px 0', textAlign: 'left'}}>
                     <div className="detail-info-list-item"><span className="detail-info-label">About:</span> {listing.about}</div>
                 </div>
-                {/* Contact button if from home and user is the owner */}
                 {fromHome && user && user.id === listing.user_id && (
                     <button
                         onClick={() => navigate(`/messages?user=${listing.user_id}`)}

@@ -4,7 +4,7 @@ import axios from 'axios';
 import Navbar from './Navbar';
 import './style.css';
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'https://cc241045-10757.node.fhstp.cc/api';
 
 function EditPet() {
     const { id } = useParams();
@@ -38,14 +38,11 @@ function EditPet() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Update pet
             await axios.post(`${API_BASE_URL}/pets/${id}`, formData, { withCredentials: true });
 
-            // Get all listings
             const listingsResponse = await axios.get(`${API_BASE_URL}/listings`, { withCredentials: true });
             const listings = listingsResponse.data.listings;
 
-            // Find and update associated listings
             const associatedListings = listings.filter(listing =>
                 listing.pet_name === formData.name ||
                 (listing.animal === formData.animal &&
@@ -53,7 +50,6 @@ function EditPet() {
                     listing.age === formData.age)
             );
 
-            // Update each associated listing
             for (const listing of associatedListings) {
                 const updatedListing = {
                     ...listing,

@@ -22,7 +22,7 @@ function App() {
 
     const fetchAPI = async () => {
         try {
-            const response = await axios.get("http://localhost:3000/");
+            const response = await axios.get("https://cc241045-10757.node.fhstp.cc/");
             console.log(response);
         } catch (error) {
             console.error("API Error:", error);
@@ -38,7 +38,6 @@ function App() {
         <>
             <Router>
                 <Routes>
-                    {/* Public routes */}
                     <Route path="/" element={<HomePage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/profile" element={<Profile />} />

@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 import { useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'https://cc241045-10757.node.fhstp.cc/api';
 
 let socket;
 
@@ -18,14 +18,12 @@ function Messages() {
     const chatEndRef = useRef(null);
     const location = useLocation();
 
-    // Fetch current user
     useEffect(() => {
         axios.get(`${API_BASE_URL}/users/me`, { withCredentials: true })
             .then(res => setUser(res.data))
             .catch(() => setUser(null));
     }, []);
 
-    // Fetch recent chats
     useEffect(() => {
         if (!user) return;
         axios.get(`${API_BASE_URL}/messages/recent`, { withCredentials: true })
@@ -33,7 +31,6 @@ function Messages() {
             .finally(() => setLoading(false));
     }, [user]);
 
-    // Pre-select chat if ?user= is present in URL (runs even if no chats)
     useEffect(() => {
         if (!user) return;
         const params = new URLSearchParams(location.search);
@@ -52,7 +49,6 @@ function Messages() {
         }
     }, [chats, location.search, user]);
 
-    // Fetch chat history when a chat is selected
     useEffect(() => {
         if (!selectedChat || !user) return;
         axios.get(`${API_BASE_URL}/messages/history/${selectedChat.otherUserId}`, { withCredentials: true })
@@ -112,7 +108,6 @@ function Messages() {
         <>
             <Navbar />
             <div className="messages-container">
-                {/* Sidebar */}
                 <div className="messages-sidebar">
                     <h2 style={{ padding: '28px 24px 18px 24px', margin: 0, borderBottom: '1.5px solid #e5e5e5', fontWeight: 700, fontSize: '1.3rem' }}>Messages</h2>
                     <div>
@@ -191,7 +186,6 @@ function Messages() {
                         )}
                         <div ref={chatEndRef} />
                     </div>
-                    {/* Message Input */}
                     <form onSubmit={handleSend} className="messages-input-form">
                         <input
                             type="text"

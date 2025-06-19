@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
@@ -14,16 +14,9 @@ const io = new Server(server, {
     }
 });
 
-
-// CORS configuration
-const corsOptions = {
-    origin: "http://localhost:5173", // Your frontend URL
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-};
-
-app.use(cors(corsOptions));
+app.use(cors({
+    credentials: true
+}));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -32,7 +25,7 @@ const db = require('./services/database.js')
 const path = require("path")
 app.use(express.static("public"))
 
-app.get('/', (req, res) => res.send('Hello World'))
+app.get('/api', (req, res) => res.send('Hello World'))
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
@@ -41,14 +34,19 @@ const listingsRouter = require("./routes/listings");
 const favoriteRouter = require("./routes/favorites");
 const messagesRouter = require("./routes/messages");
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/pets", petsRouter);
-app.use("/listings", listingsRouter);
-app.use("/favorites", favoriteRouter);
-app.use('/messages', messagesRouter);
+app.use("/api", indexRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/pets", petsRouter);
+app.use("/api/listings", listingsRouter);
+app.use("/api/favorites", favoriteRouter);
+app.use('/api/messages', messagesRouter);
 
-
+// Serve React static build
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+// Fallback to index.html for SPA
+app.use((req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
+});
 
 const onlineUsers = new Map();
 const { saveMessage } = require('./models/messageModel');
@@ -76,17 +74,13 @@ io.on('connection', (socket) => {
     });
 });
 
-
 function errorHandler(err, req, res, next) {
     console.error('Error:', err);
     res.status(500).json({ error: err.message || 'Internal server error' });
 }
-
 app.use(errorHandler);
 
-
-// Replace app.listen with server.listen
-server.listen(3000, () => {
-    console.log('Server running at http://localhost:3000');
+server.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
 });
 

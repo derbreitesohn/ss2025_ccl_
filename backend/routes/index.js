@@ -12,16 +12,12 @@ const favoriteController = require("../controllers/favoriteController");
 const router = express.Router();
 const authenticationService = require('../services/authentication');
 
-
 router.get("/", (req, res) => {
     res.json({title: "Express"})
 });
 
-
 router.get('/register', userController.loadRegister);
 router.post('/register', userController.register);
-
-
 
 router.route('/login')
     .get((req, res) => {
@@ -41,7 +37,5 @@ router.get('/logout', (req, res) => {
     res.cookie('accessToken', '', {maxAge: 0});
     res.redirect('/');
 })
-
-
 
 module.exports = router;

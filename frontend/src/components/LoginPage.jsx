@@ -4,7 +4,7 @@ import './LoginPage.css';
 import loginImage from '../images/fee_ccl.png';
 import logo from '../images/logo_patpat.png';
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'https://cc241045-10757.node.fhstp.cc/api';
 
 function LoginPage() {
     const [username, setUsername] = useState('');
@@ -51,10 +51,8 @@ function LoginPage() {
 
     return (
         <div className="login-split-container">
-            {/* Left Side - Login Form */}
             <div className="login-form-section">
                 <div className="login-form-content">
-                    {/* Logo and Header */}
                     <div className="login-header">
                         <div className="logo-section">
                             <div className="logo-placeholder">
@@ -68,20 +66,17 @@ function LoginPage() {
                         <p className="tagline">Find your perfect companion</p>
                     </div>
 
-                    {/* Welcome Text */}
                     <div className="welcome-section">
                         <h1 className="welcome-title">Welcome back</h1>
                         <p className="welcome-subtitle">Sign in to your account to continue</p>
                     </div>
 
-                    {/* Error Message */}
                     {error && (
                         <div className="error-message">
                             {error}
                         </div>
                     )}
 
-                    {/* Login Form */}
                     <form onSubmit={handleLogin} className="form-container">
                         <div className="form-group">
                             <label htmlFor="username" className="form-label">
@@ -122,7 +117,6 @@ function LoginPage() {
                         </button>
                     </form>
 
-                    {/* Footer */}
                     <div className="login-footer">
                         <p>
                             Don't have an account?{' '}
@@ -134,7 +128,6 @@ function LoginPage() {
                 </div>
             </div>
 
-            {/* Right Side - Dog Photo */}
             <div className="photo-section">
                 <div className="photo-container">
                     <img

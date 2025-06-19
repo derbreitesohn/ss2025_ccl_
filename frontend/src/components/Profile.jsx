@@ -7,7 +7,7 @@ import { FaMapMarkerAlt } from 'react-icons/fa';
 import { BsCalendar3 } from 'react-icons/bs';
 import './style.css';
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'https://cc241045-10757.node.fhstp.cc/api';
 
 function Profile() {
     const [user, setUser] = useState(null);
@@ -130,7 +130,6 @@ function Profile() {
         <div className="profile-page">
             <Navbar />
             <div className="profile-content">
-                {/* Profile Header Card */}
                 <div className="profile-header-card">
                     <img
                         src={user?.profile_picture || 'https://api.dicebear.com/7.x/avataaars/svg?seed=PatPat'}
@@ -163,7 +162,6 @@ function Profile() {
                     </button>
                 </div>
 
-                {/* Edit Profile Modal */}
                 {editMode && (
                     <div className="modal-overlay">
                         <form onSubmit={handleEditSubmit} className="edit-profile-form">
@@ -255,7 +253,6 @@ function Profile() {
                         </button>
                     </div>
 
-                    {/* Tabs */}
                     <div className="pets-tabs">
                         <button
                             onClick={() => setActiveTab('all')}
@@ -289,7 +286,6 @@ function Profile() {
                         </button>
                     </div>
 
-                    {/* Pet Cards Grid */}
                     <div className="pets-grid">
                         {filteredPets.length === 0 ? (
                             <div className="no-pets-message">No pets found.</div>
@@ -306,7 +302,6 @@ function Profile() {
                                 <span className={`pet-badge ${pet.type === 'dog' ? 'dog-badge' : 'cat-badge'}`}>
                                  {pet.badge || (pet.pet_type === 'playdate' ? 'Play-Date' : 'Adoption')}
                                 </span>
-
 
                                 <div className="pet-info">
                                     <h3 className="pet-name">{pet.name}</h3>

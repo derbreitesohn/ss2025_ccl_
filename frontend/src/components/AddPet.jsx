@@ -4,7 +4,7 @@ import axios from 'axios';
 import Navbar from './Navbar';
 import './style.css';
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'https://cc241045-10757.node.fhstp.cc/api';
 
 function AddPet() {
     const navigate = useNavigate();

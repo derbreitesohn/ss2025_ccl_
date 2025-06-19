@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './Navbar';
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'https://cc241045-10757.node.fhstp.cc/api';
 
 function PetDetail() {
     const { id } = useParams();
@@ -41,9 +41,7 @@ function PetDetail() {
                 {pet.pet_picture && (
                     <div style={{ position: 'relative' }}>
                         <img src={pet.pet_picture} alt={pet.name} />
-                        {/* Type badge on photo */}
                         <span className="listing-badge" style={{ top: 18, right: 18, left: 'unset', bottom: 'unset' }}>{pet.pet_type ? pet.pet_type.charAt(0).toUpperCase() + pet.pet_type.slice(1) : ''}</span>
-                        {/* Location under photo, right-aligned */}
                         <div style={{ textAlign: 'right', color: '#888', fontWeight: 500, marginTop: 8, marginBottom: 8, fontSize: '1.08rem' }}>{pet.location}</div>
                     </div>
                 )}

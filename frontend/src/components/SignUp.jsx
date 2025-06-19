@@ -5,13 +5,11 @@ import loginImage from '../images/fee_ccl.png';
 import logo from '../images/logo_patpat.png';
 import './SignUp.css';
 
-const API_BASE_URL = 'http://localhost:3000';
-
+const API_BASE_URL = 'https://cc241045-10757.node.fhstp.cc/api';
 
 function SignUp() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-
         name: '',
         username: '',
         email: '',
@@ -54,17 +52,13 @@ function SignUp() {
                 })
             });
 
-
             const responseText = await response.text();
-
             let data;
             try {
                 data = JSON.parse(responseText);
             } catch (jsonError) {
-                // If response is not JSON, throw the raw text
                 throw new Error(`Server error: ${responseText}`);
             }
-
             if (!response.ok) {
                 throw new Error(data.message || 'Signup failed');
             }
@@ -73,7 +67,7 @@ function SignUp() {
             navigate('/');
 
         } catch (error) {
-            console.error('Signup error:', error); // Add this for debugging
+            console.error('Signup error:', error);
             setError(error.message || 'An error occurred during Signup');
         } finally {
             setIsLoading(false);
@@ -82,10 +76,8 @@ function SignUp() {
 
     return (
         <div className="login-split-container">
-            {/* Left Side - Sign Up Form */}
             <div className="login-form-section">
                 <div className="login-form-content">
-                    {/* Logo and Header */}
                     <div className="login-header">
                         <div className="logo-section">
                             <div className="logo-placeholder">
@@ -99,20 +91,17 @@ function SignUp() {
                         <p className="tagline">Find your perfect companion</p>
                     </div>
 
-                    {/* Welcome Text */}
                     <div className="welcome-section">
                         <h1 className="welcome-title">Create an account</h1>
                         <p className="welcome-subtitle">Sign up to get started</p>
                     </div>
 
-                    {/* Error Message */}
                     {error && (
                         <div className="error-message">
                             {error}
                         </div>
                     )}
 
-                    {/* Sign Up Form */}
                     <form onSubmit={handleSubmit} className="form-container">
                         <div className="form-group">
                             <label htmlFor="name" className="form-label">Name</label>
@@ -218,7 +207,6 @@ function SignUp() {
                         </button>
                     </form>
 
-                    {/* Footer */}
                     <div className="login-footer">
                         <p>
                             Already have an account?{' '}
@@ -230,7 +218,6 @@ function SignUp() {
                 </div>
             </div>
 
-            {/* Right Side - Dog Photo */}
             <div className="photo-section">
                 <div className="photo-container">
                     <img
