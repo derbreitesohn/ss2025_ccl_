@@ -81,16 +81,16 @@ function HomePage() {
                             style={{
                                 background: '#fff',
                                 border: '1.5px solid #e5e5e5',
-                                borderRadius: '16px',
-                                boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-                                padding: '0 0 20px 0',
+                                borderRadius: '12px',
+                                boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+                                padding: '0 0 18px 0',
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'stretch',
                                 position: 'relative',
-                                minHeight: '420px',
+                                minHeight: '320px',
                                 color: 'black',
-                                overflow: 'hidden'
+                                overflow: 'hidden',
                             }}
                         >
 
@@ -113,11 +113,11 @@ function HomePage() {
                                     alt={listing.pet_name}
                                     style={{
                                         width: '100%',
-                                        height: '200px',
+                                        height: '140px',
                                         objectFit: 'cover',
-                                        borderTopLeftRadius: '16px',
-                                        borderTopRightRadius: '16px',
-                                        marginBottom: '12px'
+                                        borderTopLeftRadius: '12px',
+                                        borderTopRightRadius: '12px',
+                                        marginBottom: '10px'
                                     }}
                                 />
                             )}

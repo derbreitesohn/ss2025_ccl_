@@ -64,7 +64,7 @@ function MyListings() {
             <Navbar />
             <div style={{ maxWidth: '1300px', margin: '0 auto', padding: '30px 20px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
-                    <h1 style={{ fontWeight: 700, fontSize: '2.5rem', color: '#222', margin: 0 }}>My Listings</h1>
+                    <h1 style={{ fontWeight: 700, fontSize: '2.5rem', color: '#222', marginBottom: 10, textAlign: 'center'}}>My Listings</h1>
                     <button
                         onClick={() => navigate('/add-listing')}
                         style={{
@@ -82,7 +82,7 @@ function MyListings() {
                     </button>
                 </div>
                 {/* Animal Filter Tabs */}
-                <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
+                <div style={{ display: 'flex', gap: 12, marginBottom: 30 }}>
                     <button onClick={() => setAnimalTab('all')} style={{ background: animalTab === 'all' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'all' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>All ({animalCounts.all})</button>
                     <button onClick={() => setAnimalTab('dogs')} style={{ background: animalTab === 'dogs' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'dogs' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Dogs ({animalCounts.dogs})</button>
                     <button onClick={() => setAnimalTab('cats')} style={{ background: animalTab === 'cats' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'cats' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Cats ({animalCounts.cats})</button>
@@ -104,7 +104,8 @@ function MyListings() {
                         {filteredListings.map(listing => (
                             <div key={listing.id} className="pet-card">
                                 {listing.photo_url && (
-                                    <img src={listing.photo_url} alt={listing.pet_name} style={{ width: '100%', height: '140px', objectFit: 'cover', borderTopLeftRadius: 12, borderTopRightRadius: 12, marginBottom: 10 }} />
+                                    <img src={listing.photo_url} alt={listing.pet_name} style={{ width: '100%', height: '140px', objectFit: 'cover', borderTopLeftRadius: 12, borderTopRightRadius: 12, marginBottom: 10, display: 'flex', flexDirection: 'column', alignItems: 'stretch', position: 'relative', minHeight: '300px', border: '1.5px solid #e5e5e5',  overflow: 'hidden', }} />
+
                                 )}
                                 {/* Badge */}
                                 <span style={{ position: 'absolute', top: 12, right: 12, background: '#fff', color: '#7C3AED', border: '2px solid #7C3AED', borderRadius: 8, fontWeight: 600, fontSize: '0.95rem', padding: '3px 12px', zIndex: 2 }}>{listing.listing_type ? listing.listing_type.charAt(0).toUpperCase() + listing.listing_type.slice(1) : ''}</span>
