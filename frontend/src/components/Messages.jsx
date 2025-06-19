@@ -109,11 +109,11 @@ function Messages() {
     if (!user) return <div><Navbar /><p>Please log in to view messages.</p></div>;
 
     return (
-        <div style={{ background: '#fff', minHeight: '100vh' }}>
+        <>
             <Navbar />
-            <div style={{ display: 'flex', height: 'calc(100vh - 80px)', background: '#ffffff', padding: '0 0', marginTop: 0 }}>
+            <div className="messages-container">
                 {/* Sidebar */}
-                <div style={{ width: '370px', borderRight: '1.5px solid #e5e5e5', background: '#fff', overflowY: 'auto', borderRadius: '18px 0 0 18px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', margin: '32px 0 32px 32px', height: 'calc(100vh - 144px)' }}>
+                <div className="messages-sidebar">
                     <h2 style={{ padding: '28px 24px 18px 24px', margin: 0, borderBottom: '1.5px solid #e5e5e5', fontWeight: 700, fontSize: '1.3rem' }}>Messages</h2>
                     <div>
                         {(!chats || chats.length === 0) && !selectedChat && <p style={{ padding: '24px' }}>No recent chats.</p>}
@@ -163,11 +163,11 @@ function Messages() {
                     </div>
                 </div>
                 {/* Chat Window */}
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: '#fff', borderRadius: '0 18px 18px 0', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', margin: '32px 32px 32px 0', height: 'calc(100vh - 144px)' }}>
-                    <div style={{ padding: '28px 32px 18px 32px', borderBottom: '1.5px solid #e5e5e5', background: '#fff', borderRadius: '0 18px 0 0', fontWeight: 700, fontSize: '1.2rem' }}>
+                <div className="messages-chat">
+                    <div className="messages-header">
                         {selectedChat ? selectedChat.otherUsername : 'Select a chat'}
                     </div>
-                    <div style={{ flex: 1, overflowY: 'auto', padding: '32px', background: '#f4f4fa' }}>
+                    <div className="messages-history">
                         {selectedChat ? (
                             chatHistory.length === 0 ? (
                                 <p style={{ color: '#888' }}>No messages yet.</p>
@@ -175,24 +175,11 @@ function Messages() {
                                 chatHistory.map((msg, idx) => (
                                     <div
                                         key={idx}
-                                        style={{
-                                            display: 'flex',
-                                            justifyContent: msg.sender_id === user.id ? 'flex-end' : 'flex-start',
-                                            marginBottom: '18px'
-                                        }}
+                                        className={`message-bubble ${msg.sender_id === user.id ? 'sent' : 'received'}`}
                                     >
-                                        <div style={{
-                                            background: msg.sender_id === user.id ? '#7C3AED' : '#E0E7FF',
-                                            color: msg.sender_id === user.id ? '#fff' : '#222',
-                                            borderRadius: '16px',
-                                            padding: '12px 22px',
-                                            maxWidth: '60%',
-                                            boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
-                                            fontSize: '1.05rem',
-                                            wordBreak: 'break-word'
-                                        }}>
+                                        <div className="message-content">
                                             {msg.content}
-                                            <div style={{ fontSize: '0.8rem', color: msg.sender_id === user.id ? '#e0e0e0' : '#888', marginTop: '4px', textAlign: 'right' }}>
+                                            <div className="message-timestamp">
                                                 {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                             </div>
                                         </div>
@@ -205,21 +192,21 @@ function Messages() {
                         <div ref={chatEndRef} />
                     </div>
                     {/* Message Input */}
-                    <form onSubmit={handleSend} style={{ display: 'flex', alignItems: 'center', padding: '18px 32px', borderTop: '1.5px solid #e5e5e5', background: '#fff', borderRadius: '0 0 18px 0' }}>
+                    <form onSubmit={handleSend} className="messages-input-form">
                         <input
                             type="text"
                             value={message}
                             onChange={e => setMessage(e.target.value)}
                             placeholder="Type a message..."
-                            style={{ flex: 1, padding: '12px 18px', borderRadius: '24px', border: '1.5px solid #e5e5e5', fontSize: '1.1rem', outline: 'none', marginRight: '12px', background: '#f9f9ff' }}
+                            className="messages-input"
                         />
-                        <button type="submit" style={{ background: '#7C3AED', color: '#fff', border: 'none', borderRadius: '50%', width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, cursor: 'pointer', boxShadow: '0 2px 8px rgba(124,60,237,0.10)' }}>
+                        <button type="submit" className="messages-send-btn">
                             <span role="img" aria-label="Send">➤</span>
                         </button>
                     </form>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 

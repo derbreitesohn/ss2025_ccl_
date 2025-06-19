@@ -123,16 +123,8 @@ function HomePage() {
                             )}
                             <div style={{ padding: '0 20px', flex: 1 }}>
                                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-                                    <span style={{
-                                        background: listing.listing_type === 'adoption' ? '#6C63FF' : '#FFB347',
-                                        color: '#fff',
-                                        borderRadius: '8px',
-                                        fontSize: '0.85rem',
-                                        fontWeight: 600,
-                                        padding: '3px 12px',
-                                        marginRight: '10px',
-                                        textTransform: 'capitalize'
-                                    }}>{listing.listing_type}</span>
+                                        {/* Badge */}
+                                        <span style={{ position: 'absolute', top: 12, left: 12, background: '#fff', color: '#7C3AED', border: '2px solid #7C3AED', borderRadius: 8, fontWeight: 600, fontSize: '0.95rem', padding: '3px 12px', zIndex: 2 }}>{listing.listing_type ? listing.listing_type.charAt(0).toUpperCase() + listing.listing_type.slice(1) : ''}</span>
                                     <span style={{ color: '#888', fontSize: '0.95rem' }}>{listing.location}</span>
                                 </div>
                                 <h2 style={{ fontSize: '1.4rem', fontWeight: 700, margin: '0 0 6px 0', color: '#222' }}>{listing.pet_name}</h2>
@@ -158,7 +150,7 @@ function HomePage() {
                                     Contact
                                 </button>
                                 <button
-                                    onClick={() => navigate(`/listings/${listing.id}`)}
+                                    onClick={() => navigate(`/listings/${listing.id}`, { state: { from: 'home' } })}
                                     style={{
                                         flex: 1,
                                         padding: '10px 0',

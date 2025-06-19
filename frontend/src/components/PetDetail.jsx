@@ -37,29 +37,28 @@ function PetDetail() {
     return (
         <div>
             <Navbar />
-            <div style={{ maxWidth: '700px', margin: '40px auto', background: '#fff', borderRadius: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', padding: '32px' }}>
-                <div style={{ marginBottom: '24px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#666', fontSize: '0.95rem' }}>
-                        <a href="/" style={{ color: '#7C3AED', textDecoration: 'none' }}>Home</a>
-                        <span>></span>
-                        <a href="/profile" style={{ color: '#7C3AED', textDecoration: 'none' }}>Profile</a>
-                        <span>></span>
-                        <span>Pet Detail</span>
-                    </div>
-                </div>
+            <div className="detail-card" style={{position: 'relative'}}>
                 {pet.pet_picture && (
-                    <img src={pet.pet_picture} alt={pet.name} style={{ width: '100%', borderRadius: '12px', marginBottom: '24px' }} />
+                    <div style={{ position: 'relative' }}>
+                        <img src={pet.pet_picture} alt={pet.name} />
+                        {/* Type badge on photo */}
+                        <span className="listing-badge" style={{ top: 18, right: 18, left: 'unset', bottom: 'unset' }}>{pet.pet_type ? pet.pet_type.charAt(0).toUpperCase() + pet.pet_type.slice(1) : ''}</span>
+                        {/* Location under photo, right-aligned */}
+                        <div style={{ textAlign: 'right', color: '#888', fontWeight: 500, marginTop: 8, marginBottom: 8, fontSize: '1.08rem' }}>{pet.location}</div>
+                    </div>
                 )}
-                <h1 style={{ fontSize: '2rem', fontWeight: 700 }}>{pet.name}</h1>
-                <p><strong>Pet Type</strong> {pet.pet_type}</p>
-                <p><strong>Type:</strong> {pet.animal}</p>
-                <p><strong>Breed:</strong> {pet.breed}</p>
-                <p><strong>Age:</strong> {pet.age}</p>
-                <p><strong>Gender:</strong> {pet.gender}</p>
-                <p><strong>Weight:</strong> {pet.weight}</p>
-                <p><strong>Color:</strong> {pet.color}</p>
-                <p><strong>Location:</strong> {pet.location}</p>
-                <p><strong>About:</strong> {pet.about}</p>
+                <h1 className={'h1-centered'}>{pet.name}</h1>
+                <div className="detail-box-grid">
+                    <div className="detail-box"><div className="detail-box-label">Age</div><div className="detail-box-value">{pet.age}</div></div>
+                    <div className="detail-box"><div className="detail-box-label">Gender</div><div className="detail-box-value">{pet.gender}</div></div>
+                    <div className="detail-box"><div className="detail-box-label">Weight</div><div className="detail-box-value">{pet.weight}</div></div>
+                    <div className="detail-box"><div className="detail-box-label">Color</div><div className="detail-box-value">{pet.color}</div></div>
+                    <div className="detail-box"><div className="detail-box-label">Breed</div><div className="detail-box-value">{pet.breed}</div></div>
+                    <div className="detail-box"><div className="detail-box-label">Animal</div><div className="detail-box-value">{pet.animal}</div></div>
+                </div>
+                <div style={{margin: '32px 0 18px 0', textAlign: 'left'}}>
+                    <div className="detail-info-list-item"><span className="detail-info-label">About:</span> {pet.about}</div>
+                </div>
                 {user && user.id === pet.user_id && (
                     <div style={{ display: 'flex', gap: 12, marginTop: 24 }}>
                         <button onClick={() => navigate(`/edit-pet/${pet.id}`)} style={{ flex: 1, padding: '10px 0', background: '#E0E7FF', color: '#000000', border: 'none', borderRadius: 8, fontWeight: 600, fontSize: '1rem', cursor: 'pointer' }}>Edit</button>
