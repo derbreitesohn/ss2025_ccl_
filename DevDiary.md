@@ -40,6 +40,24 @@
 
     16.06.2025
         - ✅ What I worked on today: Writing this diary.
-        - 💡 Biggest learning: Database 
-        - ❌ Biggest mistake/blocker:
-        - 📌 Notes for tomorrow:
+        - 💡 Biggest learning: helped others
+        - ❌ Biggest mistake/blocker: /
+        - 📌 Notes for tomorrow: /
+
+    17.06.2025
+        - ✅ What I worked on today: Uploading my frontend
+        - 💡 Biggest learning: /
+        - ❌ Biggest mistake/blocker: /
+        - 📌 Notes for tomorrow: Final testing
+    
+    18.06.2025
+        - ✅ What I worked on today: Implemented a delete Profile Button, added some separate nav
+        - 💡 Biggest learning: /
+        - ❌ Biggest mistake/blocker: It took me ages to find a silly little mistake where i forgot a "/" in front of one of my routes
+        - 📌 Notes for tomorrow: Uploading to CC
+
+    19.06.2025
+        - ✅ What I worked on today: Uploading to CC, rewriting a hella lot of my code bc of it
+        - 💡 Biggest learning: to keep cool under this pressure
+        - ❌ Biggest mistake/blocker: Css, CC
+        - 📌 Notes for tomorrow: Presentation day yay
