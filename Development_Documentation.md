@@ -4,7 +4,7 @@
 
 🌐 **Live Website**: [https://cc241045-10757.node.fhstp.cc](https://cc241045-10757.node.fhstp.cc)  
 📁 **GitLab Repository**: [https://git.nwt.fhstp.ac.at/cc241045/ss2025_ccl_cc241045](https://git.nwt.fhstp.ac.at/cc241045/ss2025_ccl_cc241045)
-### 🧰 Technologies Used
+### Technologies Used
 
 - **Frontend**: React, JavaScript, HTML, CSS
 - **Backend**: Node.js, Express.js
