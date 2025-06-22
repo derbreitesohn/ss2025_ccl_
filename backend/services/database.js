@@ -1,18 +1,23 @@
-require('dotenv').config(); // Load environment variables from a .env file into process.env
-
+require('dotenv').config();
 const mysql = require('mysql2');
 
-const config = mysql.createConnection({
-    host: 'atp.fhstp.ac.at', // Database server host
-    port: 8007, // Port number for the database
+const config = mysql.createPool({
+    host: 'atp.fhstp.ac.at',
+    port: 8007,
     user: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: "cc241045",
+
+    // Nur die wichtigsten Optionen
+    connectionLimit: 10,
+    waitForConnections: true,
+    reconnect: true
 });
-// Connect to the database and handle connection errors
-config.connect(function(err){
-    if (err) throw err;
-    console.log('Connected to the database');
+
+config.on('error', function(err) {
+    console.error('Database error:', err);
 });
+
+console.log('🎉 Database pool created successfully!');
 
 module.exports = {config};

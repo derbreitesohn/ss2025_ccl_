@@ -60,4 +60,30 @@
         - ✅ What I worked on today: Uploading to CC, rewriting a hella lot of my code bc of it
         - 💡 Biggest learning: to keep cool under this pressure
         - ❌ Biggest mistake/blocker: Css, CC
-        - 📌 Notes for tomorrow: Presentation day yay
+        - 📌 Notes for tomorrow: Presentation day yay 
+
+    *Final Personal Reflection*
+
+    🌟 What worked well for you during the CCL?
+
+        - I got a lot of the basic structure done quite fast which helped me later on where I just had to focus on the details. 
+
+
+    🧩 What were your biggest challenges or struggles?
+
+        - Figuring out exactly what had to be done by which deadline, getting the checkins.
+
+
+    🔍 What did you manage to understand better during these two weeks?
+
+        - How to create database tables and the backend in general. 
+
+
+    🕳️ What do you still struggle with?
+
+        - How to center a div. jk but figuring out how some node modules work. Also auth related things and websockets.
+
+
+    🚀 Looking back to the start of the semester: Did you think you’d be able to build the app you delivered? Why or why not?
+    
+        -Definitely not. I pretty much just started programming and at the beginning of the semester I was quite intimidated by front and backend. I read through all the courses and the requirements which stressed me out but safe to say I am quite happy by what I´ve achieved in the past two weeks. :)

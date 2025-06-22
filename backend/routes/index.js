@@ -21,7 +21,7 @@ router.post('/register', userController.register);
 
 router.route('/login')
     .get((req, res) => {
-        res.render('login');
+        res.json({login: "login"});
     })
     .post(async (req, res) => {
         try {
