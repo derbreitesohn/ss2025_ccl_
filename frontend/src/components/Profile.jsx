@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
-import LoginPage from "./LoginPage.jsx";
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import { BsCalendar3 } from 'react-icons/bs';
 import './style.css';
@@ -144,13 +143,9 @@ function Profile() {
                                 <FaMapMarkerAlt className="icon" />
                                 {user?.location || 'Vienna'}
                             </span>
-                            <span className="profile-member-since">
-                                <BsCalendar3 className="icon" />
-                                Member since March 2025
-                            </span>
                         </div>
                         <div className="profile-about">
-                            {user?.about || 'Cymbro on the outside Dog lover on the inside <3'}
+                            {user?.about}
                         </div>
                     </div>
                     <button onClick={handleEditClick} className="edit-profile-button">

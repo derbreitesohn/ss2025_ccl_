@@ -44,12 +44,12 @@ npm run dev
 ### User Flow for Grading
 
 1. Login via the user credentials given
-2. Once logged in you land on the Profile Page from here you can see your profile but also your pets. 
-3. If you would like you can edit your profile, edit your pets or create a new pet
-4. Go to "Home", here you can browse all listings, you can also filter by dog, cat, playdate or adoption
-5. If you click the heart on a listing card the listing gets saved to your "Favorites" page.
-6. If you click "View details" you get to the Listing Details Page where you can see more details of the pet. 
-7. From here (but also from home) you can click the "Contact" button which immediately sends you to the Messages page and loads a chat with the owner of the pet. On the left side you can also see your recent chats.
+2. Once logged in you land on the Home Page from here you can browse all listings, you can also filter by dog, cat, playdate or adoption.
+3. If you click the heart on a listing card the listing gets saved to your "Favorites" page.
+4. If you click "View details" you get to the Listing Details Page where you can see more details of the pet.
+5. From here (but also from home) you can click the "Contact" button which immediately sends you to the Messages page and loads a chat with the owner of the pet. On the left side you can also see your recent chats.
+6. If you would like you can go to your Profile and edit your profile, edit your pets or create a new pet.
+
 
 
 - Which features are essential to test?

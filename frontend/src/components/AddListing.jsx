@@ -33,7 +33,7 @@ function AddListing() {
                 setLoading(true);
                 setError(null);
                 const [userResponse, petsResponse] = await Promise.all([
-                    axios.get(`${API_BASE_URL}/users/me`, { withCredentials: true }),
+                    axios.get(`${API_BASE_URL}/users/me`, { withCredentials: true }), //current user
                     axios.get(`${API_BASE_URL}/pets`, { withCredentials: true })
                 ]);
                 setFormData(prevState => ({

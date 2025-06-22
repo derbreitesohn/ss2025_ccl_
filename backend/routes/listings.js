@@ -6,7 +6,7 @@ const authenticationService = require('../services/authentication');
 router.get('/', listingController.getListings);
 router.get('/add', listingController.addListing);
 router.post('/add', listingController.saveListing);
-router.get('/mine', authenticationService.authenticateJWT, listingController.getMyListings);
+router.get('/mine', authenticationService.authenticateJWT, listingController.getMyListings); //get listing from current user
 router.get('/:id', listingController.getListing);
 
 router.use(authenticationService.authenticateJWT);

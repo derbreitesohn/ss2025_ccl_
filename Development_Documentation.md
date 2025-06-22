@@ -33,7 +33,7 @@
 - What features should I test?
   - Test the Filter system, Favorites, Messages, CRUD
 - What is the main flow?
-    - Login -> Profile -> Home browse -> Favorite a listing -> Click "View Listing" -> Click "Contact" to start messaging
+    - Login -> Home browse -> Click "View Listing" -> Click "Contact" to start messaging
 - Any design decisions you want to highlight?
   - Used separate pets and listings table so you can create a listing based on an already existing pet.
 - Any known issues or limitations?

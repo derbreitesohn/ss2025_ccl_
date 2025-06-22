@@ -2,7 +2,6 @@ const petModel = require("../models/petModel");
 const req = require("express/lib/request");
 const res = require("express/lib/response");
 
-
 function getPets(req, res, next) {
     petModel.getPets()
         .then(pets => res.json( pets))

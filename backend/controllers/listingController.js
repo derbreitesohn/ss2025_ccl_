@@ -51,7 +51,6 @@ function saveListing(req, res, next) {
     if (!req.body) {
         return res.status(400).json({ error: "No body received" });
     }
-
     const newListing = req.body;
 
     listingModel.saveListing(newListing)

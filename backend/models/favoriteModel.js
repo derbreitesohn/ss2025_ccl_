@@ -1,5 +1,6 @@
 const db = require('../services/database').config;
 
+//liking a listing
 function addFavorite(userId, listingId) {
     const sql = "INSERT INTO user_favorites (user_id, listing_id, created_at) VALUES (?, ?, NOW())";
     return new Promise((resolve, reject) => {
@@ -27,7 +28,7 @@ function removeFavorite(userId, listingId) {
         });
     });
 }
-
+//determine where a listing is favorited
 function isFavorited(userId, listingId) {
     const sql = "SELECT COUNT(*) AS count FROM user_favorites WHERE user_id = ? AND listing_id = ?";
     return new Promise((resolve, reject) => {

@@ -8,7 +8,6 @@ const config = mysql.createPool({
     password: process.env.DB_PASSWORD,
     database: "cc241045",
 
-    // Nur die wichtigsten Optionen
     connectionLimit: 10,
     waitForConnections: true,
     reconnect: true

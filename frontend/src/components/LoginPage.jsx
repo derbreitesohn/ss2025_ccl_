@@ -37,7 +37,7 @@ function LoginPage() {
 
             if (data.Login === "success") {
                 console.log('Login successful, redirecting to profile...');
-                navigate('/profile');
+                navigate('/');
             } else {
                 setError('Invalid username or password');
             }

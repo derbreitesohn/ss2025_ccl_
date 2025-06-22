@@ -43,8 +43,6 @@ function addUser(req, res, next) {
         profile_picture: '',
         about: '',
         password: '',
-
-
     };
     res.json(emptyUser);
 }
@@ -84,9 +82,6 @@ function deleteUser(req, res, next) {
         .then(() => res.redirect('/'))
         .catch(err => res.status(500).send('Error deleting user: ' + err.message));
 }
-
-
-
 
 module.exports = {
     getUsers,
