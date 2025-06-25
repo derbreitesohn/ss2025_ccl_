@@ -22,7 +22,7 @@ function App() {
 
     const fetchAPI = async () => {
         try {
-            const response = await axios.get("https://cc241045-10757.node.fhstp.cc/");
+            const response = await axios.get("http://localhost:3000/");
             console.log(response);
         } catch (error) {
             console.error("API Error:", error);
