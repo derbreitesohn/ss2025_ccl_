@@ -4,7 +4,7 @@ import './LoginPage.css';
 import loginImage from '../images/fee_ccl.png';
 import logo from '../images/logo_patpat.png';
 
-const API_BASE_URL = 'https://cc241045-10757.node.fhstp.cc/api';
+const API_BASE_URL = 'http://localhost:3000';
 
 function LoginPage() {
     const [username, setUsername] = useState('');
