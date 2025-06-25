@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import { FaHeart } from 'react-icons/fa';
 
-const API_BASE_URL = 'https://cc241045-10757.node.fhstp.cc/api';
+const API_BASE_URL = 'http://localhost:3000';
 
 function HomePage() {
     const [listings, setListings] = useState([]);
