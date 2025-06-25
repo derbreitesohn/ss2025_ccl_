@@ -5,7 +5,7 @@ import loginImage from '../images/fee_ccl.png';
 import logo from '../images/logo_patpat.png';
 import './SignUp.css';
 
-const API_BASE_URL = 'https://cc241045-10757.node.fhstp.cc/api';
+const API_BASE_URL = 'http://localhost:3000';
 
 function SignUp() {
     const navigate = useNavigate();
