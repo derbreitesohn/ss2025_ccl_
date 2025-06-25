@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 import { useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 
-const API_BASE_URL = 'https://cc241045-10757.node.fhstp.cc/api';
+const API_BASE_URL = 'http://localhost:3000';
 
 let socket;
 
