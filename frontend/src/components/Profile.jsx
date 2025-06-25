@@ -6,7 +6,7 @@ import { FaMapMarkerAlt } from 'react-icons/fa';
 import { BsCalendar3 } from 'react-icons/bs';
 import './style.css';
 
-const API_BASE_URL = 'https://cc241045-10757.node.fhstp.cc/api';
+const API_BASE_URL = 'http://localhost:3000';
 
 function Profile() {
     const [user, setUser] = useState(null);
