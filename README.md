@@ -4,7 +4,9 @@
 
 **PatPat** is a full-stack web application that connects pet owners for fun playdates and provides a platform for putting animals up for adoption. Whether you're looking to meet fellow pet lovers or help an animal find a new home, PatPat makes it easy to connect and care.
 
-🌐 **Live Website**: [https://cc241045-10757.node.fhstp.cc](https://cc241045-10757.node.fhstp.cc)  
+ **Live Website**: [https://cc241045-10757.node.fhstp.cc](https://cc241045-10757.node.fhstp.cc)  
+  **New Domain**: [PatPat](https://patpat-three.vercel.app/)) 
+
 📁 **GitLab Repository**: [https://git.nwt.fhstp.ac.at/cc241045/ss2025_ccl_cc241045](https://git.nwt.fhstp.ac.at/cc241045/ss2025_ccl_cc241045)
 
 ## 🚀 Getting Started
