@@ -1,235 +1,56 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom'
-import loginImage from '../images/fee_ccl.png';
-import logo from '../images/logo_patpat.png';
-import './SignUp.css';
+import { useState } from 'react';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { FaPaw } from 'react-icons/fa';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
+import AuthLayout from './AuthLayout';
+import { useAuth } from '../auth';
+import { api, DEMO_MODE, returnPath } from '../api';
 
-const API_BASE_URL = 'http://localhost:3000';
-
-function SignUp() {
-    const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        name: '',
-        username: '',
-        email: '',
-        password: '',
-        location: '',
-        profile_picture: '',
-        about: '',
-
-    });
-    const [isLoading, setIsLoading] = useState(false);
+export default function SignUp() {
+    const [form, setForm] = useState({ name: '', username: '', email: '', password: '', location: '', profile_picture: '', about: '' });
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
+    const [busy, setBusy] = useState(false);
+    const { user } = useAuth();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const change = event => setForm(previous => ({ ...previous, [event.target.name]: event.target.value }));
 
-
-    const handleChange = (e) => {
-        setFormData({...formData, [e.target.name]: e.target.value});
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
+    const submit = async event => {
+        event.preventDefault();
         setError('');
-
+        if (DEMO_MODE) { setError('Accounts aren’t available in this preview. You can still explore the pets.'); return; }
+        setBusy(true);
         try {
-            const response = await fetch(`${API_BASE_URL}/register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-
-                body: JSON.stringify({
-                    name: formData.name,
-                    username: formData.username,
-                    email: formData.email,
-                    password: formData.password,
-                    location: formData.location,
-                    profile_picture: formData.profile_picture,
-                    about: formData.about,
-
-                })
-            });
-
-            const responseText = await response.text();
-            let data;
-            try {
-                data = JSON.parse(responseText);
-            } catch (jsonError) {
-                throw new Error(`Server error: ${responseText}`);
-            }
-            if (!response.ok) {
-                throw new Error(data.message || 'Signup failed');
-            }
-
-            console.log('Signup successful:', data);
-            navigate('/');
-
-        } catch (error) {
-            console.error('Signup error:', error);
-            setError(error.message || 'An error occurred during Signup');
-        } finally {
-            setIsLoading(false);
-        }
+            const { data } = await api.post('/register', form);
+            if (data.register !== 'DONE') throw new Error('Unexpected registration response');
+            const params = new URLSearchParams(location.search);
+            params.set('next', returnPath(location.search));
+            params.set('registered', '1');
+            navigate(`/login?${params}`, { replace: true });
+        } catch (err) {
+            setError(err.response?.status === 409 ? 'That username or email is already in use. Try another, or log in.' : 'We couldn’t create your account. Please check your details and try again.');
+        } finally { setBusy(false); }
     };
 
-    return (
-        <div className="login-split-container">
-            <div className="login-form-section">
-                <div className="login-form-content">
-                    <div className="login-header">
-                        <div className="logo-section">
-                            <div className="logo-placeholder">
-                                <img
-                                    src={logo}
-                                    alt="logo"
-                                    className="logo-image"
-                                />
-                            </div>
-                        </div>
-                        <p className="tagline">Find your perfect companion</p>
-                    </div>
-
-                    <div className="welcome-section">
-                        <h1 className="welcome-title">Create an account</h1>
-                        <p className="welcome-subtitle">Sign up to get started</p>
-                    </div>
-
-                    {error && (
-                        <div className="error-message">
-                            {error}
-                        </div>
-                    )}
-
-                    <form onSubmit={handleSubmit} className="form-container">
-                        <div className="form-group">
-                            <label htmlFor="name" className="form-label">Name</label>
-                            <input
-                                type="text"
-                                id="name"
-                                name="name"
-                                value={formData.name}
-                                onChange={handleChange}
-                                required
-                                className="form-input"
-                                placeholder="Enter your Name"
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="username" className="form-label">Username</label>
-                            <input
-                                type="text"
-                                id="username"
-                                name="username"
-                                value={formData.username}
-                                onChange={handleChange}
-                                required
-                                className="form-input"
-                                placeholder="Enter your Username"
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="email" className="form-label">Email</label>
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                required
-                                className="form-input"
-                                placeholder="Enter your Email"
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="password" className="form-label">Password</label>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                required
-                                className="form-input"
-                                placeholder="Enter your Password"
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="location" className="form-label">Location</label>
-                            <input
-                                type="text"
-                                id="location"
-                                name="location"
-                                value={formData.location}
-                                onChange={handleChange}
-                                className="form-input"
-                                placeholder="Enter your Location"
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="profile_picture" className="form-label">Profile Picture URL</label>
-                            <input
-                                type="text"
-                                id="profile_picture"
-                                name="profile_picture"
-                                value={formData.profile_picture}
-                                onChange={handleChange}
-                                className="form-input"
-                                placeholder="Enter picture URL"
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="about" className="form-label">About</label>
-                            <input
-                                type="text"
-                                id="about"
-                                name="about"
-                                value={formData.about}
-                                onChange={handleChange}
-                                className="form-input"
-                                placeholder="Tell us about yourself"
-                            />
-                        </div>
-
-                        <button
-                            type="submit"
-                            className={`signin-button ${isLoading ? 'loading' : ''}`}
-                            disabled={isLoading}
-                        >
-                            {isLoading ? 'Creating account...' : 'Sign Up'}
-                        </button>
-                    </form>
-
-                    <div className="login-footer">
-                        <p>
-                            Already have an account?{' '}
-                            <a href="/login" className="signup-link">
-                                Sign in
-                            </a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div className="photo-section">
-                <div className="photo-container">
-                    <img
-                        src={loginImage}
-                        alt="Beautiful dog companion"
-                        className="login-image"
-                    />
-                    <div className="photo-overlay"></div>
-                </div>
-            </div>
-        </div>
-    );
+    if (user) return <Navigate to={returnPath(location.search)} replace />;
+    return <AuthLayout>
+        <div className="eyebrow"><FaPaw aria-hidden="true" /> A place for you and your pet</div>
+        <h1>Let’s make a connection.</h1><p className="auth-subtitle">Save a favorite. Say hello. Find your kind of company.</p>
+        {error && <p className="notice error" role="alert">{error}</p>}
+        <form onSubmit={submit}>
+            <div className="auth-field-row"><label className="auth-field">Name<input name="name" autoComplete="name" value={form.name} onChange={change} required placeholder="Your name" /></label><label className="auth-field">Username<input name="username" autoComplete="username" value={form.username} onChange={change} required placeholder="Choose a username" /></label></div>
+            <label className="auth-field">Email<input name="email" type="email" autoComplete="email" value={form.email} onChange={change} required placeholder="you@example.com" /></label>
+            <label className="auth-field" htmlFor="signup-password">Password</label>
+            <div className="password-field"><input id="signup-password" name="password" type={showPassword ? 'text' : 'password'} autoComplete="new-password" value={form.password} onChange={change} required minLength={8} placeholder="At least 8 characters" /><button type="button" aria-label={showPassword ? 'Hide password' : 'Show password'} aria-pressed={showPassword} onClick={() => setShowPassword(!showPassword)}>{showPassword ? <FiEyeOff /> : <FiEye />}</button></div>
+            <details className="auth-optional"><summary>Add a little about yourself <span>(optional)</span></summary><p>You can also fill these in on your profile later.</p>
+                <label className="auth-field">Location<input name="location" autoComplete="address-level2" value={form.location} onChange={change} placeholder="Your town or city" /></label>
+                <label className="auth-field">Profile picture URL<input name="profile_picture" type="url" value={form.profile_picture} onChange={change} placeholder="https://…" /></label>
+                <label className="auth-field">About you<textarea name="about" rows="3" value={form.about} onChange={change} placeholder="Tell the community a little about you and your pet." /></label>
+            </details>
+            <button className="pat-button auth-submit" disabled={busy}>{busy ? 'Creating your account…' : 'Create an account'}</button>
+        </form>
+        <p className="auth-footer">Already part of the pack? <Link to={`/login${location.search}`}>Log in</Link></p>
+        <p className="auth-browse-note">Just looking? <Link to="/#browse">Keep exploring without an account.</Link></p>
+    </AuthLayout>;
 }
-
-    export default SignUp;

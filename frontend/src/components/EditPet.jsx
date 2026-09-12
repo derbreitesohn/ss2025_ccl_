@@ -4,24 +4,23 @@ import axios from 'axios';
 import Navbar from './Navbar';
 import './style.css';
 
-const API_BASE_URL = 'http://localhost:3000';
+import { API_BASE_URL } from '../api';
 
 function EditPet() {
     const { id } = useParams();
     const [formData, setFormData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [saving, setSaving] = useState(false);
+    const [saveError, setSaveError] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [petResponse, listingsResponse] = await Promise.all([
-                    axios.get(`${API_BASE_URL}/pets/${id}`, { withCredentials: true }),
-                    axios.get(`${API_BASE_URL}/listings`, { withCredentials: true })
-                ]);
+                const petResponse = await axios.get(`${API_BASE_URL}/pets/${id}`, { withCredentials: true });
                 setFormData(petResponse.data);
-            } catch (err) {
+            } catch {
                 setError('Failed to load pet');
             } finally {
                 setLoading(false);
@@ -37,6 +36,9 @@ function EditPet() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (saving) return;
+        setSaving(true);
+        setSaveError('');
         try {
             await axios.post(`${API_BASE_URL}/pets/${id}`, formData, { withCredentials: true });
 
@@ -44,10 +46,8 @@ function EditPet() {
             const listings = listingsResponse.data.listings;
 
             const associatedListings = listings.filter(listing =>
-                listing.pet_name === formData.name ||
-                (listing.animal === formData.animal &&
-                    listing.breed === formData.breed &&
-                    listing.age === formData.age)
+                listing.pet_id != null && String(listing.pet_id) === String(id) &&
+                String(listing.user_id) === String(formData.user_id)
             );
 
             for (const listing of associatedListings) {
@@ -61,15 +61,17 @@ function EditPet() {
                     weight: formData.weight,
                     color: formData.color,
                     location: formData.location,
-                    about: formData.description,
-                    photo_url: formData.image_url
+                    about: formData.about,
+                    photo_url: formData.pet_picture
                 };
                 await axios.post(`${API_BASE_URL}/listings/${listing.id}`, updatedListing, { withCredentials: true });
             }
 
             navigate(`/pets/${id}`);
-        } catch (err) {
-            setError('Failed to update pet');
+        } catch {
+            setSaveError('We couldn’t finish saving your pet and linked listings. Your details are still here; please try again.');
+        } finally {
+            setSaving(false);
         }
     };
 
@@ -84,22 +86,22 @@ function EditPet() {
                 <div className="card">
                     <div className="card-body">
                         <h1 className="h4 mb-4">Edit Pet</h1>
+                        {saveError && <p className="notice error" role="alert">{saveError}</p>}
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
-                                <label>Name:
-                                    <input
+                                <label htmlFor="edit-pet-name">Name:</label>
+                                    <input id="edit-pet-name"
                                         name="name"
                                         value={formData.name}
                                         onChange={handleChange}
                                         required
                                         className="form-control"
                                     />
-                                </label>
                             </div>
 
                             <div className="form-group">
-                                <label>Pet Type:
-                                    <select
+                                <label htmlFor="edit-pet-pet_type">Pet Type:</label>
+                                    <select id="edit-pet-pet_type"
                                         name="pet_type"
                                         value={formData.pet_type}
                                         onChange={handleChange}
@@ -109,113 +111,103 @@ function EditPet() {
                                         <option value="adoption">Adoption</option>
                                         <option value="playdate">Playdate</option>
                                     </select>
-                                </label>
                             </div>
 
                             <div className="form-group">
-                                <label>Animal:
-                                    <input
+                                <label htmlFor="edit-pet-animal">Animal:</label>
+                                    <input id="edit-pet-animal"
                                         name="animal"
                                         value={formData.animal}
                                         onChange={handleChange}
                                         required
                                         className="form-control"
                                     />
-                                </label>
                             </div>
 
                             <div className="form-group">
-                                <label>Breed:
-                                    <input
+                                <label htmlFor="edit-pet-breed">Breed:</label>
+                                    <input id="edit-pet-breed"
                                         name="breed"
                                         value={formData.breed}
                                         onChange={handleChange}
                                         className="form-control"
                                     />
-                                </label>
                             </div>
 
                             <div className="form-group">
-                                <label>Age:
-                                    <input
+                                <label htmlFor="edit-pet-age">Age:</label>
+                                    <input id="edit-pet-age"
                                         name="age"
                                         value={formData.age}
                                         onChange={handleChange}
                                         className="form-control"
                                     />
-                                </label>
                             </div>
 
                             <div className="form-group">
-                                <label>Gender:
-                                    <input
+                                <label htmlFor="edit-pet-gender">Gender:</label>
+                                    <input id="edit-pet-gender"
                                         name="gender"
                                         value={formData.gender}
                                         onChange={handleChange}
                                         className="form-control"
                                     />
-                                </label>
                             </div>
 
                             <div className="form-group">
-                                <label>Weight:
-                                    <input
+                                <label htmlFor="edit-pet-weight">Weight:</label>
+                                    <input id="edit-pet-weight"
                                         name="weight"
                                         value={formData.weight}
                                         onChange={handleChange}
                                         className="form-control"
                                     />
-                                </label>
                             </div>
 
                             <div className="form-group">
-                                <label>Color:
-                                    <input
+                                <label htmlFor="edit-pet-color">Color:</label>
+                                    <input id="edit-pet-color"
                                         name="color"
                                         value={formData.color}
                                         onChange={handleChange}
                                         className="form-control"
                                     />
-                                </label>
                             </div>
 
                             <div className="form-group">
-                                <label>Location:
-                                    <input
+                                <label htmlFor="edit-pet-location">Location:</label>
+                                    <input id="edit-pet-location"
                                         name="location"
                                         value={formData.location}
                                         onChange={handleChange}
                                         required
                                         className="form-control"
                                     />
-                                </label>
                             </div>
 
                             <div className="form-group">
-                                <label>Description:
-                                    <textarea
-                                        name="description"
-                                        value={formData.description}
+                                <label htmlFor="edit-pet-about">Description:</label>
+                                    <textarea id="edit-pet-about"
+                                        name="about"
+                                        value={formData.about}
                                         onChange={handleChange}
                                         className="form-control"
                                         rows="4"
                                     />
-                                </label>
                             </div>
 
                             <div className="form-group">
-                                <label>Image URL:
-                                    <input
-                                        name="image_url"
-                                        value={formData.image_url}
+                                <label htmlFor="edit-pet-pet_picture">Image URL:</label>
+                                    <input id="edit-pet-pet_picture"
+                                        name="pet_picture"
+                                        value={formData.pet_picture}
                                         onChange={handleChange}
                                         className="form-control"
                                     />
-                                </label>
                             </div>
 
                             <div className="d-flex gap-2">
-                                <button type="submit" className="btn btn-primary flex-grow-1">Save</button>
+                                <button type="submit" className="btn btn-primary flex-grow-1" disabled={saving}>{saving ? 'Saving…' : 'Save'}</button>
                                 <button type="button" onClick={() => navigate(-1)} className="btn btn-secondary flex-grow-1">Cancel</button>
                             </div>
                         </form>

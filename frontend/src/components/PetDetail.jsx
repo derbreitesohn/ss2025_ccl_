@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './Navbar';
 
-const API_BASE_URL = 'http://localhost:3000';
+import { API_BASE_URL } from '../api';
 
 function PetDetail() {
     const { id } = useParams();

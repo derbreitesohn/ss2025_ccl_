@@ -1,99 +1,54 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Link, useLocation, useParams } from 'react-router-dom';
+import { FiArrowLeft, FiMapPin, FiMessageCircle } from 'react-icons/fi';
+import { FaPaw } from 'react-icons/fa';
 import Navbar from './Navbar';
+import Footer from './Footer';
+import PetPhoto from './PetPhoto';
+import { getListing } from '../listings';
+import { useAuth } from '../auth';
+import { DEMO_MODE } from '../api';
+import './ListingDetail.css';
 
-const API_BASE_URL = 'http://localhost:3000';
-
-function ListingDetail() {
+export default function ListingDetail() {
     const { id } = useParams();
+    const location = useLocation();
+    const { user } = useAuth();
     const [listing, setListing] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const location = useLocation();
-    const navigate = useNavigate();
-    const [user, setUser] = useState(null);
+    const [error, setError] = useState('');
+    const [attempt, setAttempt] = useState(0);
+    const back = location.state?.from === 'my-listings' ? '/listings' : location.state?.browsePath || '/#browse';
 
     useEffect(() => {
-        axios.get(`${API_BASE_URL}/listings/${id}`)
-            .then(response => {
-                setListing(response.data.listing);
+        const controller = new AbortController();
+        setLoading(true);
+        setError('');
+        getListing(id, controller.signal)
+            .then(data => { if (!controller.signal.aborted) setListing(data); })
+            .catch(err => {
+                if (!controller.signal.aborted) {
+                    if (err.response?.status === 404) setListing(null);
+                    else setError('We couldn’t load this pet’s details. Please try again.');
+                }
             })
-            .catch(error => {
-                setError('Failed to load listing details');
-            })
-            .finally(() => setLoading(false));
-        axios.get(`${API_BASE_URL}/users/me`, { withCredentials: true })
-            .then(res => setUser(res.data))
-            .catch(() => setUser(null));
-    }, [id]);
+            .finally(() => { if (!controller.signal.aborted) setLoading(false); });
+        return () => controller.abort();
+    }, [id, attempt]);
 
-    // Determine navigation context
-    const fromMyListings = location.state && location.state.from === 'my-listings';
-    const fromHome = location.state && location.state.from === 'home';
-
-    if (loading) return <div><Navbar /><p>Loading...</p></div>;
-    if (error) return <div><Navbar /><p style={{color: 'red'}}>{error}</p></div>;
-    if (!listing) return <div><Navbar /><p>No listing found.</p></div>;
-
-    return (
-        <div>
-            <Navbar />
-            <div className="breadcrumb">
-                <a href="/">Home</a>
-                <span>&gt;</span>
-                {fromMyListings ? (
-                    <>
-                        <a href="/listings">My Listings</a>
-                        <span>&gt;</span>
-                        <span>Listing Details</span>
-                    </>
-                ) : (
-                    <span>Listing Details</span>
-                )}
+    const own = user && listing && String(user.id) === String(listing.user_id);
+    return <><Navbar /><main className="page-shell listing-detail-page">
+        <Link className="text-link detail-back" to={back}><FiArrowLeft aria-hidden="true" />{back === '/listings' ? 'Back to my listings' : 'Back to the pets'}</Link>
+        {loading || error || !listing ? <div className="state-panel" role="status"><FaPaw aria-hidden="true" /><h1>{loading ? 'Getting to know this companion…' : error ? 'Let’s try that again' : 'This listing is no longer here.'}</h1><p>{error || (!loading && 'There are more companions waiting to meet you.')}</p>{error && <button className="pat-button" onClick={() => setAttempt(value => value + 1)}>Try again</button>}{!loading && !error && <Link className="pat-button" to="/#browse">Explore other pets</Link>}</div> :
+        <article className="public-detail-card">
+            {DEMO_MODE && <div className="notice detail-preview">Example profile · This pet is part of the PatPat preview.</div>}
+            <div className="public-detail-photo"><PetPhoto src={listing.photo_url} name={listing.pet_name} eager /><span className={`listing-kind ${listing.listing_type}`}>{listing.listing_type || 'Companion'}</span></div>
+            <div className="public-detail-body">
+                <div className="public-detail-heading"><div><p className="listing-location"><FiMapPin aria-hidden="true" />{listing.location || 'Location not shared'}</p><h1>Meet {listing.pet_name}.</h1></div><span className="detail-purpose">{listing.listing_type === 'adoption' ? 'Looking for a loving home' : 'Looking for a new friend'}</span></div>
+                <dl className="public-detail-facts">{[['Age', listing.age], ['Gender', listing.gender], ['Weight', listing.weight], ['Color', listing.color], ['Breed', listing.breed], ['Animal', listing.animal]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value || 'Not shared yet'}</dd></div>)}</dl>
+                <h2>A little about {listing.pet_name}</h2><p className="detail-about">{listing.about || 'Their person hasn’t added a description yet. Say hello to learn more.'}</p>
+                <div className="detail-contact"><div><h2>{own ? 'This is your listing.' : 'Could this be a happy connection?'}</h2><p>{own ? 'Keep their details up to date so people can get to know them.' : 'Say hello, ask a few questions, and take it from there.'}</p></div><Link className="pat-button" to={own ? `/listings/${id}/edit` : `/messages?user=${listing.user_id}`}>{own ? 'Edit listing' : <><FiMessageCircle aria-hidden="true" />{user ? 'Contact owner' : 'Log in to say hello'}</>}</Link></div>
             </div>
-            <div className="detail-card" style={{position: 'relative'}}>
-                {listing.photo_url && (
-                    <div style={{ position: 'relative' }}>
-                        <img src={listing.photo_url} alt={listing.pet_name} />
-                        <span className="listing-badge" style={{ top: 18, right: 18, left: 'unset', bottom: 'unset' }}>{listing.listing_type ? listing.listing_type.charAt(0).toUpperCase() + listing.listing_type.slice(1) : ''}</span>
-                        <div style={{ textAlign: 'right', color: '#888', fontWeight: 500, marginTop: 8, marginBottom: 8, fontSize: '1.08rem' }}>{listing.location}</div>
-                    </div>
-                )}
-                <h1 className={'h1-centered'}>{listing.pet_name}</h1>
-                <div className="detail-box-grid">
-                    <div className="detail-box"><div className="detail-box-label">Age</div><div className="detail-box-value">{listing.age}</div></div>
-                    <div className="detail-box"><div className="detail-box-label">Gender</div><div className="detail-box-value">{listing.gender}</div></div>
-                    <div className="detail-box"><div className="detail-box-label">Weight</div><div className="detail-box-value">{listing.weight}</div></div>
-                    <div className="detail-box"><div className="detail-box-label">Color</div><div className="detail-box-value">{listing.color}</div></div>
-                    <div className="detail-box"><div className="detail-box-label">Breed</div><div className="detail-box-value">{listing.breed}</div></div>
-                    <div className="detail-box"><div className="detail-box-label">Animal</div><div className="detail-box-value">{listing.animal}</div></div>
-                </div>
-                <div style={{margin: '32px 0 18px 0', textAlign: 'left'}}>
-                    <div className="detail-info-list-item"><span className="detail-info-label">About:</span> {listing.about}</div>
-                </div>
-                {fromHome && user && user.id === listing.user_id && (
-                    <button
-                        onClick={() => navigate(`/messages?user=${listing.user_id}`)}
-                        style={{
-                            padding: '12px 0',
-                            background: '#7C3AED',
-                            color: '#fff',
-                            border: 'none',
-                            borderRadius: '6px',
-                            fontWeight: 600,
-                            fontSize: '1.1rem',
-                            cursor: 'pointer',
-                            marginTop: '32px',
-                            width: '100%'
-                        }}
-                    >
-                        Contact
-                    </button>
-                )}
-            </div>
-        </div>
-    );
+        </article>}
+    </main><Footer /></>;
 }
-
-export default ListingDetail;

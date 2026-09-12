@@ -1,58 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, Link, NavLink, useLocation } from 'react-router-dom';
+import { FiMenu, FiX } from 'react-icons/fi';
+import { useAuth } from '../auth';
+import { loginPath } from '../api';
 import './Navbar.css';
 import logo from '../images/logo_patpat.png';
 
-function Navbar() {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [atTop, setAtTop] = useState(true);
+export default function Navbar() {
+    const [open, setOpen] = useState(false);
+    const [busy, setBusy] = useState(false);
+    const [error, setError] = useState('');
+    const { user, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+    const current = location.pathname + location.search + location.hash;
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setAtTop(window.scrollY === 0);
-        };
-        window.addEventListener('scroll', handleScroll);
-        handleScroll();
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/login');
+    const handleLogout = async () => {
+        setBusy(true);
+        setError('');
+        try {
+            await logout();
+            navigate('/');
+        } catch {
+            setError('Couldn’t log out. Please try again.');
+        } finally {
+            setBusy(false);
+        }
     };
 
-    return (
-        <nav className={`navbar${atTop ? ' at-top' : ''}`} style={{ background: '#fff', color: 'black' }}>
-            <div className="logo-container">
-                <img src={logo} alt="Logo" className="logo" style={{ height: '60px', width: 'auto' }} />
+    return <header className="navbar">
+        <nav className="nav-inner" aria-label="Main navigation">
+            <Link to="/" className="logo-container" aria-label="PatPat home"><img src={logo} alt="PatPat" className="logo" /></Link>
+            <div id="main-menu" className={`nav-links ${open ? 'is-open' : ''}`} onClick={() => setOpen(false)} onKeyDown={e => { if (e.key === 'Escape') setOpen(false); }}>
+                <NavLink to="/" end>Home</NavLink>
+                {user ? <>
+                    <NavLink to="/profile">Profile</NavLink>
+                    <NavLink to="/listings">My Listings</NavLink>
+                    <NavLink to="/favorites">Favorites</NavLink>
+                    <NavLink to="/messages">Messages</NavLink>
+                </> : <>
+                    <Link to="/#browse">Find a companion</Link>
+                    <Link to="/#how-it-works">How it works</Link>
+                </>}
             </div>
-
-            <button
-                className="mobile-menu-btn"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-                ☰
-            </button>
-
-            <div className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
-                <div className="nav-links-left">
-                    <Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link>
-                    <Link to="/profile" className={location.pathname === '/profile' ? 'active' : ''}>Profile</Link>
-                    <Link to="/listings" className={location.pathname === '/listings' ? 'active' : ''}>My Listings</Link>
-                    <Link to="/favorites" className={location.pathname === '/favorites' ? 'active' : ''}>Favorites</Link>
-                    <Link to="/messages" className={location.pathname === '/messages' ? 'active' : ''}>Messages</Link>
-                </div>
-            </div>
-
-            <div className="nav-links-right">
-                <button className="logout-btn" onClick={handleLogout}>
-                    Logout
-                </button>
+            <div className="nav-actions">
+                {user ? <button className="pat-button secondary" onClick={handleLogout} disabled={busy}>{busy ? 'Logging out…' : 'Log out'}</button> :
+                    <Link className="pat-button" to={loginPath(current)}>Log in <span aria-hidden="true">↗</span></Link>}
+                <button className="mobile-menu-btn" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} aria-controls="main-menu" onClick={() => setOpen(!open)}>{open ? <FiX /> : <FiMenu />}</button>
             </div>
         </nav>
-    );
+        {error && <div className="nav-error" role="alert">{error}</div>}
+    </header>;
 }
-
-export default Navbar;

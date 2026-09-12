@@ -6,7 +6,6 @@ let getPets = () => new Promise((resolve, reject) => {
         if (err) {
             reject(err);
         } else {
-            console.log(pets);
             resolve(pets);
         }
     });
@@ -24,7 +23,7 @@ let getPet = (id) => new Promise((resolve, reject) => {
     });
 });
 
-let savePet = (petData) => new Promise(async (resolve, reject) => {
+let savePet = (petData) => new Promise((resolve, reject) => {
 
     let sql = "INSERT INTO pets (user_id, name, pet_type, animal, breed, age, gender, weight, color, location, about, pet_picture) VALUES (" +
         db.escape(petData.user_id) + "," +
@@ -40,18 +39,16 @@ let savePet = (petData) => new Promise(async (resolve, reject) => {
         db.escape(petData.about) + "," +
         db.escape(petData.pet_picture) + ")";
 
-    console.log(sql);
     db.query(sql, function (err, result) {
         if (err) {
             reject(err);
         } else {
-            console.log("Pet added with ID: " + result.insertId);
-            resolve(petData);
+            resolve({ ...petData, id: result.insertId });
         }
     });
 });
 
-let updatePet = (petData, userId) => new Promise(async (resolve, reject) => {
+let updatePet = (petData) => new Promise((resolve, reject) => {
 
     let sql = "UPDATE pets SET " +
         "user_id = " + db.escape(petData.user_id) +
@@ -68,12 +65,10 @@ let updatePet = (petData, userId) => new Promise(async (resolve, reject) => {
         ", pet_picture = " + db.escape(petData.pet_picture) +
         " WHERE id = " + parseInt(petData.id);
 
-    console.log(sql);
     db.query(sql, function (err, result, fields) {
         if (err) {
-            reject(err);
+            return reject(err);
         }
-        console.log(result.affectedRows + " rows have been affected");
         resolve(petData);
     });
 });
@@ -84,7 +79,6 @@ let deletePet = (id) => new Promise((resolve, reject) => {
         if (err) {
             reject(err);
         } else {
-            console.log("Deleted pet with ID: " + id);
             resolve();
         }
     });

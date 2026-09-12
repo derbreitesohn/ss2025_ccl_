@@ -5,7 +5,6 @@ let getListings = () => new Promise((resolve, reject) => {
         if (err) {
             reject(err);
         } else {
-            console.log(listings);
             resolve(listings);
         }
     });
@@ -39,13 +38,11 @@ let saveListing = (listingData) => new Promise((resolve, reject) => {
         db.escape(listingData.photo_url) + "," +
         db.escape(listingData.listing_type) + ")";
 
-    console.log(sql);
     db.query(sql, function (err, result) {
         if (err) {
             reject(err);
         } else {
-            console.log("Listing added with ID: " + result.insertId);
-            resolve(listingData);
+            resolve({ ...listingData, id: result.insertId });
         }
     });
 });
@@ -67,12 +64,10 @@ let updateListing = (listingData) => new Promise((resolve, reject) => {
         ", listing_type = " + db.escape(listingData.listing_type) +
         " WHERE id = " + parseInt(listingData.id);
 
-    console.log(sql);
     db.query(sql, function (err, result) {
         if (err) {
             reject(err);
         } else {
-            console.log(result.affectedRows + " rows have been affected");
             resolve(listingData);
         }
     });
@@ -84,7 +79,6 @@ let deleteListing = (id) => new Promise((resolve, reject) => {
         if (err) {
             reject(err);
         } else {
-            console.log("Deleted listing with ID: " + id);
             resolve();
         }
     });

@@ -1,51 +1,31 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './Navbar';
 import './style.css';
 
-const API_BASE_URL = 'http://localhost:3000';
+import { API_BASE_URL } from '../api';
+import { useAuth } from '../auth';
 
 function AddPet() {
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
-        user_id: '',
+        user_id: user.id,
         name: '',
-        pet_type: '',
-        animal: '',
+        pet_type: 'playdate',
+        animal: 'dog',
         breed: '',
         age: '',
         gender: '',
         weight: '',
         color: '',
         location: '',
-        description: '',
-        image_url: ''
+        about: '',
+        pet_picture: ''
     });
-
-    useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                setLoading(true);
-                setError(null);
-                const response = await axios.get(`${API_BASE_URL}/users/me`, {
-                    withCredentials: true
-                });
-                setFormData(prevState => ({
-                    ...prevState,
-                    user_id: response.data.id,
-                }));
-            } catch (err) {
-                console.error('Error fetching user:', err);
-                setError('Failed to load user data. Please make sure you are logged in.');
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchUserData();
-    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -57,36 +37,17 @@ function AddPet() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (loading) return;
+        setLoading(true);
+        setError(null);
         try {
-            console.log(formData);
-            await axios.post(`${API_BASE_URL}/pets/add`, formData, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-
-                body: JSON.stringify({
-                    user_id: formData.user_id,
-                    name: formData.name,
-                    pet_type: formData.pet_type,
-                    animal: formData.animal,
-                    breed: formData.breed,
-                    age: formData.age,
-                    gender: formData.gender,
-                    weight: formData.weight,
-                    color: formData.color,
-                    location: formData.location,
-                    description: formData.description,
-                    image_url: formData.image_url
-
-                }),
-                withCredentials: true
-            });
+            await axios.post(`${API_BASE_URL}/pets/add`, formData, { withCredentials: true, timeout: 10000 });
             navigate('/profile');
         } catch (error) {
-            console.error('Error adding pet:', error.response.data);
-            alert('Failed to add pet. Please try again.');
+            console.error('Error adding pet:', error.response?.data);
+            setError('Failed to add pet. Please try again.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -97,6 +58,7 @@ function AddPet() {
                 <div className="card">
                     <div className="card-body">
                         <h1 className="h4 mb-4">Add New Pet</h1>
+                        {error && <p className="notice error" role="alert">{error}</p>}
                         <form onSubmit={handleSubmit}>
                             {[
                                 { label: 'Name', name: 'name', type: 'text' },
@@ -108,43 +70,50 @@ function AddPet() {
                                 { label: 'Weight (kg)', name: 'weight', type: 'number' },
                                 { label: 'Color', name: 'color', type: 'text' },
                                 { label: 'Location', name: 'location', type: 'text' },
-                                { label: 'Image URL', name: 'image_url', type: 'url' }
+                                { label: 'Image URL', name: 'pet_picture', type: 'url' }
                             ].map(({ label, name, type }) => (
                                 <div key={name} className="form-group">
-                                    <label>
+                                    <label htmlFor={`add-pet-${name}`}>
                                         {label}:
-                                        <input
+                                    </label>
+                                        {name === 'pet_type' || name === 'animal' ? <select id={`add-pet-${name}`} name={name} value={formData[name]} onChange={handleChange} className="form-control">
+                                            {(name === 'pet_type' ? [['playdate', 'Playdate'], ['adoption', 'Adoption']] : [['dog', 'Dog'], ['cat', 'Cat'], ['other', 'Other']]).map(([value, text]) => <option key={value} value={value}>{text}</option>)}
+                                        </select> : <input
+                                            id={`add-pet-${name}`}
                                             type={type}
+                                            min={type === 'number' ? 0 : undefined}
+                                            step={type === 'number' ? 'any' : undefined}
                                             name={name}
                                             value={formData[name]}
                                             onChange={handleChange}
-                                            required={name !== 'image_url'}
+                                            required={name !== 'pet_picture'}
                                             className="form-control"
-                                        />
-                                    </label>
+                                        />}
                                 </div>
                             ))}
 
                             <div className="form-group">
-                                <label>
+                                <label htmlFor="add-pet-about">
                                     Description:
+                                </label>
                                     <textarea
-                                        name="description"
-                                        value={formData.description}
+                                        id="add-pet-about"
+                                        name="about"
+                                        value={formData.about}
                                         onChange={handleChange}
                                         required
                                         className="form-control"
                                         style={{ minHeight: '100px' }}
                                     />
-                                </label>
                             </div>
 
                             <div className="d-flex gap-2">
                                 <button
                                     type="submit"
                                     className="btn btn-primary"
+                                    disabled={loading}
                                 >
-                                    Add Pet
+                                    {loading ? 'Please wait…' : 'Add Pet'}
                                 </button>
                                 <button
                                     type="button"

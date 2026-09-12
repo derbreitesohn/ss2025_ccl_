@@ -3,13 +3,16 @@ import axios from 'axios';
 import { io } from 'socket.io-client';
 import { useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
+import { useAuth } from '../auth';
 
-const API_BASE_URL = 'http://localhost:3000';
+import { API_BASE_URL, SOCKET_URL } from '../api';
 
 let socket;
 
 function Messages() {
-    const [user, setUser] = useState(null);
+    const { user } = useAuth();
+    const [error, setError] = useState('');
+    const [connected, setConnected] = useState(false);
     const [chats, setChats] = useState([]);
     const [selectedChat, setSelectedChat] = useState(null);
     const [chatHistory, setChatHistory] = useState([]);
@@ -19,15 +22,10 @@ function Messages() {
     const location = useLocation();
 
     useEffect(() => {
-        axios.get(`${API_BASE_URL}/users/me`, { withCredentials: true })
-            .then(res => setUser(res.data))
-            .catch(() => setUser(null));
-    }, []);
-
-    useEffect(() => {
         if (!user) return;
         axios.get(`${API_BASE_URL}/messages/recent`, { withCredentials: true })
             .then(res => setChats(res.data.chats || []))
+            .catch(() => setError('Conversations could not be loaded. Please refresh to try again.'))
             .finally(() => setLoading(false));
     }, [user]);
 
@@ -51,15 +49,21 @@ function Messages() {
 
     useEffect(() => {
         if (!selectedChat || !user) return;
-        axios.get(`${API_BASE_URL}/messages/history/${selectedChat.otherUserId}`, { withCredentials: true })
-            .then(res => setChatHistory(res.data.history || []));
+        const controller = new AbortController();
+        setChatHistory([]);
+        axios.get(`${API_BASE_URL}/messages/history/${selectedChat.otherUserId}`, { withCredentials: true, signal: controller.signal })
+            .then(res => setChatHistory(res.data.history || []))
+            .catch(err => { if (err.code !== 'ERR_CANCELED') setError('Messages could not be loaded. Please try again.'); });
+        return () => controller.abort();
     }, [selectedChat, user]);
 
     // Setup Socket.IO
     useEffect(() => {
         if (!user) return;
-        socket = io(API_BASE_URL, { withCredentials: true });
-        socket.emit('register', user.id);
+        socket = io(SOCKET_URL, { withCredentials: true });
+        socket.on('connect', () => { socket.emit('register', user.id); setConnected(true); });
+        socket.on('disconnect', () => setConnected(false));
+        socket.on('connect_error', () => setConnected(false));
 
         socket.on('private_message', (msg) => {
             if (selectedChat && msg.senderId === selectedChat.otherUserId) {
@@ -86,7 +90,7 @@ function Messages() {
 
     const handleSend = (e) => {
         e.preventDefault();
-        if (!message.trim() || !selectedChat) return;
+        if (!message.trim() || !selectedChat || !socket?.connected) return;
         socket.emit('private_message', {
             senderId: user.id,
             receiverId: selectedChat.otherUserId,
@@ -163,6 +167,8 @@ function Messages() {
                         {selectedChat ? selectedChat.otherUsername : 'Select a chat'}
                     </div>
                     <div className="messages-history">
+                        {error && <p className="notice error" role="alert">{error}</p>}
+                        {!connected && <p className="notice" role="status">Connecting to chat… Your message will stay here while we reconnect.</p>}
                         {selectedChat ? (
                             chatHistory.length === 0 ? (
                                 <p style={{ color: '#888' }}>No messages yet.</p>
@@ -193,8 +199,10 @@ function Messages() {
                             onChange={e => setMessage(e.target.value)}
                             placeholder="Type a message..."
                             className="messages-input"
+                            aria-label="Message"
+                            disabled={!selectedChat}
                         />
-                        <button type="submit" className="messages-send-btn">
+                        <button type="submit" className="messages-send-btn" aria-label="Send message" disabled={!connected || !selectedChat || !message.trim()}>
                             <span role="img" aria-label="Send">➤</span>
                         </button>
                     </form>

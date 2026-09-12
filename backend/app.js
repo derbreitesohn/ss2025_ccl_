@@ -22,7 +22,7 @@ const corsOptions = {
     allowedHeaders: ['Content-Type', 'Authorization']
 };
 
-//app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 //app.use(cors({
    // credentials: true
 //}));
@@ -49,6 +49,9 @@ app.use("/api/pets", petsRouter);
 app.use("/api/listings", listingsRouter);
 app.use("/api/favorites", favoriteRouter);
 app.use('/api/messages', messagesRouter);
+
+// An unknown API route should never return the frontend HTML.
+app.use('/api', (req, res) => res.status(404).json({ error: 'API route not found' }));
 
 // Serve React static build
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
@@ -92,4 +95,3 @@ app.use(errorHandler);
 server.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
-

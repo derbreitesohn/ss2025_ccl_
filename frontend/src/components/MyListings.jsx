@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 
-const API_BASE_URL = 'http://localhost:3000';
+import { API_BASE_URL } from '../api';
 
 function MyListings() {
     const [listings, setListings] = useState([]);
@@ -93,13 +93,13 @@ function MyListings() {
                         {error}
                     </div>
                 )}
-                {filteredListings.length === 0 ? (
+                {!error && (filteredListings.length === 0 ? (
                     <div style={{ textAlign: 'center', padding: '40px', background: '#f9f9f9', borderRadius: '8px' }}>
-                        <p>You haven't created any listings yet.</p>
-                        <p>Click the "+ Add New Listing" button to create your first listing!</p>
+                        <p>{listings.length ? 'No listings match this filter.' : "You haven't created any listings yet."}</p>
+                        {listings.length ? <button className="pat-button secondary" onClick={() => setAnimalTab('all')}>Show all listings</button> : <p>Click "+ Add New Listing" to introduce your pet to the community.</p>}
                     </div>
                 ) : (
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 28 }}>
+                    <div className="account-listing-grid">
                         {filteredListings.map(listing => (
                             <div key={listing.id} className="pet-card">
                                 {listing.photo_url && (
@@ -129,7 +129,7 @@ function MyListings() {
                             </div>
                         ))}
                     </div>
-                )}
+                ))}
             </div>
         </div>
     );

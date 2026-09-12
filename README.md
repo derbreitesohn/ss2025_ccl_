@@ -5,7 +5,21 @@
 **PatPat** is a full-stack web application that connects pet owners for fun playdates and provides a platform for putting animals up for adoption. Whether you're looking to meet fellow pet lovers or help an animal find a new home, PatPat makes it easy to connect and care.
 
  **Live Website**: [https://cc241045-10757.node.fhstp.cc](https://cc241045-10757.node.fhstp.cc)  
-  **New Domain**: [PatPat](https://patpat-three.vercel.app/)) 
+  **New Domain**: [PatPat](https://patpat-three.vercel.app/)
+
+## Preview the public home
+
+Visitors can explore PatPat and listing details before creating an account. Login is available in the top-right corner, and account actions return you to your intended destination after signing in.
+
+For a presentation preview with clearly labeled example pets and no database setup:
+
+```bash
+cd frontend
+npm ci
+npm run dev:demo -- --host 127.0.0.1 --port 5174
+```
+
+Open http://127.0.0.1:5174. See [frontend setup and checks](frontend/README.md) for the live backend configuration, browser tests, and preview details.
 
 📁 **GitLab Repository**: [https://git.nwt.fhstp.ac.at/cc241045/ss2025_ccl_cc241045](https://git.nwt.fhstp.ac.at/cc241045/ss2025_ccl_cc241045)
 
@@ -15,8 +29,8 @@ This project consists of a **React frontend** and a **Node.js + Express backend*
 
 ### 1. Clone the repository
 ```bash
-git clone https://git.nwt.fhstp.ac.at/cc241045/ss2025_ccl_cc241045.git
-cd ss2025_ccl_cc241045
+git clone https://github.com/derbreitesohn/ss2025_ccl_.git
+cd ss2025_ccl_
 ```
 
 ### 2. Install backend dependencies

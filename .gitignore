@@ -3,4 +3,8 @@ backend/node_modules
 backend/.env
 frontend/.env
 .idea
+.npm-cache/
+.preview/
+frontend/test-results/
+frontend/playwright-report/
 

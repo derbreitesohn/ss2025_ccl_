@@ -6,7 +6,7 @@ import { FaMapMarkerAlt } from 'react-icons/fa';
 import { BsCalendar3 } from 'react-icons/bs';
 import './style.css';
 
-const API_BASE_URL = 'http://localhost:3000';
+import { API_BASE_URL } from '../api';
 
 function Profile() {
     const [user, setUser] = useState(null);
@@ -72,7 +72,7 @@ function Profile() {
             await axios.post(`${API_BASE_URL}/users/${user.id}`, editData, { withCredentials: true });
             setUser(editData);
             setEditMode(false);
-        } catch (err) {
+        } catch {
             alert('Error updating user');
         }
     };

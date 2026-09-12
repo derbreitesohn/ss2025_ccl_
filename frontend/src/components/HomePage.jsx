@@ -1,178 +1,130 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { FaPaw, FaDog, FaCat } from 'react-icons/fa';
+import { FiArrowRight, FiHeart, FiSearch, FiMapPin, FiMessageCircle, FiCheck } from 'react-icons/fi';
 import Navbar from './Navbar';
-import { FaHeart } from 'react-icons/fa';
+import Footer from './Footer';
+import ListingCard from './ListingCard';
+import { useAuth } from '../auth';
+import { api, DEMO_MODE, loginPath } from '../api';
+import { getListings } from '../listings';
+import fee from '../images/fee_ccl.png';
+import './HomePage.css';
 
-const API_BASE_URL = 'http://localhost:3000';
+const species = [['all', 'All pets', FaPaw], ['dog', 'Dogs', FaDog], ['cat', 'Cats', FaCat]];
+const normalize = value => String(value || '').trim().toLowerCase();
 
-function HomePage() {
+export default function HomePage() {
     const [listings, setListings] = useState([]);
-    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
     const [favoriteIds, setFavoriteIds] = useState([]);
-    const [user, setUser] = useState(null);
+    const [saving, setSaving] = useState(null);
+    const [favoriteError, setFavoriteError] = useState('');
+    const { user, loading: authLoading, refreshUser } = useAuth();
+    const [params] = useSearchParams();
+    const location = useLocation();
     const navigate = useNavigate();
-    const [animalTab, setAnimalTab] = useState('all');
-    const animalCounts = {
-        all: listings.length,
-        dogs: listings.filter(l => (l.animal || '').toLowerCase() === 'dog').length,
-        cats: listings.filter(l => (l.animal || '').toLowerCase() === 'cat').length,
-        playdate: listings.filter(l => (l.listing_type || '').toLowerCase() === 'playdate').length,
-        adoption: listings.filter(l => (l.listing_type || '').toLowerCase() === 'adoption').length,
-    };
-    const filteredListings = listings.filter(listing => {
-        if (animalTab === 'all') return true;
-        if (animalTab === 'dogs') return (listing.animal || '').toLowerCase() === 'dog';
-        if (animalTab === 'cats') return (listing.animal || '').toLowerCase() === 'cat';
-        if (animalTab === 'playdate') return (listing.listing_type || '').toLowerCase() === 'playdate';
-        if (animalTab === 'adoption') return (listing.listing_type || '').toLowerCase() === 'adoption';
-        return true;
-    });
+    const animal = ['dog', 'cat'].includes(params.get('animal')) ? params.get('animal') : 'all';
+    const purpose = ['playdate', 'adoption'].includes(params.get('purpose')) ? params.get('purpose') : 'all';
+    const query = params.get('q') || '';
+    const browsePath = location.pathname + location.search + '#browse';
 
-    useEffect(() => {
-        axios.get(`${API_BASE_URL}/listings`)
-            .then(response => {
-                setListings(response.data.listings);
-            })
-            .catch(error => {
-                console.error('Error fetching listings:', error);
-                setError('Failed to load listings');
-            });
-
-        axios.get(`${API_BASE_URL}/favorites`, { withCredentials: true })
-            .then(res => {
-                setFavoriteIds(res.data.favorites.map(fav => fav.id));
-            })
-            .catch(() => {});
-
-        axios.get(`${API_BASE_URL}/users/me`, { withCredentials: true })
-            .then(res => setUser(res.data))
-            .catch(() => setUser(null));
+    const load = useCallback(async (signal) => {
+        setLoading(true);
+        setError('');
+        try { setListings(await getListings(signal)); }
+        catch (err) { if (!signal?.aborted && err.code !== 'ERR_CANCELED') setError('We couldn’t load the pets just now. Please try again in a moment.'); }
+        finally { if (!signal?.aborted) setLoading(false); }
     }, []);
 
-    const toggleFavorite = async (listingId) => {
-        if (favoriteIds.includes(listingId)) {
-            await axios.delete(`${API_BASE_URL}/favorites/${listingId}`, { withCredentials: true });
-            setFavoriteIds(favoriteIds.filter(id => id !== listingId));
-        } else {
-            await axios.post(`${API_BASE_URL}/favorites/${listingId}`, {}, { withCredentials: true });
-            setFavoriteIds([...favoriteIds, listingId]);
-        }
+    useEffect(() => {
+        const controller = new AbortController();
+        load(controller.signal);
+        return () => controller.abort();
+    }, [load]);
+
+    useEffect(() => {
+        if (!user) { setFavoriteIds([]); return; }
+        const controller = new AbortController();
+        api.get('/favorites', { signal: controller.signal })
+            .then(({ data }) => setFavoriteIds(data.favorites.map(favorite => String(favorite.id))))
+            .catch(err => { if (err.code !== 'ERR_CANCELED') setFavoriteError('Saved pets couldn’t be loaded. Please refresh to try again.'); });
+        return () => controller.abort();
+    }, [user]);
+
+    const updateFilter = (key, value) => {
+        const next = new URLSearchParams(params);
+        if (value && value !== 'all') next.set(key, value); else next.delete(key);
+        navigate({ search: next.toString(), hash: location.hash }, { replace: true, preventScrollReset: true });
+    };
+    const clearFilters = () => navigate({ search: '', hash: location.hash }, { replace: true, preventScrollReset: true });
+    const matchesPurpose = listing => purpose === 'all' || normalize(listing.listing_type) === purpose;
+    const filtered = listings.filter(listing =>
+        matchesPurpose(listing) && (animal === 'all' || normalize(listing.animal) === animal) &&
+        normalize([listing.pet_name, listing.breed, listing.location].join(' ')).includes(normalize(query)));
+    const hasFilters = animal !== 'all' || purpose !== 'all' || query;
+
+    const toggleFavorite = async id => {
+        if (!user) { navigate(loginPath(browsePath, 'save')); return; }
+        setSaving(id);
+        setFavoriteError('');
+        try {
+            const saved = favoriteIds.includes(String(id));
+            if (saved) await api.delete(`/favorites/${id}`);
+            else await api.post(`/favorites/${id}`);
+            setFavoriteIds(previous => saved ? previous.filter(value => value !== String(id)) : [...previous, String(id)]);
+        } catch (err) {
+            if ([401, 403].includes(err.response?.status)) {
+                await refreshUser();
+                navigate(loginPath(browsePath, 'save'));
+            } else setFavoriteError('That change couldn’t be saved. Please try again.');
+        } finally { setSaving(null); }
     };
 
-    return (
-        <div style={{ background: '#fff', minHeight: '100vh', color: 'black' }}>
-            <Navbar />
-            <div className="page-content" style={{ maxWidth: '1300px', margin: '0 auto', padding: '30px 20px' }}>
-                <h1 style={{ fontWeight: 700, fontSize: '2.5rem', marginBottom: '20px', color: '#222' }}>Browse Current Listings</h1>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-
-                <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
-                    <button onClick={() => setAnimalTab('all')} style={{ background: animalTab === 'all' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'all' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>All ({animalCounts.all})</button>
-                    <button onClick={() => setAnimalTab('dogs')} style={{ background: animalTab === 'dogs' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'dogs' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Dogs ({animalCounts.dogs})</button>
-                    <button onClick={() => setAnimalTab('cats')} style={{ background: animalTab === 'cats' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'cats' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Cats ({animalCounts.cats})</button>
-                    <button onClick={() => setAnimalTab('playdate')} style={{ background: animalTab === 'playdate' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'playdate' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Playdate ({animalCounts.playdate})</button>
-                    <button onClick={() => setAnimalTab('adoption')} style={{ background: animalTab === 'adoption' ? '#7C3AED' : '#f3f3f3', color: animalTab === 'adoption' ? '#fff' : '#444', border: 'none', borderRadius: 16, fontWeight: 600, fontSize: '1rem', padding: '6px 18px', cursor: 'pointer' }}>Adoption ({animalCounts.adoption})</button>
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '32px', marginTop: '30px' }}>
-                    {filteredListings.map(listing => (
-                        <div
-                            key={listing.id}
-                            style={{
-                                background: '#fff',
-                                border: '1.5px solid #e5e5e5',
-                                borderRadius: '12px',
-                                boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
-                                padding: '0 0 18px 0',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'stretch',
-                                position: 'relative',
-                                minHeight: '320px',
-                                color: 'black',
-                                overflow: 'hidden',
-                            }}
-                        >
-
-                            <div style={{ position: 'absolute', top: 18, right: 18, zIndex: 10 }}>
-                                <FaHeart
-                                    onClick={e => { e.stopPropagation(); toggleFavorite(listing.id); }}
-                                    style={{
-                                        fontSize: 28,
-                                        color: favoriteIds.includes(listing.id) ? '#E11D48' : '#e5e5e5',
-                                        cursor: 'pointer',
-                                        transition: 'color 0.2s',
-                                        filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.10))'
-                                    }}
-                                    title={favoriteIds.includes(listing.id) ? 'Remove from favorites' : 'Add to favorites'}
-                                />
-                            </div>
-                            {listing.photo_url && (
-                                <img
-                                    src={listing.photo_url}
-                                    alt={listing.pet_name}
-                                    style={{
-                                        width: '100%',
-                                        height: '140px',
-                                        objectFit: 'cover',
-                                        borderTopLeftRadius: '12px',
-                                        borderTopRightRadius: '12px',
-                                        marginBottom: '10px'
-                                    }}
-                                />
-                            )}
-                            <div style={{ padding: '0 20px', flex: 1 }}>
-                                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-                                        {/* Badge */}
-                                        <span style={{ position: 'absolute', top: 12, left: 12, background: '#fff', color: '#7C3AED', border: '2px solid #7C3AED', borderRadius: 8, fontWeight: 600, fontSize: '0.95rem', padding: '3px 12px', zIndex: 2 }}>{listing.listing_type ? listing.listing_type.charAt(0).toUpperCase() + listing.listing_type.slice(1) : ''}</span>
-                                    <span style={{ color: '#888', fontSize: '0.95rem' }}>{listing.location}</span>
-                                </div>
-                                <h2 style={{ fontSize: '1.4rem', fontWeight: 700, margin: '0 0 6px 0', color: '#222' }}>{listing.pet_name}</h2>
-                                <div style={{ color: '#444', fontSize: '1.05rem', marginBottom: '4px' }}><strong>Breed:</strong> {listing.breed}</div>
-                                <div style={{ color: '#444', fontSize: '1.05rem', marginBottom: '4px' }}><strong>Age:</strong> {listing.age}</div>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', padding: '0 20px' }}>
-                                <button
-                                    onClick={() => navigate(`/messages?user=${listing.user_id}`)}
-                                    style={{
-                                        flex: 1,
-                                        padding: '10px 0',
-                                        background: '#7C3AED',
-                                        color: '#fff',
-                                        border: 'none',
-                                        borderRadius: '6px',
-                                        fontWeight: 600,
-                                        fontSize: '1rem',
-                                        cursor: 'pointer',
-                                        marginTop: '12px'
-                                    }}
-                                >
-                                    Contact
-                                </button>
-                                <button
-                                    onClick={() => navigate(`/listings/${listing.id}`, { state: { from: 'home' } })}
-                                    style={{
-                                        flex: 1,
-                                        padding: '10px 0',
-                                        background: '#fff',
-                                        color: '#7C3AED',
-                                        border: '2px solid #7C3AED',
-                                        borderRadius: '6px',
-                                        fontWeight: 600,
-                                        fontSize: '1rem',
-                                        cursor: 'pointer',
-                                        marginTop: '12px'
-                                    }}
-                                >
-                                    View Details
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+    return <><Navbar /><main>
+        <section className="home-hero page-shell" aria-labelledby="home-heading">
+            <div className="hero-copy">
+                <div className="eyebrow"><FaPaw aria-hidden="true" /> Good company starts here</div>
+                <h1 id="home-heading">Little paws.<br /><span>Big connections.</span></h1>
+                <p>A new friend for your pet. A loving home for a companion.<br className="desktop-break" /> Find your next happy connection with PatPat.</p>
+                <div className="hero-actions"><Link className="pat-button" to="/#browse">Meet the pets <FiArrowRight aria-hidden="true" /></Link><Link className="text-link" to="/#how-it-works">How it works</Link></div>
+                <div className="hero-note"><FiCheck aria-hidden="true" /> Have a look around. No account needed.</div>
             </div>
+            <div className="hero-photo">
+                <img src={fee} alt="Fee, a black Labrador, relaxing at home" fetchPriority="high" />
+                <div className="hero-photo-note"><span className="hero-heart"><FiHeart aria-hidden="true" /></span><div><strong>Life’s better together.</strong><span>For pets. And their people.</span></div></div>
+            </div>
+        </section>
+        <div className="page-shell">
+            <div className="connection-options">
+                <Link to="/?purpose=playdate#browse" className="connection-option"><span className="option-icon"><FaPaw aria-hidden="true" /></span><div><h2>A friend for your best friend</h2><p>Find a playdate. Make their day.</p></div><FiArrowRight aria-hidden="true" /></Link>
+                <Link to="/?purpose=adoption#browse" className="connection-option"><span className="option-icon peach"><FiHeart aria-hidden="true" /></span><div><h2>A home, a whole new beginning</h2><p>Meet a companion to welcome home.</p></div><FiArrowRight aria-hidden="true" /></Link>
+            </div>
+            <section id="browse" className="browse-section" aria-labelledby="browse-heading">
+                <div className="section-heading"><div><div className="eyebrow">Find your connection</div><h2 id="browse-heading">A new friend could be right here.</h2><p>Get to know the pets looking for company or a place to call home.</p></div>{user && <Link className="pat-button secondary" to="/add-listing">+ Create a listing</Link>}</div>
+                <div className="browse-toolbar">
+                    <div className="species-filters" role="group" aria-label="Filter by pet">
+                        {species.map(([value, label, Icon]) => <button key={value} className={animal === value ? 'selected' : ''} aria-pressed={animal === value} onClick={() => updateFilter('animal', value)}><Icon aria-hidden="true" />{label}<span>{loading || error ? '–' : listings.filter(listing => matchesPurpose(listing) && (value === 'all' || normalize(listing.animal) === value)).length}</span></button>)}
+                    </div>
+                    <div className="browse-controls"><label className="search-field"><FiSearch aria-hidden="true" /><span className="sr-only">Search pets by name, breed, or location</span><input type="search" placeholder="Name, breed or location" value={query} onChange={e => updateFilter('q', e.target.value)} /></label><label className="purpose-select"><span className="sr-only">Listing type</span><select aria-label="Listing type" value={purpose} onChange={e => updateFilter('purpose', e.target.value)}><option value="all">All connections</option><option value="playdate">Playdates</option><option value="adoption">Adoption</option></select></label></div>
+                </div>
+                {DEMO_MODE && <div className="preview-label"><span>Preview</span> Example pets to help you explore PatPat.</div>}
+                {favoriteError && <p className="notice error" role="alert">{favoriteError}</p>}
+                {loading ? <div className="listing-grid" aria-label="Loading pets" aria-busy="true">{Array.from({ length: 4 }, (_, i) => <div key={i} className="listing-skeleton"><div /><span /><span /><span /></div>)}</div> :
+                    error ? <div className="state-panel" role="alert"><FaPaw aria-hidden="true" /><h3>The pets are taking a little break.</h3><p>{error}</p><button className="pat-button" onClick={() => load()}>Try again</button></div> :
+                    filtered.length ? <><div className="listing-grid">{filtered.map(listing => <ListingCard key={listing.id} listing={listing} favorite={favoriteIds.includes(String(listing.id))} busy={saving !== null || authLoading} onFavorite={toggleFavorite} browsePath={browsePath} own={user && String(user.id) === String(listing.user_id)} />)}</div><div className="results-note" role="status">{filtered.length} {filtered.length === 1 ? 'companion' : 'companions'} to get to know{hasFilters && <button onClick={clearFilters}>Clear filters</button>}</div></> :
+                    <div className="state-panel"><FiSearch aria-hidden="true" /><h3>{hasFilters ? 'No paws found just yet.' : 'Every connection starts with a hello.'}</h3><p>{hasFilters ? 'Try another name or location, or broaden your filters.' : 'There are no listings yet. Share a pet to help the first connection happen.'}</p>{hasFilters ? <button className="pat-button secondary" onClick={clearFilters}>Clear filters</button> : <Link className="pat-button" to="/add-listing">Create the first listing</Link>}</div>}
+            </section>
         </div>
-    );
+        <section className="how-section" id="how-it-works" aria-labelledby="how-heading"><div className="page-shell">
+            <div className="section-heading"><div><div className="eyebrow">A few small steps</div><h2 id="how-heading">From a little hello to a happy connection.</h2><p>Take your time. Find the right fit for you and your pet.</p></div></div>
+            <div className="how-grid">{[
+                [FiSearch, '01', 'Explore at your own pace', 'Browse playdates and adoption listings. See who catches your eye, without signing up.'],
+                [FiMessageCircle, '02', 'Say hello', 'Create an account to save your favorites, ask questions, and get to know the person behind the pet.'],
+                [FiMapPin, '03', 'Make a connection', 'Arrange a meet-up together and see if it’s a match. A little care goes a long way.'],
+            ].map(([Icon, number, title, text]) => <div className="how-step" key={number}><div className="step-top"><span className="option-icon"><Icon aria-hidden="true" /></span><span>{number}</span></div><h3>{title}</h3><p>{text}</p></div>)}</div>
+            {!user && <div className="join-banner"><div><h3>Got a little love to share?</h3><p>Join PatPat and start making connections.</p></div><Link className="pat-button" to="/signup">Create an account <FiArrowRight aria-hidden="true" /></Link></div>}
+        </div></section>
+    </main><Footer /></>;
 }
-
-export default HomePage;

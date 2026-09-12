@@ -33,8 +33,13 @@ router.route('/login')
         }
     });
 
+router.post('/logout', (req, res) => {
+    res.clearCookie('accessToken', { httpOnly: true, sameSite: 'Lax', path: '/' });
+    res.status(204).end();
+});
+
 router.get('/logout', (req, res) => {
-    res.cookie('accessToken', '', {maxAge: 0});
+    res.clearCookie('accessToken', { httpOnly: true, sameSite: 'Lax', path: '/' });
     res.redirect('/');
 })
 
