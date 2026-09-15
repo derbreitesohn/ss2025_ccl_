@@ -5,6 +5,13 @@ import Navbar from './Navbar';
 
 import { API_BASE_URL } from '../api';
 
+// Listings carry all five columns but most are left blank, and the card printed
+// every label regardless — five empty rows per card, worst on a phone.
+const listingDetails = (listing) => [
+    ['Breed', listing.breed], ['Age', listing.age], ['Gender', listing.gender],
+    ['Weight', listing.weight], ['Color', listing.color],
+].filter(([, value]) => value !== null && value !== undefined && String(value).trim() !== '');
+
 function MyListings() {
     const [listings, setListings] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -110,11 +117,9 @@ function MyListings() {
                                 <span style={{ position: 'absolute', top: 12, right: 12, background: '#fff', color: '#7C3AED', border: '2px solid #7C3AED', borderRadius: 8, fontWeight: 600, fontSize: '0.95rem', padding: '3px 12px', zIndex: 2 }}>{listing.listing_type ? listing.listing_type.charAt(0).toUpperCase() + listing.listing_type.slice(1) : ''}</span>
                                 <div style={{ padding: '0 18px', flex: 1 }}>
                                     <h3 style={{ fontSize: '1.2rem', fontWeight: 700, margin: '20px 0 6px 0', color: '#222' }}>{listing.pet_name}</h3>
-                                    <div style={{ color: '#444', fontSize: '1rem', marginBottom: 2 }}><strong>Breed:</strong> {listing.breed}</div>
-                                    <div style={{ color: '#444', fontSize: '1rem', marginBottom: 2 }}><strong>Age:</strong> {listing.age}</div>
-                                    <div style={{ color: '#444', fontSize: '1rem', marginBottom: 2 }}><strong>Gender:</strong> {listing.gender}</div>
-                                    <div style={{ color: '#444', fontSize: '1rem', marginBottom: 2 }}><strong>Weight:</strong> {listing.weight}</div>
-                                    <div style={{ color: '#444', fontSize: '1rem', marginBottom: 2 }}><strong>Color:</strong> {listing.color}</div>
+                                    {listingDetails(listing).map(([label, value]) => (
+                                        <div key={label} style={{ color: '#444', fontSize: '1rem', marginBottom: 2 }}><strong>{label}:</strong> {value}</div>
+                                    ))}
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, padding: '0 18px', marginTop: '20px' }}>
                                     <button onClick={() => navigate(`/listings/${listing.id}/edit`)} style={{ flex: 1, padding: '8px 0', background: '#E0E7FF', color: '#000000', border: 'none', borderRadius: 6, fontWeight: 600, fontSize: '1rem', cursor: 'pointer', marginTop: 12 }}>Edit</button>

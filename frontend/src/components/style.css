@@ -832,4 +832,34 @@
     .message-content { max-width: 85%; }
     .container .card { padding: 22px 18px; }
     .h1-mylistings { font-size: 32px !important; }
+
+    /* The header card used to keep the avatar, the details and both buttons on
+       one line. Below ~500px that left .profile-info a sliver: the name broke
+       across two lines and the About text ran one word per row. Give the
+       details a real minimum and let the buttons take their own row, so the
+       reading order matches the desktop card. */
+    .profile-header-card { align-items: center; }
+    .profile-info { flex: 1 1 190px; }
+    /* Half the row is 141px, and "Delete Profile" needs 156px at the desktop
+       padding, so trim the sides rather than let the label break in two. */
+    .edit-profile-button, .delete-profile-button { flex: 1 1 140px; padding-inline: 14px; white-space: nowrap; }
+
+    /* Five filter chips wrapped onto three rows on a phone. Desktop keeps them
+       on one line, so do the same here and let the row scroll sideways. */
+    .pets-tabs, .mylistings-filters {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+    .pets-tabs::-webkit-scrollbar, .mylistings-filters::-webkit-scrollbar { display: none; }
+    .pets-tabs > button, .mylistings-filters > button { flex: 0 0 auto; }
+
+    /* Edit / View Details / Delete share the row instead of stair-stepping. */
+    .pet-actions > button { flex: 1 1 auto; }
+
+    /* 320px was the height the five metadata rows needed. The two-column grid
+       on desktop still wants it so the cards line up; a single column doesn't,
+       and it left a block of empty card under every short listing. */
+    .pet-card { min-height: 0; }
 }

@@ -8,6 +8,14 @@ import './style.css';
 
 import { API_BASE_URL } from '../api';
 
+// Every one of these is a real column, but most pets only fill in a couple.
+// The card used to print all five with a literal "Text" placeholder, which on a
+// phone buried the pet's name under five empty rows. Show the ones that have a value.
+const petDetails = (pet) => [
+    ['Breed', pet.breed], ['Age', pet.age], ['Gender', pet.gender],
+    ['Weight', pet.weight], ['Color', pet.color],
+].filter(([, value]) => value !== null && value !== undefined && String(value).trim() !== '');
+
 function Profile() {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -300,11 +308,9 @@ function Profile() {
 
                                 <div className="pet-info">
                                     <h3 className="pet-name">{pet.name}</h3>
-                                    <div className="pet-detail"><strong>Breed:</strong> {pet.breed || 'Text'}</div>
-                                    <div className="pet-detail"><strong>Age:</strong> {pet.age || 'Text'}</div>
-                                    <div className="pet-detail"><strong>Gender:</strong> {pet.gender || 'Text'}</div>
-                                    <div className="pet-detail"><strong>Weight:</strong> {pet.weight || 'Text'}</div>
-                                    <div className="pet-detail"><strong>Color:</strong> {pet.color || 'Text'}</div>
+                                    {petDetails(pet).map(([label, value]) => (
+                                        <div key={label} className="pet-detail"><strong>{label}:</strong> {value}</div>
+                                    ))}
                                 </div>
 
                                 <div className="pet-actions">
