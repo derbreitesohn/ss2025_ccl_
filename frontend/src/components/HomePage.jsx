@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { FaPaw, FaDog, FaCat } from 'react-icons/fa';
-import { FiArrowRight, FiHeart, FiSearch, FiMapPin, FiMessageCircle, FiCheck } from 'react-icons/fi';
+import { FiSearch, FiMapPin, FiMessageCircle, FiCheck } from 'react-icons/fi';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import ListingCard from './ListingCard';
 import { useAuth } from '../auth';
-import { api, DEMO_MODE, loginPath } from '../api';
+import { api, loginPath } from '../api';
 import { getListings } from '../listings';
 import fee from '../images/fee_ccl.png';
 import './HomePage.css';
@@ -85,31 +85,23 @@ export default function HomePage() {
     return <><Navbar /><main>
         <section className="home-hero page-shell" aria-labelledby="home-heading">
             <div className="hero-copy">
-                <div className="eyebrow"><FaPaw aria-hidden="true" /> Good company starts here</div>
                 <h1 id="home-heading">Little paws.<br /><span>Big connections.</span></h1>
                 <p>A new friend for your pet. A loving home for a companion.<br className="desktop-break" /> Find your next happy connection with PatPat.</p>
-                <div className="hero-actions"><Link className="pat-button" to="/#browse">Meet the pets <FiArrowRight aria-hidden="true" /></Link><Link className="text-link" to="/#how-it-works">How it works</Link></div>
                 <div className="hero-note"><FiCheck aria-hidden="true" /> Have a look around. No account needed.</div>
             </div>
             <div className="hero-photo">
                 <img src={fee} alt="Fee, a black Labrador, relaxing at home" fetchPriority="high" />
-                <div className="hero-photo-note"><span className="hero-heart"><FiHeart aria-hidden="true" /></span><div><strong>Life’s better together.</strong><span>For pets. And their people.</span></div></div>
             </div>
         </section>
         <div className="page-shell">
-            <div className="connection-options">
-                <Link to="/?purpose=playdate#browse" className="connection-option"><span className="option-icon"><FaPaw aria-hidden="true" /></span><div><h2>A friend for your best friend</h2><p>Find a playdate. Make their day.</p></div><FiArrowRight aria-hidden="true" /></Link>
-                <Link to="/?purpose=adoption#browse" className="connection-option"><span className="option-icon peach"><FiHeart aria-hidden="true" /></span><div><h2>A home, a whole new beginning</h2><p>Meet a companion to welcome home.</p></div><FiArrowRight aria-hidden="true" /></Link>
-            </div>
             <section id="browse" className="browse-section" aria-labelledby="browse-heading">
-                <div className="section-heading"><div><div className="eyebrow">Find your connection</div><h2 id="browse-heading">A new friend could be right here.</h2><p>Get to know the pets looking for company or a place to call home.</p></div>{user && <Link className="pat-button secondary" to="/add-listing">+ Create a listing</Link>}</div>
+                <div className="section-heading"><div><h2 id="browse-heading">A new friend could be right here.</h2><p>Get to know the pets looking for company or a place to call home.</p></div>{user && <Link className="pat-button secondary" to="/add-listing">+ Create a listing</Link>}</div>
                 <div className="browse-toolbar">
                     <div className="species-filters" role="group" aria-label="Filter by pet">
                         {species.map(([value, label, Icon]) => <button key={value} className={animal === value ? 'selected' : ''} aria-pressed={animal === value} onClick={() => updateFilter('animal', value)}><Icon aria-hidden="true" />{label}<span>{loading || error ? '–' : listings.filter(listing => matchesPurpose(listing) && (value === 'all' || normalize(listing.animal) === value)).length}</span></button>)}
                     </div>
                     <div className="browse-controls"><label className="search-field"><FiSearch aria-hidden="true" /><span className="sr-only">Search pets by name, breed, or location</span><input type="search" placeholder="Name, breed or location" value={query} onChange={e => updateFilter('q', e.target.value)} /></label><label className="purpose-select"><span className="sr-only">Listing type</span><select aria-label="Listing type" value={purpose} onChange={e => updateFilter('purpose', e.target.value)}><option value="all">All connections</option><option value="playdate">Playdates</option><option value="adoption">Adoption</option></select></label></div>
                 </div>
-                {DEMO_MODE && <div className="preview-label"><span>Preview</span> Example pets to help you explore PatPat.</div>}
                 {favoriteError && <p className="notice error" role="alert">{favoriteError}</p>}
                 {loading ? <div className="listing-grid" aria-label="Loading pets" aria-busy="true">{Array.from({ length: 4 }, (_, i) => <div key={i} className="listing-skeleton"><div /><span /><span /><span /></div>)}</div> :
                     error ? <div className="state-panel" role="alert"><FaPaw aria-hidden="true" /><h3>The pets are taking a little break.</h3><p>{error}</p><button className="pat-button" onClick={() => load()}>Try again</button></div> :
@@ -118,13 +110,13 @@ export default function HomePage() {
             </section>
         </div>
         <section className="how-section" id="how-it-works" aria-labelledby="how-heading"><div className="page-shell">
-            <div className="section-heading"><div><div className="eyebrow">A few small steps</div><h2 id="how-heading">From a little hello to a happy connection.</h2><p>Take your time. Find the right fit for you and your pet.</p></div></div>
+            <div className="section-heading"><div><h2 id="how-heading">From a little hello to a happy connection.</h2><p>Take your time. Find the right fit for you and your pet.</p></div></div>
             <div className="how-grid">{[
                 [FiSearch, '01', 'Explore at your own pace', 'Browse playdates and adoption listings. See who catches your eye, without signing up.'],
                 [FiMessageCircle, '02', 'Say hello', 'Create an account to save your favorites, ask questions, and get to know the person behind the pet.'],
                 [FiMapPin, '03', 'Make a connection', 'Arrange a meet-up together and see if it’s a match. A little care goes a long way.'],
             ].map(([Icon, number, title, text]) => <div className="how-step" key={number}><div className="step-top"><span className="option-icon"><Icon aria-hidden="true" /></span><span>{number}</span></div><h3>{title}</h3><p>{text}</p></div>)}</div>
-            {!user && <div className="join-banner"><div><h3>Got a little love to share?</h3><p>Join PatPat and start making connections.</p></div><Link className="pat-button" to="/signup">Create an account <FiArrowRight aria-hidden="true" /></Link></div>}
+            {!user && <div className="join-banner"><div><h3>Got a little love to share?</h3><p>Join PatPat and start making connections.</p></div><Link className="pat-button" to="/signup">Create an account</Link></div>}
         </div></section>
     </main><Footer /></>;
 }

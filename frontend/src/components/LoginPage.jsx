@@ -26,7 +26,7 @@ export default function LoginPage() {
     const handleLogin = async event => {
         event.preventDefault();
         setError('');
-        if (DEMO_MODE) { setError('Accounts aren’t available in this preview. You can still explore the pets.'); return; }
+        if (DEMO_MODE) { setError('Accounts aren’t available just yet. You can still explore the pets.'); return; }
         setBusy(true);
         try {
             const { data } = await api.post('/login', { username: username.trim(), password });
