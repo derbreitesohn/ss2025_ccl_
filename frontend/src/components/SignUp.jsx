@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { FaPaw } from 'react-icons/fa';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import AuthLayout from './AuthLayout';
 import { useAuth } from '../auth';
@@ -35,8 +34,8 @@ export default function SignUp() {
 
     if (user) return <Navigate to={returnPath(location.search)} replace />;
     return <AuthLayout>
-        <div className="eyebrow"><FaPaw aria-hidden="true" /> A place for you and your pet</div>
-        <h1>Let’s make a connection.</h1><p className="auth-subtitle">Save a favorite. Say hello. Find your kind of company.</p>
+        <div className="eyebrow">A place for you and your pet</div>
+        <h1>Let’s make a connection.</h1>
         {error && <p className="notice error" role="alert">{error}</p>}
         <form onSubmit={submit}>
             <div className="auth-field-row"><label className="auth-field">Name<input name="name" autoComplete="name" value={form.name} onChange={change} required placeholder="Your name" /></label><label className="auth-field">Username<input name="username" autoComplete="username" value={form.username} onChange={change} required placeholder="Choose a username" /></label></div>
@@ -50,7 +49,7 @@ export default function SignUp() {
             </details>
             <button className="pat-button auth-submit" disabled={busy}>{busy ? 'Creating your account…' : 'Create an account'}</button>
         </form>
-        <p className="auth-footer">Already part of the pack? <Link to={`/login${location.search}`}>Log in</Link></p>
+        <p className="auth-footer">Already have an account? <Link to={`/login${location.search}`}>Log in</Link></p>
         <p className="auth-browse-note">Just looking? <Link to="/#browse">Keep exploring without an account.</Link></p>
     </AuthLayout>;
 }

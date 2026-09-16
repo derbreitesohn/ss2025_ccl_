@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useLocation, useNavigate, Link, Navigate } from 'react-router-dom';
-import { FaPaw } from 'react-icons/fa';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import AuthLayout from './AuthLayout';
 import { useAuth } from '../auth';
@@ -20,8 +19,7 @@ export default function LoginPage() {
     const reason = params.get('reason');
     const subtitle = reason === 'save' ? 'Log in to keep your favorite companions close.' :
         next.startsWith('/messages') ? 'Log in to say hello and get to know their person.' :
-        next.startsWith('/add-') ? 'Log in to introduce your pet to the community.' :
-        'Your pets, your favorites, and a few new friends await.';
+        next.startsWith('/add-') ? 'Log in to introduce your pet to the community.' : '';
 
     const handleLogin = async event => {
         event.preventDefault();
@@ -41,8 +39,8 @@ export default function LoginPage() {
 
     if (user) return <Navigate to={next} replace />;
     return <AuthLayout>
-        <div className="eyebrow"><FaPaw aria-hidden="true" /> Welcome to PatPat</div>
-        <h1>Good to see you again.</h1><p className="auth-subtitle">{subtitle}</p>
+        <div className="eyebrow">Welcome to PatPat</div>
+        <h1>Good to see you again.</h1>{subtitle && <p className="auth-subtitle">{subtitle}</p>}
         {params.get('registered') === '1' && <p className="notice" role="status">Your account is ready. Log in to get started.</p>}
         {error && <p className="notice error" role="alert">{error}</p>}
         <form onSubmit={handleLogin}>
