@@ -92,8 +92,8 @@ export default function HomePage() {
             </div>
         </section>
         <div className="page-shell">
-            <section id="browse" className="browse-section" aria-labelledby="browse-heading">
-                <div className="section-heading"><div><h2 id="browse-heading">A new friend could be right here.</h2></div>{user && <Link className="pat-button secondary" to="/add-listing">+ Create a listing</Link>}</div>
+            <section id="browse" className="browse-section" aria-label="Browse pets">
+                <div className="section-heading"><div />{user && <Link className="pat-button secondary" to="/add-listing">+ Create a listing</Link>}</div>
                 <div className="browse-toolbar">
                     <div className="species-filters" role="group" aria-label="Filter by pet">
                         {species.map(([value, label, Icon]) => <button key={value} className={animal === value ? 'selected' : ''} aria-pressed={animal === value} onClick={() => updateFilter('animal', value)}><Icon aria-hidden="true" />{label}<span>{loading || error ? '–' : listings.filter(listing => matchesPurpose(listing) && (value === 'all' || normalize(listing.animal) === value)).length}</span></button>)}

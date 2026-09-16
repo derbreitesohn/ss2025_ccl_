@@ -1,11 +1,5 @@
 :root {
-  /* Karla for text, Fraunces for the headings. The starter's system-ui stack gave
-     the site no voice of its own - every generated React app wears it. A warm
-     grotesque against a high-contrast serif is what makes this read as a brand
-     rather than a template. Both fall back to widely installed faces. */
-  --font-text: "Karla", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-display: "Fraunces", Georgia, "Iowan Old Style", "Times New Roman", serif;
-  font-family: var(--font-text);
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color: #26232c;
@@ -14,8 +8,8 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --purple: #7c3aed;
-  --purple-dark: #6428cf;
+  --purple: #784ebc;
+  --purple-dark: #63409c;
   --muted: #716b7c;
   --line: #e9e5ee;
 }
@@ -28,15 +22,10 @@ button:disabled { cursor: wait; opacity: .65; }
 a { color: var(--purple); text-decoration: none; }
 a:hover { color: var(--purple-dark); }
 button, a { transition: background-color .18s, color .18s, box-shadow .18s; }
-:focus-visible { outline: 3px solid #9c6bf0; outline-offset: 4px; }
+:focus-visible { outline: 3px solid #9b7fd0; outline-offset: 4px; }
 img { max-width: 100%; }
-h1, h2, h3 {
-  font-family: var(--font-display);
-  font-optical-sizing: auto;
-  font-weight: 600;
-  line-height: 1.2;
-}
-::selection { background: #e9dcff; }
+h1, h2, h3 { line-height: 1.2; }
+::selection { background: #e6ddf4; }
 [id] { scroll-margin-top: 105px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }

@@ -45,7 +45,7 @@ export default function Navbar() {
             </div>
             <div className="nav-actions">
                 {user ? <button className="pat-button secondary" onClick={handleLogout} disabled={busy}>{busy ? 'Logging out…' : 'Log out'}</button> :
-                    <Link className="pat-button" to={loginPath(current)}>Log in <span aria-hidden="true">↗</span></Link>}
+                    <Link className="pat-button" to={loginPath(current)}>Log in</Link>}
                 <button className="mobile-menu-btn" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} aria-controls="main-menu" onClick={() => setOpen(!open)}>{open ? <FiX /> : <FiMenu />}</button>
             </div>
         </nav>
