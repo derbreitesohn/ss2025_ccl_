@@ -15,13 +15,13 @@
 }
 
 .btn-primary {
-    background-color: #7C3AED;
+    background-color: #b4522a;
     color: white;
     margin: 15px;
 }
 
 .btn-primary:hover {
-    background-color: #6d28d9;
+    background-color: #a5421e;
 }
 
 .btn-secondary {
@@ -36,12 +36,12 @@
 
 .btn-outline-primary {
     background-color: transparent;
-    color: #7C3AED;
-    border: 2px solid #7C3AED;
+    color: #b4522a;
+    border: 2px solid #b4522a;
 }
 
 .btn-outline-primary:hover {
-    background-color: #7C3AED;
+    background-color: #b4522a;
     color: white;
 }
 
@@ -189,8 +189,8 @@
 
 .edit-profile-button {
     background: #fff;
-    color: #7C3AED;
-    border: 1.5px solid #7C3AED;
+    color: #b4522a;
+    border: 1.5px solid #b4522a;
     border-radius: 8px;
     font-weight: 600;
     font-size: 1rem;
@@ -201,7 +201,7 @@
 }
 
 .edit-profile-button:hover {
-    background: #7C3AED;
+    background: #b4522a;
     color: white;
 }
 
@@ -259,7 +259,7 @@
 .save-button {
     flex: 1;
     padding: 10px 0;
-    background: #7C3AED;
+    background: #b4522a;
     color: white;
     border: none;
     border-radius: 8px;
@@ -269,7 +269,7 @@
 }
 
 .save-button:hover {
-    background: #6D28D9;
+    background: #a5421e;
 }
 
 .cancel-button {
@@ -325,7 +325,7 @@
 }
 
 .add-pet-button {
-    background: #7C3AED;
+    background: #b4522a;
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -336,7 +336,7 @@
 }
 
 .add-pet-button:hover {
-    background: #6D28D9;
+    background: #a5421e;
 }
 
 /* Tabs */
@@ -359,7 +359,7 @@
 }
 
 .tab-button.active {
-    background: #7C3AED;
+    background: #b4522a;
     color: #fff;
 }
 
@@ -413,9 +413,9 @@
     position: absolute;
     top: 12px;
     right: 12px;
-    color: #7C3AED;
+    color: #b4522a;
     background: #ffffff;
-    border: #7C3AED 1px solid;
+    border: #b4522a 1px solid;
     border-radius: 8px;
     font-weight: 600;
     font-size: 0.95rem;
@@ -428,8 +428,8 @@
     top: 12px;
     right: 12px;
     background: #fff;
-    color: #7C3AED;
-    border: 2px solid #7C3AED;
+    color: #b4522a;
+    border: 2px solid #b4522a;
     border-radius: 8px;
     font-weight: 600;
     font-size: 0.95rem;
@@ -467,8 +467,8 @@
 .edit-pet-button {
     flex: 1;
     padding: 8px 0;
-    background: #E0E7FF;
-    color: #7C3AED;
+    background: #f7e3d2;
+    color: #b4522a;
     border: none;
     border-radius: 6px;
     font-weight: 600;
@@ -478,15 +478,15 @@
 }
 
 .edit-pet-button:hover {
-    background: #C7D2FE;
+    background: #f0d2b8;
 }
 
 .view-pet-button {
     flex: 1;
     padding: 8px 0;
     background: #fff;
-    color: #7C3AED;
-    border: 2px solid #7C3AED;
+    color: #b4522a;
+    border: 2px solid #b4522a;
     border-radius: 6px;
     font-weight: 600;
     font-size: 1rem;
@@ -495,7 +495,7 @@
 }
 
 .view-pet-button:hover {
-    background: #7C3AED;
+    background: #b4522a;
     color: white;
 }
 
@@ -537,7 +537,7 @@
 }
 
 .breadcrumb a {
-    color: #7C3AED;
+    color: #b4522a;
     text-decoration: none;
     font-weight: 500;
 }
@@ -582,7 +582,7 @@
 }
 
 .detail-fields strong {
-    color: #7C3AED;
+    color: #b4522a;
     font-weight: 600;
 }
 
@@ -639,7 +639,7 @@
     flex: 1;
     overflow-y: auto;
     padding: 32px;
-    background: #f4f4fa;
+    background: #f7f4ec;
 }
 
 .message-bubble {
@@ -656,7 +656,7 @@
 }
 
 .message-content {
-    background: #E0E7FF;
+    background: #f7e3d2;
     color: #222;
     border-radius: 16px;
     padding: 12px 22px;
@@ -667,7 +667,7 @@
 }
 
 .message-bubble.sent .message-content {
-    background: #7C3AED;
+    background: #b4522a;
     color: #fff;
 }
 
@@ -699,11 +699,11 @@
     font-size: 1.1rem;
     outline: none;
     margin-right: 12px;
-    background: #f9f9ff;
+    background: #fbf9f3;
 }
 
 .messages-send-btn {
-    background: #7C3AED;
+    background: #b4522a;
     color: #fff;
     border: none;
     border-radius: 50%;
@@ -718,7 +718,7 @@
 }
 
 .messages-send-btn:hover {
-    background: #6D28D9;
+    background: #a5421e;
 }
 
 .h1-mylistings {
@@ -807,9 +807,9 @@
 .profile-about, .pet-detail { overflow-wrap: anywhere; }
 .container .card { max-width: 760px; margin: 20px auto; padding: 28px; border: 1px solid var(--line); border-radius: 12px; }
 .container .card h1 { font-size: 30px; letter-spacing: -.6px; margin: 0 0 24px; }
-.container .form-group > label { display: block; color: #574a64; font-size: 14px; }
-.container .form-control { display: block; margin-top: 8px; padding: 11px 13px; background: #fff; color: #30273a; }
-.container .form-control:focus { border-color: var(--purple); box-shadow: 0 0 0 3px #7c3aed15; }
+.container .form-group > label { display: block; color: #584936; font-size: 14px; }
+.container .form-control { display: block; margin-top: 8px; padding: 11px 13px; background: #fff; color: #31281b; }
+.container .form-control:focus { border-color: var(--purple); box-shadow: 0 0 0 3px #b4522a15; }
 .container .btn { border-radius: 7px; padding: 11px 20px; margin: 8px 10px 0 0; }
 .messages-container { height: calc(100dvh - 80px); max-width: 1320px; margin: auto; }
 .messages-sidebar { flex-shrink: 0; }

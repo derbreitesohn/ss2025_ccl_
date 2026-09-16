@@ -1,6 +1,6 @@
 .listing-detail-page { max-width: 940px; padding-top: 28px; padding-bottom: 55px; min-height: calc(100dvh - 180px); }
-.detail-back { margin-bottom: 24px; color: #897697; }
-.public-detail-card { border: 1px solid var(--line); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 24px #35204008; }
+.detail-back { margin-bottom: 24px; color: #8b7455; }
+.public-detail-card { border: 1px solid var(--line); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 24px #3a281608; }
 .public-detail-photo { height: 420px; position: relative; }
 .public-detail-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 38%; }
 .public-detail-photo .listing-kind { top: 20px; left: 20px; font-size: 13px; padding: 6px 13px; }
@@ -8,10 +8,10 @@
 .public-detail-heading { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
 .public-detail-heading h1 { margin: 8px 0 0; font-size: 37px; letter-spacing: -1px; }
 .public-detail-heading .listing-location { margin: 0; font-size: 13px; }
-.detail-purpose { color: #886b9f; font-size: 12px; background: #f8f2ff; border-radius: 20px; padding: 8px 14px; }
+.detail-purpose { color: #8a6a4c; font-size: 12px; background: #fdf4e9; border-radius: 20px; padding: 8px 14px; }
 .public-detail-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 28px 0 30px; }
-.public-detail-facts div { padding: 17px 12px; text-align: center; background: #f7f4fa; border-radius: 8px; }
-.public-detail-facts dt { font-size: 12px; color: #94829f; margin-bottom: 5px; }
+.public-detail-facts div { padding: 17px 12px; text-align: center; background: #f9f5ee; border-radius: 8px; }
+.public-detail-facts dt { font-size: 12px; color: #957f58; margin-bottom: 5px; }
 .public-detail-facts dd { margin: 0; font-weight: 600; font-size: 14px; text-transform: capitalize; }
 .public-detail-body h2 { font-size: 18px; margin: 0 0 12px; }
 .detail-about { color: var(--muted); font-size: 14px; line-height: 1.85; white-space: pre-wrap; overflow-wrap: anywhere; }

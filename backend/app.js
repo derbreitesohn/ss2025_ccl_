@@ -92,6 +92,13 @@ function errorHandler(err, req, res, next) {
 }
 app.use(errorHandler);
 
-server.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
+// On Vercel the app is imported by a serverless function, which owns the request
+// lifecycle - binding a port there would fail the build. Locally nothing changes:
+// `npm start` still runs this file directly and still listens.
+if (!process.env.VERCEL) {
+    server.listen(port, () => {
+        console.log(`Server running at http://localhost:${port}`);
+    });
+}
+
+module.exports = app;
