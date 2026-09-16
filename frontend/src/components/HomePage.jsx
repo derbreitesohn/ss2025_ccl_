@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { FaPaw, FaDog, FaCat } from 'react-icons/fa';
-import { FiSearch, FiMapPin, FiMessageCircle, FiCheck } from 'react-icons/fi';
+import { FiSearch, FiMapPin, FiMessageCircle } from 'react-icons/fi';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import ListingCard from './ListingCard';
@@ -86,8 +86,6 @@ export default function HomePage() {
         <section className="home-hero page-shell" aria-labelledby="home-heading">
             <div className="hero-copy">
                 <h1 id="home-heading">Little paws.<br /><span>Big connections.</span></h1>
-                <p>A new friend for your pet. A loving home for a companion.<br className="desktop-break" /> Find your next happy connection with PatPat.</p>
-                <div className="hero-note"><FiCheck aria-hidden="true" /> Have a look around. No account needed.</div>
             </div>
             <div className="hero-photo">
                 <img src={fee} alt="Fee, a black Labrador, relaxing at home" fetchPriority="high" />
@@ -95,7 +93,7 @@ export default function HomePage() {
         </section>
         <div className="page-shell">
             <section id="browse" className="browse-section" aria-labelledby="browse-heading">
-                <div className="section-heading"><div><h2 id="browse-heading">A new friend could be right here.</h2><p>Get to know the pets looking for company or a place to call home.</p></div>{user && <Link className="pat-button secondary" to="/add-listing">+ Create a listing</Link>}</div>
+                <div className="section-heading"><div><h2 id="browse-heading">A new friend could be right here.</h2></div>{user && <Link className="pat-button secondary" to="/add-listing">+ Create a listing</Link>}</div>
                 <div className="browse-toolbar">
                     <div className="species-filters" role="group" aria-label="Filter by pet">
                         {species.map(([value, label, Icon]) => <button key={value} className={animal === value ? 'selected' : ''} aria-pressed={animal === value} onClick={() => updateFilter('animal', value)}><Icon aria-hidden="true" />{label}<span>{loading || error ? '–' : listings.filter(listing => matchesPurpose(listing) && (value === 'all' || normalize(listing.animal) === value)).length}</span></button>)}
@@ -110,13 +108,13 @@ export default function HomePage() {
             </section>
         </div>
         <section className="how-section" id="how-it-works" aria-labelledby="how-heading"><div className="page-shell">
-            <div className="section-heading"><div><h2 id="how-heading">From a little hello to a happy connection.</h2><p>Take your time. Find the right fit for you and your pet.</p></div></div>
+            <div className="section-heading"><div><h2 id="how-heading">From a little hello to a happy connection.</h2></div></div>
             <div className="how-grid">{[
                 [FiSearch, '01', 'Explore at your own pace', 'Browse playdates and adoption listings. See who catches your eye, without signing up.'],
                 [FiMessageCircle, '02', 'Say hello', 'Create an account to save your favorites, ask questions, and get to know the person behind the pet.'],
                 [FiMapPin, '03', 'Make a connection', 'Arrange a meet-up together and see if it’s a match. A little care goes a long way.'],
             ].map(([Icon, number, title, text]) => <div className="how-step" key={number}><div className="step-top"><span className="option-icon"><Icon aria-hidden="true" /></span><span>{number}</span></div><h3>{title}</h3><p>{text}</p></div>)}</div>
-            {!user && <div className="join-banner"><div><h3>Got a little love to share?</h3><p>Join PatPat and start making connections.</p></div><Link className="pat-button" to="/signup">Create an account</Link></div>}
+            {!user && <div className="join-banner"><div><h3>Got a little love to share?</h3></div><Link className="pat-button" to="/signup">Create an account</Link></div>}
         </div></section>
     </main><Footer /></>;
 }

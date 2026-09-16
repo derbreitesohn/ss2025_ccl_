@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
-import { FiArrowLeft, FiMapPin, FiMessageCircle } from 'react-icons/fi';
+import { FiMapPin, FiMessageCircle } from 'react-icons/fi';
 import { FaPaw } from 'react-icons/fa';
 import Navbar from './Navbar';
 import Footer from './Footer';
@@ -38,7 +38,7 @@ export default function ListingDetail() {
 
     const own = user && listing && String(user.id) === String(listing.user_id);
     return <><Navbar /><main className="page-shell listing-detail-page">
-        <Link className="text-link detail-back" to={back}><FiArrowLeft aria-hidden="true" />{back === '/listings' ? 'Back to my listings' : 'Back to the pets'}</Link>
+        <Link className="text-link detail-back" to={back}>{back === '/listings' ? 'Back to my listings' : 'Back to the pets'}</Link>
         {loading || error || !listing ? <div className="state-panel" role="status"><FaPaw aria-hidden="true" /><h1>{loading ? 'Getting to know this companion…' : error ? 'Let’s try that again' : 'This listing is no longer here.'}</h1><p>{error || (!loading && 'There are more companions waiting to meet you.')}</p>{error && <button className="pat-button" onClick={() => setAttempt(value => value + 1)}>Try again</button>}{!loading && !error && <Link className="pat-button" to="/#browse">Explore other pets</Link>}</div> :
         <article className="public-detail-card">
             {DEMO_MODE && <div className="notice detail-preview">Example profile · This pet is part of the PatPat preview.</div>}

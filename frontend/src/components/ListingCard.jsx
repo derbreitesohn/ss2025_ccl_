@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FiHeart, FiMapPin, FiArrowUpRight } from 'react-icons/fi';
+import { FiHeart, FiMapPin } from 'react-icons/fi';
 import PetPhoto from './PetPhoto';
 
 export default function ListingCard({ listing, favorite, busy, onFavorite, browsePath, own }) {
@@ -11,7 +11,7 @@ export default function ListingCard({ listing, favorite, busy, onFavorite, brows
         </div>
         <div className="listing-card-body">
             <span className="listing-location"><FiMapPin aria-hidden="true" />{listing.location || 'Location not shared'}</span>
-            <h3><Link to={`/listings/${listing.id}`} state={{ browsePath }}>{listing.pet_name}</Link><FiArrowUpRight aria-hidden="true" /></h3>
+            <h3><Link to={`/listings/${listing.id}`} state={{ browsePath }}>{listing.pet_name}</Link></h3>
             <p>{listing.breed || listing.animal || 'Pet'} <span>·</span> {listing.age || 'Age not shared'}</p>
             <div className="listing-card-actions">
                 <Link className="pat-button" to={own ? `/listings/${listing.id}/edit` : `/messages?user=${listing.user_id}`}>{own ? 'Edit listing' : 'Contact'}</Link>

@@ -2,15 +2,15 @@
 .page-shell { width: min(1240px, calc(100% - 64px)); margin: 0 auto; }
 .pat-button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 21px; border: 1px solid var(--purple); border-radius: 8px; background: var(--purple); color: #fff; font-weight: 600; font-size: 14px; line-height: 1.5; }
 .pat-button:hover { background: var(--purple-dark); border-color: var(--purple-dark); color: #fff; }
-.pat-button.secondary { background: #fff; color: var(--purple); border-color: #e6cfaf; }
-.pat-button.secondary:hover { background: #fdf4ea; }
+.pat-button.secondary { background: #fff; color: var(--purple); border-color: #ded0f4; }
+.pat-button.secondary:hover { background: #f7f2ff; }
 .text-link { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; }
 .eyebrow { display: flex; align-items: center; gap: 8px; color: var(--purple); font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; }
-.state-panel { text-align: center; padding: 54px 24px; border: 1px solid var(--line); border-radius: 12px; background: #fdfaf4; margin: 28px 0; }
+.state-panel { text-align: center; padding: 54px 24px; border: 1px solid var(--line); border-radius: 12px; background: #fcfaff; margin: 28px 0; }
 .state-panel h1, .state-panel h2 { font-size: 24px; margin: 12px 0; }
 .state-panel p { color: var(--muted); margin: 12px auto 22px; max-width: 450px; }
 .state-panel > svg { color: var(--purple); font-size: 30px; }
-.notice { padding: 13px 17px; border-radius: 8px; border: 1px solid #e6cfaf; background: #fdf8f0; color: #665340; font-size: 14px; }
+.notice { padding: 13px 17px; border-radius: 8px; border: 1px solid #ded0f4; background: #faf7ff; color: #655575; font-size: 14px; }
 .notice.error { background: #fff6f6; color: #9a3545; border-color: #f2d5da; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 @media (max-width: 640px) { .page-shell { width: calc(100% - 36px); } }
